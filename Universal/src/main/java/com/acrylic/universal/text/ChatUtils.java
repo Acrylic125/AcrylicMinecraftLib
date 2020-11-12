@@ -1,12 +1,11 @@
-package com.acrylic.acrylic.text;
+package com.acrylic.universal.text;
 
 import lombok.experimental.UtilityClass;
 import org.bukkit.ChatColor;
 
-@UtilityClass
 public final class ChatUtils {
 
-    public String get(String text) {
+    public static String get(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 

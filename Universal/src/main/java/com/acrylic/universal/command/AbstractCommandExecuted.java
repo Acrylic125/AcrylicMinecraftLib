@@ -1,4 +1,4 @@
-package com.acrylic.acrylic.command;
+package com.acrylic.universal.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -8,6 +8,8 @@ public interface AbstractCommandExecuted {
     CommandSender getSender();
 
     String[] getArgs();
+
+    CommandBuilderExecutor getParentCommandBuilder();
 
     default String getArg(int argument) {
         String[] args = getArgs();

@@ -1,10 +1,21 @@
-package com.acrylic.acrylic.command;
+package com.acrylic.universal.command;
+
+import com.acrylic.universal.text.ChatUtils;
+
+import java.util.function.Consumer;
 
 public interface CommandBuilderExecutor extends CommandBuilderChecks {
 
     CommandBuilderExecutor[] getArguments();
 
     AbstractCommandBuilder arguments(AbstractCommandBuilder[] arguments);
+
+    default void iterateArguments(Consumer<CommandBuilderExecutor> action) {
+        CommandBuilderExecutor[] args = getArguments();
+        if (args != null && args.length > 0)
+            for (CommandBuilderExecutor arg : args)
+                action.accept(arg);
+    }
 
     default CommandBuilderExecutor getArgument(AbstractCommandExecuted abstractCommandExecuted) {
         CommandBuilderExecutor[] args = getArguments();
@@ -36,7 +47,7 @@ public interface CommandBuilderExecutor extends CommandBuilderChecks {
         String[] oldArgs = abstractCommandExecuted.getArgs();
         if (l >= 0)
             System.arraycopy(oldArgs, 1, newArgs, 0, l);
-        argument.execute(new CommandExecuted(abstractCommandExecuted.getSender(), newArgs));
+        argument.execute(new CommandExecuted(abstractCommandExecuted.getSender(), newArgs, this));
         return true;
     }
 
@@ -45,7 +56,12 @@ public interface CommandBuilderExecutor extends CommandBuilderChecks {
         if (canUseThis(abstractCommandExecuted) &&
                 commandHandler != null &&
                 !checkArgument(abstractCommandExecuted)) {
+            boolean isTimerActive = isTimerActive();
+            if (isTimerActive)
+                clockTime();
             commandHandler.run(abstractCommandExecuted);
+            if (isTimerActive)
+                System.out.println(ChatUtils.get("The command took " + getTimeFromLastClockedAsString()));
         }
     }
 

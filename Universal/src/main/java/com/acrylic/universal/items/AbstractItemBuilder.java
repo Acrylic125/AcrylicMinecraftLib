@@ -1,0 +1,77 @@
+package com.acrylic.universal.items;
+
+import com.acrylic.universal.text.ChatUtils;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
+public interface AbstractItemBuilder {
+
+    AbstractItemBuilder meta(ItemMeta meta);
+
+    ItemStack getItem();
+
+    ItemMeta meta();
+
+    AbstractItemBuilder damage(short damage);
+
+    AbstractItemBuilder durability(short durability);
+
+    default AbstractItemBuilder amount(int amount) {
+        getItem().setAmount(amount);
+        return this;
+    }
+
+    default AbstractItemBuilder shiny(boolean shiny) {
+        return enchant(Enchantment.LURE, 1)
+                .itemFlags(ItemFlag.HIDE_ENCHANTS);
+    }
+
+    default AbstractItemBuilder itemFlags(ItemFlag... itemFlags) {
+        meta().addItemFlags(itemFlags);
+        return this;
+    }
+
+    default AbstractItemBuilder attribute(Attribute attribute, AttributeModifier attributeModifier) {
+        meta().addAttributeModifier(attribute, attributeModifier);
+        return this;
+    }
+
+    default AbstractItemBuilder enchant(@NotNull Enchantment enchantment, int level) {
+        meta().addEnchant(enchantment, level, false);
+        return this;
+    }
+
+    default AbstractItemBuilder name(String name) {
+        meta().setDisplayName(name);
+        return this;
+    }
+
+    default AbstractItemBuilder lore(String... lore) {
+        final ArrayList<String> l = new ArrayList<>();
+        for (String s : lore) {
+            l.add(ChatUtils.get(s));
+        }
+        meta().setLore(l);
+        return this;
+    }
+
+    default AbstractItemBuilder meta(Consumer<ItemMeta> metaConsumer) {
+        metaConsumer.accept(meta());
+        return this;
+    }
+
+    default ItemStack build() {
+        ItemStack item = getItem();
+        item.setItemMeta(meta());
+        return item;
+    }
+
+}

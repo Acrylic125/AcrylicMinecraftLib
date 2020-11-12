@@ -11,13 +11,13 @@
     </parent>
 
     <groupId>com.acrylic</groupId>
-    <artifactId>Acrylic</artifactId>
+    <artifactId>Universal</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>Acrylic</name>
+    <name>Universal</name>
 
-    <description>Main module.</description>
+    <description>Core module.</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -76,21 +76,6 @@
             <artifactId>spigot-api</artifactId>
             <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.acrylic</groupId>
-            <artifactId>Universal</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.acrylic</groupId>
-            <artifactId>Version_1_8</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.acrylic</groupId>
-            <artifactId>Version_1_16</artifactId>
-            <version>1.0</version>
         </dependency>
     </dependencies>
 </project>

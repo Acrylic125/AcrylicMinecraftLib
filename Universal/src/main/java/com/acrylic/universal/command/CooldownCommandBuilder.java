@@ -1,4 +1,4 @@
-package com.acrylic.acrylic.command;
+package com.acrylic.universal.command;
 
 public class CooldownCommandBuilder extends CommandBuilder {
 

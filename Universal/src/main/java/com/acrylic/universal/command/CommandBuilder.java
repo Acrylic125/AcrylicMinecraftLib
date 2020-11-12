@@ -1,8 +1,9 @@
-package com.acrylic.acrylic.command;
+package com.acrylic.universal.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,11 +21,15 @@ public class CommandBuilder
     private Predicate<AbstractCommandExecuted> filter;
     private String[] permissions;
 
+    private long lastClocked = 0;
+    private boolean shouldClock = false;
+
     public CommandBuilder(String command) {
         super(command.toLowerCase());
     }
 
-    public CommandBuilder setDescription(String description) {
+    @NotNull
+    public CommandBuilder setDescription(@NotNull String description) {
         super.setDescription(description);
         return this;
     }
@@ -33,7 +38,8 @@ public class CommandBuilder
         return setAliases(Arrays.asList(aliases));
     }
 
-    public CommandBuilder setAliases(List<String> aliases) {
+    @NotNull
+    public CommandBuilder setAliases(@NotNull List<String> aliases) {
         List<String> newAliases = new ArrayList<>();
         for (String alias : aliases) {
             newAliases.add(alias.toLowerCase());
@@ -110,7 +116,7 @@ public class CommandBuilder
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        execute(new CommandExecuted(sender, args));
+        execute(new CommandExecuted(sender, args, null));
         return true;
     }
 
@@ -120,9 +126,29 @@ public class CommandBuilder
     }
 
     @Override
-    public AbstractCommandBuilder arguments(AbstractCommandBuilder[] arguments) {
+    public CommandBuilder arguments(AbstractCommandBuilder[] arguments) {
         this.arguments = arguments;
         return this;
     }
 
+    @Override
+    public boolean isTimerActive() {
+        return shouldClock;
+    }
+
+    @Override
+    public CommandBuilder setTimerActive(boolean isTimerActive) {
+        this.shouldClock = isTimerActive;
+        return this;
+    }
+
+    @Override
+    public long getLastClocked() {
+        return lastClocked;
+    }
+
+    @Override
+    public void clockTime() {
+        lastClocked = System.currentTimeMillis();
+    }
 }

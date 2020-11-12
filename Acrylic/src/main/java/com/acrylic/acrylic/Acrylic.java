@@ -1,21 +1,15 @@
 package com.acrylic.acrylic;
 
+import com.acrylic.universal.Universal;
 import com.acrylic.acrylic.defaultcommands.AcrylicCommand;
-import com.acrylic.acrylic.text.ChatUtils;
-import lombok.Getter;
+import com.acrylic.universal.text.ChatUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Acrylic extends JavaPlugin {
 
-    /**
-     * Plugin Instance.
-     */
-    @Getter
-    private static Acrylic plugin;
-
     @Override
     public void onEnable() {
-        plugin = this;
+        Universal.setPlugin(this);
 
         AcrylicCommand.registerMainCommand();
         System.out.println(ChatUtils.get(
