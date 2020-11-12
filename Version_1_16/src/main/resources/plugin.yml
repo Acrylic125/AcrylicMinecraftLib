@@ -1,0 +1,6 @@
+name: Version_1_16
+version: ${project.version}
+main: com.acrylic.version_1_16.Version_1_16
+api-version: 1.16
+authors: [ Acrylic ]
+description: 1.16 Module.
