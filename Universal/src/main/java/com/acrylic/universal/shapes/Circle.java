@@ -1,6 +1,7 @@
 package com.acrylic.universal.shapes;
 
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 public class Circle extends AbstractVectorShape {
 
@@ -27,10 +28,10 @@ public class Circle extends AbstractVectorShape {
         float rad = getRadiansBetween() * getIndex();
         double x = getRadius() * Math.cos(rad);
         double z = getRadius() * Math.sin(rad);
-        Location newLoc = new Location(location.getWorld(), x, 0, z);
-        rotate(newLoc);
+        Vector vector = new Vector(x, 0, z);
+        rotate(vector);
 
-        location.add(newLoc);
+        location.add(vector);
         return location;
     }
 }

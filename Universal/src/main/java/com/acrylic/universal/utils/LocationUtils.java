@@ -1,38 +1,12 @@
 package com.acrylic.universal.utils;
 
-import com.google.common.base.Preconditions;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public class LocationUtils {
-
-    @NotNull
-    public Vector rotateAroundNonUnitAxis(Vector a, @NotNull Vector axis, double angle) throws IllegalArgumentException {
-        Preconditions.checkArgument(axis != null, "The provided axis vector was null");
-
-        double x = a.getX(), y = a.getY(), z = a.getZ();
-        double x2 = axis.getX(), y2 = axis.getY(), z2 = axis.getZ();
-
-        double cosTheta = Math.cos(angle);
-        double sinTheta = Math.sin(angle);
-        double dotProduct = a.dot(axis);
-
-        double xPrime = x2 * dotProduct * (1d - cosTheta)
-                + x * cosTheta
-                + (-z2 * y + y2 * z) * sinTheta;
-        double yPrime = y2 * dotProduct * (1d - cosTheta)
-                + y * cosTheta
-                + (z2 * x - x2 * z) * sinTheta;
-        double zPrime = z2 * dotProduct * (1d - cosTheta)
-                + z * cosTheta
-                + (-y2 * x + x2 * y) * sinTheta;
-
-        return a.setX(xPrime).setY(yPrime).setZ(zPrime);
-    }
 
     public float getFixedYaw(Entity entity) {
         return getFixedYaw(entity.getLocation());
@@ -56,28 +30,27 @@ public class LocationUtils {
         return yaw;
     }
 
-    public Location rotateAroundAxisX(Location location, double cos, double sin) {
-        double y = location.getY() * cos - location.getZ() * sin;
-        double z = location.getY() * sin + location.getZ() * cos;
-        location.setY(y);
-        location.setZ(z);
-        return location;
+
+
+    public void rotateAroundAxisX3D(Vector vector, double cos, double sin) {
+        double y = vector.getY() * cos - vector.getZ() * sin;
+        double z = vector.getY() * sin + vector.getZ() * cos;
+        vector.setY(y);
+        vector.setZ(z);
     }
 
-    public Location rotateAroundAxisY(Location location, double cos, double sin) {
-        double x = location.getX() * cos + location.getZ() * sin;
-        double z = location.getX() * -sin + location.getZ() * cos;
-        location.setX(x);
-        location.setZ(z);
-        return location;
+    public void rotateAroundAxisY3D(Vector vector, double cos, double sin) {
+        double x = vector.getX() * cos + vector.getZ() * sin;
+        double z = vector.getX() * -sin + vector.getZ() * cos;
+        vector.setX(x);
+        vector.setZ(z);
     }
 
-    public Location rotateAroundAxisZ(Location location, double cos, double sin) {
-        double x = location.getX() * cos - location.getY() * sin;
-        double y = location.getX() * sin + location.getY() * cos;
-        location.setX(x);
-        location.setY(y);
-        return location;
+    public void rotateAroundAxisZ3D(Vector vector, double cos, double sin) {
+        double x = vector.getX() * cos - vector.getY() * sin;
+        double y = vector.getX() * sin + vector.getY() * cos;
+        vector.setX(x);
+        vector.setY(y);
     }
 
 }

@@ -13,14 +13,26 @@ public final class TrigonometrySet {
         setSin(sinAngle).setCos(cosAngle);
     }
 
-    public TrigonometrySet setSin(float angle) {
-        this.sin = (float) Math.sin(Math.toRadians(angle));
+    public void cloneFrom(TrigonometrySet trigonometrySet) {
+        forceSetSin(trigonometrySet.getSin()).forceSetCos(trigonometrySet.getCos());
+    }
+
+    public TrigonometrySet forceSetSin(float sin) {
+        this.sin = sin;
         return this;
     }
 
-    public TrigonometrySet setCos(float angle) {
-        this.cos = (float) Math.cos(Math.toRadians(angle));
+    public TrigonometrySet forceSetCos(float cos) {
+        this.cos = cos;
         return this;
+    }
+
+    public TrigonometrySet setSin(float angle) {
+        return forceSetSin((float) Math.sin(Math.toRadians(angle)));
+    }
+
+    public TrigonometrySet setCos(float angle) {
+        return forceSetCos((float) Math.cos(Math.toRadians(angle)));
     }
 
     public TrigonometrySet set(float angle) {

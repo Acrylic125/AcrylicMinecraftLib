@@ -42,9 +42,11 @@ public class AcrylicCommand {
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
 
-                    Circle circle = (Circle) new Circle(3, 25).setRot(sender.getLocation());
-                    circle.invokeAction(25, sender.getLocation(), location -> {
-                        location.getBlock().setType(Material.GOLD_BLOCK);
+                    float b = (360f / 25);
+                    Circle circle = (Circle) new Circle(3, 25);//.setRot(sender);
+                    circle.setRot(sender);
+                    circle.invokeAction(25, sender.getLocation(), (i, location) -> {
+                        sender.sendBlockChange(location, Material.DIAMOND_BLOCK, (byte) 0);
                     });
 
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));

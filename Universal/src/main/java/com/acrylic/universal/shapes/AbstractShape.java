@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 @Setter @Getter
@@ -24,9 +25,9 @@ public abstract class AbstractShape {
         return invoke(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()));
     }
 
-    public void invokeAction(int count, @NotNull final Location location, @NotNull final Consumer<Location> action) {
+    public void invokeAction(int count, @NotNull final Location location, @NotNull final BiConsumer<Integer, Location> action) {
         for (int i = 0; i < count; i++) {
-            action.accept(getLocation(location));
+            action.accept(i, getLocation(location));
         }
     }
 
