@@ -2,7 +2,12 @@ package com.acrylic.universal.math;
 
 import lombok.Getter;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * This object handles the transformation of vectors
+ * in 2D space.
+ */
 @Getter
 public class Orientation2D {
 
@@ -38,7 +43,10 @@ public class Orientation2D {
         return this;
     }
 
-    public void transform(Vector vector) {
+    /**
+     * @param vector The vector to transform.
+     */
+    public void transform(@NotNull Vector vector) {
         rotateAroundAxisX(vector, xOrientation.getCos(), xOrientation.getSin());
         rotateAroundAxisZ(vector, zOrientation.getCos(), zOrientation.getSin());
     }

@@ -4,6 +4,7 @@ import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.shapes.Circle;
+import com.acrylic.universal.shapes.Line;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import lombok.experimental.UtilityClass;
@@ -65,9 +66,21 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
 
-                            Circle circle = new Circle(3, 25);//.setRot(sender);
-                            circle.setOrientation(sender);
+                            Circle circle = new Circle(3, 25);
+                            circle.setOrientation(sender).setShouldReuse(true);
                             circle.invokeAction(25, sender.getLocation().add(sender.getLocation().getDirection().multiply(3)), (i, location) -> {
+                                sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
+                            });
+                        }),
+                        new CommandBuilder("line")
+                                .setTimerActive(true)
+                                .filter(AbstractCommandExecuted::isPlayer)
+                                .handle(commandExecutor -> {
+                            Player sender = (Player) commandExecutor.getSender();
+
+                            Line line = new Line(sender.getLocation(), 1f);
+                            line.setTo(sender.getLocation().add(sender.getLocation().getDirection().multiply(15)));
+                            line.invokeAction(25, sender.getLocation(), (i, location) -> {
                                 sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
                             });
                         })

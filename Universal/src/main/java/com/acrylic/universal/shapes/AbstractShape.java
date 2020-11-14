@@ -10,13 +10,11 @@ import java.util.function.BiConsumer;
 @Setter @Getter
 public abstract class AbstractShape {
 
-    private float radius;
-    private int amount;
+    private float frequency;
     private int index = 0;
 
-    public AbstractShape(float radius, int amount) {
-        this.radius = radius;
-        this.amount = amount;
+    public AbstractShape(float frequency) {
+        this.frequency = frequency;
     }
 
     public Location getLocation(@NotNull final Location location) {

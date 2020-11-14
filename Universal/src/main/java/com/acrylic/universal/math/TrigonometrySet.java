@@ -1,5 +1,11 @@
 package com.acrylic.universal.math;
 
+/**
+ * A collection of trigonometric functions cached.
+ *
+ * This should be used instead of recalculating trigonometric functions
+ * to save on performance.
+ */
 public final class TrigonometrySet {
 
     private float sin;

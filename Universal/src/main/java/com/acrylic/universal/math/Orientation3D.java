@@ -2,7 +2,12 @@ package com.acrylic.universal.math;
 
 import lombok.Getter;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * This object handles the transformation of vectors
+ * in 3D space.
+ */
 @Getter
 public class Orientation3D extends Orientation2D {
 
@@ -51,8 +56,11 @@ public class Orientation3D extends Orientation2D {
         return this;
     }
 
+    /**
+     * @param vector The vector to transform.
+     */
     @Override
-    public void transform(Vector vector) {
+    public void transform(@NotNull Vector vector) {
         rotateAroundAxisX(vector, getXOrientation().getCos(), getXOrientation().getSin());
         rotateAroundAxisY(vector, getYOrientation().getCos(), getYOrientation().getSin());
         rotateAroundAxisZ(vector, getZOrientation().getCos(), getZOrientation().getSin());
