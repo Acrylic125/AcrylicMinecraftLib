@@ -39,8 +39,13 @@ public class Orientation2D {
     }
 
     public void transform(Vector vector) {
-        rotateAroundAxisX(vector, xOrientation.getSin(), xOrientation.getCos());
-        rotateAroundAxisZ(vector, zOrientation.getSin(), zOrientation.getCos());
+        rotateAroundAxisX(vector, xOrientation.getCos(), xOrientation.getSin());
+        rotateAroundAxisZ(vector, zOrientation.getCos(), zOrientation.getSin());
+    }
+
+    public void cloneFrom(Orientation2D orientation2D) {
+        setXOrientation(orientation2D.getXOrientation());
+        setZOrientation(orientation2D.getZOrientation());
     }
 
     public static void rotateAroundAxisX(Vector vector, double cos, double sin) {

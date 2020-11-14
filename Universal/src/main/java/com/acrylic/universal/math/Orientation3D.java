@@ -53,9 +53,15 @@ public class Orientation3D extends Orientation2D {
 
     @Override
     public void transform(Vector vector) {
-        rotateAroundAxisX(vector, getXOrientation().getSin(), getXOrientation().getCos());
-        rotateAroundAxisY(vector, getYOrientation().getSin(), getYOrientation().getCos());
-        rotateAroundAxisZ(vector, getZOrientation().getSin(), getZOrientation().getCos());
+        rotateAroundAxisX(vector, getXOrientation().getCos(), getXOrientation().getSin());
+        rotateAroundAxisY(vector, getYOrientation().getCos(), getYOrientation().getSin());
+        rotateAroundAxisZ(vector, getZOrientation().getCos(), getZOrientation().getSin());
+    }
+
+    public void cloneFrom(Orientation3D orientation3D) {
+        setXOrientation(orientation3D.getXOrientation());
+        setYOrientation(orientation3D.getYOrientation());
+        setZOrientation(orientation3D.getZOrientation());
     }
 
     public static void rotateAroundAxisX(Vector vector, double cos, double sin) {

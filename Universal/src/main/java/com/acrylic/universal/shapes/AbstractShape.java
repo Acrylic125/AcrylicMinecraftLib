@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 @Setter @Getter
 public abstract class AbstractShape {
