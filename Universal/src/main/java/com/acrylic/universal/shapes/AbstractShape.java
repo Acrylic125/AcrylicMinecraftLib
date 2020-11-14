@@ -12,13 +12,14 @@ public abstract class AbstractShape {
 
     private float frequency;
     private int index = 0;
+    private int indexIncrement = 1;
 
     public AbstractShape(float frequency) {
         this.frequency = frequency;
     }
 
     public Location getLocation(@NotNull final Location location) {
-        index++;
+        index += indexIncrement;
         return invoke(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()));
     }
 
@@ -26,6 +27,10 @@ public abstract class AbstractShape {
         for (int i = 0; i < count; i++) {
             action.accept(i, getLocation(location));
         }
+    }
+
+    public float getFrequency() {
+        return frequency;
     }
 
     public abstract Location invoke(Location location);

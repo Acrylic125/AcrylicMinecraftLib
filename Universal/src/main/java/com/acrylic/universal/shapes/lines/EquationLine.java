@@ -1,5 +1,6 @@
 package com.acrylic.universal.shapes.lines;
 
+import com.acrylic.universal.shapes.functional.VectorEquationLineFunction;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;

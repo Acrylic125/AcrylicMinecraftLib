@@ -1,5 +1,6 @@
 package com.acrylic.universal.shapes.lines;
 
+import com.acrylic.universal.shapes.functional.VectorEquationLineFunction;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;

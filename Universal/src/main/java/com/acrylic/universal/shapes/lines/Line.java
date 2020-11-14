@@ -1,18 +1,21 @@
 package com.acrylic.universal.shapes.lines;
 
-import com.acrylic.universal.shapes.AbstractVectorShape;
+import com.acrylic.universal.shapes.interfaces.ToAndFrom;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public class Line extends AbstractVectorShape {
+public class Line extends BaseLine implements ToAndFrom {
 
-    private Vector dV;
     private Vector from;
     private Vector to;
     private double distance = 0;
+
+    public Line(float frequency) {
+        super(frequency);
+    }
 
     public Line(@NotNull Location from, float frequency) {
         super(frequency);
@@ -24,22 +27,24 @@ public class Line extends AbstractVectorShape {
         setFrom(from);
     }
 
-    public void setFrom(@NotNull Location location) {
-        this.from = location.toVector();
+    @Override
+    public void setFrom(@NotNull Vector vector) {
+        this.from = vector;
         calculate();
     }
 
-    public void setTo(@NotNull Location location) {
-        this.to = location.toVector();
+    @Override
+    public void setTo(@NotNull Vector vector) {
+        this.to = vector;
         calculate();
     }
 
     public void calculate() {
         if (from != null && to != null) {
             distance = from.distance(to);
-            dV = new Vector(to.getX(), to.getY(), to.getZ())
+            setDV(new Vector(to.getX(), to.getY(), to.getZ())
                     .subtract(from)
-                    .multiply(1 / (getFrequency() * distance));
+                    .multiply(1 / (getFrequency() * distance)));
         }
     }
 
@@ -47,11 +52,4 @@ public class Line extends AbstractVectorShape {
         return getIndex() / getFrequency();
     }
 
-    @Override
-    public Vector getAdditiveVector() {
-        int index = getIndex();
-        return (super.shouldReuse()) ?
-                getReusableVector().setX(dV.getX() * index).setY(dV.getY() * index).setZ(dV.getZ() * index) :
-                new Vector(dV.getX() * index, dV.getY() * index, dV.getZ() * index);
-    }
 }

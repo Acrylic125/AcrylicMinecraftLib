@@ -1,5 +1,6 @@
-package com.acrylic.universal.shapes.lines;
+package com.acrylic.universal.shapes.functional;
 
+import com.acrylic.universal.shapes.lines.EquationLine;
 import org.bukkit.util.Vector;
 
 @FunctionalInterface
