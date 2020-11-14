@@ -41,4 +41,9 @@ public class Circle extends AbstractVectorShape {
                 getReusableVector().setX(x).setY(0).setZ(z) :
                 new Vector(x, 0, z);
     }
+
+    @Override
+    public int getFullCycleIndex() {
+        return (int) getFrequency();
+    }
 }

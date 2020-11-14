@@ -1,17 +1,27 @@
 package com.acrylic.acrylic.defaultcommands;
 
+import com.acrylic.universal.Universal;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
+import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.Spiral;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.EventExecutor;
+import org.bukkit.plugin.RegisteredListener;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.spigotmc.CustomTimingsHandler;
 
 @UtilityClass
 public class AcrylicCommand {
@@ -85,7 +95,7 @@ public class AcrylicCommand {
 
                             Line line = new Line(sender.getLocation(), 1f);
                             line.setTo(sender.getLocation().add(sender.getLocation().getDirection().multiply(15)));
-                            line.invokeAction(25, sender.getLocation(), (i, location) -> {
+                            line.invokeAction(sender.getLocation(), (i, location) -> {
                                 sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
                             });
                         }),
@@ -101,10 +111,20 @@ public class AcrylicCommand {
                             spiral.setRadiusIncrement(0.1f);
                             spiral.setFrequencyIncrement(0.08f);
                             spiral.setShouldUseTimeLine(true);
-                            spiral.set(sender.getLocation(), sender.getLocation().add(sender.getLocation().getDirection().multiply(20)));
-                            spiral.invokeAction(350, sender.getLocation(), (i, location) -> {
+                            spiral.set(sender.getLocation(), sender.getLocation().add(sender.getLocation().getDirection().multiply(10)));
+                            spiral.invokeAction(sender.getLocation(), (i, location) -> {
                                 sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
                             });
+                        }),
+                        new CommandBuilder("event")
+                                .setDescription("Event test.")
+                                .handle(commandExecutor -> {
+                            EventBuilder
+                                    .listen(EntityDamageByEntityEvent.class)
+                                    .handle(event -> {
+                                        Bukkit.broadcastMessage("Hit " + event.getDamager().getName());
+                                    })
+                                    .register();
                         })
 
 

@@ -26,4 +26,8 @@ public class BaseLine extends AbstractVectorShape {
                 new Vector(dV.getX() * index, dV.getY() * index, dV.getZ() * index);
     }
 
+    @Override
+    public int getFullCycleIndex() {
+        return 1;
+    }
 }

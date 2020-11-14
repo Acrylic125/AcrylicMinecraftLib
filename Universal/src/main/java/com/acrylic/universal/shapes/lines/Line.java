@@ -2,6 +2,7 @@ package com.acrylic.universal.shapes.lines;
 
 import com.acrylic.universal.shapes.interfaces.ToAndFrom;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +51,12 @@ public class Line extends BaseLine implements ToAndFrom {
 
     public double getDistanceFromOrigin() {
         return getIndex() / getFrequency();
+    }
+
+    @Override
+    public int getFullCycleIndex() {
+        Bukkit.broadcastMessage(getFrequency() + " " + distance);
+        return (int) Math.ceil(distance * getFrequency());
     }
 
 }

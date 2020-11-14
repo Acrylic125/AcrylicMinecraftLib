@@ -29,10 +29,16 @@ public abstract class AbstractShape {
         }
     }
 
+    public void invokeAction(@NotNull final Location location, @NotNull final BiConsumer<Integer, Location> action) {
+        invokeAction(getFullCycleIndex(), location, action);
+    }
+
     public float getFrequency() {
         return frequency;
     }
 
     public abstract Location invoke(Location location);
+
+    public abstract int getFullCycleIndex();
 
 }

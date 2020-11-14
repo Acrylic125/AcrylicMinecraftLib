@@ -4,7 +4,6 @@ import com.acrylic.universal.shapes.interfaces.ToAndFrom;
 import com.acrylic.universal.shapes.lines.Line;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -68,6 +67,11 @@ public class Spiral extends Circle implements ToAndFrom {
         return (super.shouldReuse()) ?
                 getReusableVector().setX(x).setY(0).setZ(z) :
                 new Vector(x, 0, z);
+    }
+
+    @Override
+    public int getFullCycleIndex() {
+        return (usingTimeLine()) ? timeLine.getFullCycleIndex() : (int) getFrequency();
     }
 
 }
