@@ -4,7 +4,8 @@ import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.shapes.Circle;
-import com.acrylic.universal.shapes.Line;
+import com.acrylic.universal.shapes.lines.Line;
+import com.acrylic.universal.shapes.lines.QuadraticYLine;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import lombok.experimental.UtilityClass;
@@ -39,6 +40,13 @@ public class AcrylicCommand {
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
 
+                    QuadraticYLine line = new QuadraticYLine(sender.getLocation(), 1f);
+                    line.setScalar(-0.05f)
+                            .setConstant(1f)
+                            .setTo(sender.getLocation().add(sender.getLocation().getDirection().multiply(15)));
+                    line.invokeAction(25, sender.getLocation(), (i, location) -> {
+                        sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
+                    });
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
