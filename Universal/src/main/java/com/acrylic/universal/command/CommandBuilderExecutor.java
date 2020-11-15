@@ -26,14 +26,11 @@ public interface CommandBuilderExecutor extends CommandBuilderChecks {
             return null;
         arg = arg.toLowerCase();
         for (CommandBuilderExecutor argument : args) {
-            if (arg.equals(argument.getName())) {
+            if (arg.equals(argument.getName()))
                 return argument;
-            }
-            for (String alias : argument.getAliases()) {
-                if (arg.equals(alias)) {
+            for (String alias : argument.getAliases())
+                if (arg.equals(alias))
                     return argument;
-                }
-            }
         }
         return null;
     }

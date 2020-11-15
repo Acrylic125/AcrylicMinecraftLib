@@ -1,5 +1,6 @@
 package com.acrylic.universal.shapes;
 
+import com.acrylic.universal.AbstractIndefiniteShape;
 import com.acrylic.universal.math.Orientation3D;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -8,7 +9,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public abstract class AbstractVectorShape extends AbstractShape {
+public abstract class AbstractVectorShape extends AbstractIndefiniteShape {
 
     private final Orientation3D orientation;
     private Vector reusableVector = null;
@@ -70,7 +71,7 @@ public abstract class AbstractVectorShape extends AbstractShape {
     }
 
     @Override
-    public Location invoke(Location location) {
+    public Location transformPoint(Location location) {
         return location.add(rotateAdditiveVector(getAdditiveVector()));
     }
 

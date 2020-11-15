@@ -1,4 +1,4 @@
-package com.acrylic.universal.shapes.interfaces;
+package com.acrylic.universal.interfaces;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;

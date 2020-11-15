@@ -1,10 +1,11 @@
 package com.acrylic.acrylic.defaultcommands;
 
-import com.acrylic.universal.Universal;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.events.EventBuilder;
+import com.acrylic.universal.gui.GUIBuilder;
+import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.Spiral;
 import com.acrylic.universal.shapes.lines.Line;
@@ -15,20 +16,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.plugin.EventExecutor;
-import org.bukkit.plugin.RegisteredListener;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.spigotmc.CustomTimingsHandler;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
 @UtilityClass
 public class AcrylicCommand {
 
     public void registerMainCommand() {
         
-        new CommandBuilder("acrylic")
+        CommandBuilder.create("acrylic")
                 .setAliases("acryliccmd")
                 .arguments(new AbstractCommandBuilder[] {
                         getTestCommandBuilder()
@@ -44,16 +40,29 @@ public class AcrylicCommand {
         .register();
     }
 
+
     private CommandBuilder getTestCommandBuilder() {
-        return new CommandBuilder("test")
+        return CommandBuilder.create("test")
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
 
+                    GUIBuilder.create(
+                            InventoryBuilder
+                                    .create()
+                                    .rows(3)
+                                    .title("Hello")
+                                    .build()
+                    ).clickListener(EventBuilder
+                            .listen(InventoryClickEvent.class).handle(event -> {
+                                event.setCancelled(true);
+                            })
+                    ).open(sender);
+
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
-                        new CommandBuilder("-list")
+                        CommandBuilder.create("-list")
                                 .setDescription("This list.")
                                 .handle(commandExecutor ->  {
                             CommandSender sender = commandExecutor.getSender();
@@ -62,7 +71,7 @@ public class AcrylicCommand {
                                 sender.sendMessage(ChatUtils.get("  &3&l- &r&b" + commandBuilderExecutor.getName() + " &r&7"));
                             });
                         }),
-                        new CommandBuilder("item")
+                        CommandBuilder.create("item")
                                 .setDescription("ItemBuilder test.")
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
@@ -73,7 +82,7 @@ public class AcrylicCommand {
                                             .build()
                             );
                         }),
-                        new CommandBuilder("circle")
+                        CommandBuilder.create("circle")
                                 .setTimerActive(true)
                                 .setDescription("Circles.")
                                 .filter(AbstractCommandExecuted::isPlayer)
@@ -86,7 +95,7 @@ public class AcrylicCommand {
                                 sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
                             });
                         }),
-                        new CommandBuilder("line")
+                        CommandBuilder.create("line")
                                 .setTimerActive(true)
                                 .setDescription("Line in the direction you face.")
                                 .filter(AbstractCommandExecuted::isPlayer)
@@ -99,7 +108,7 @@ public class AcrylicCommand {
                                 sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
                             });
                         }),
-                        new CommandBuilder("spiral")
+                        CommandBuilder.create("spiral")
                                 .setTimerActive(true)
                                 .setDescription("Spiral in the direction you face.")
                                 .filter(AbstractCommandExecuted::isPlayer)
@@ -116,7 +125,7 @@ public class AcrylicCommand {
                                 sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
                             });
                         }),
-                        new CommandBuilder("event")
+                        CommandBuilder.create("event")
                                 .setDescription("Event test.")
                                 .handle(commandExecutor -> {
                             EventBuilder
@@ -125,6 +134,7 @@ public class AcrylicCommand {
                                         Bukkit.broadcastMessage("Hit " + event.getDamager().getName());
                                     })
                                     .register();
+
                         })
 
 

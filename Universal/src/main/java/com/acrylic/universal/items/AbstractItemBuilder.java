@@ -1,6 +1,7 @@
 package com.acrylic.universal.items;
 
 import com.acrylic.universal.text.ChatUtils;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -30,8 +31,13 @@ public interface AbstractItemBuilder {
     }
 
     default AbstractItemBuilder shiny(boolean shiny) {
-        return enchant(Enchantment.LURE, 1)
-                .itemFlags(ItemFlag.HIDE_ENCHANTS);
+        boolean isRod = (getItem().getType().equals(Material.FISHING_ROD));
+        return (shiny) ?
+                enchant(isRod ? Enchantment.OXYGEN : Enchantment.LURE, 1)
+                       .itemFlags(ItemFlag.HIDE_ENCHANTS)
+                :
+                removeEnchant(isRod ? Enchantment.OXYGEN : Enchantment.LURE)
+                        .removeItemFlags(ItemFlag.HIDE_ENCHANTS);
     }
 
     default AbstractItemBuilder itemFlags(ItemFlag... itemFlags) {
@@ -39,8 +45,23 @@ public interface AbstractItemBuilder {
         return this;
     }
 
+    default AbstractItemBuilder removeItemFlags(ItemFlag... itemFlags) {
+        meta().removeItemFlags(itemFlags);
+        return this;
+    }
+
     default AbstractItemBuilder attribute(Attribute attribute, AttributeModifier attributeModifier) {
         meta().addAttributeModifier(attribute, attributeModifier);
+        return this;
+    }
+
+    default AbstractItemBuilder removeAttribute(Attribute attribute, AttributeModifier attributeModifier) {
+        meta().removeAttributeModifier(attribute, attributeModifier);
+        return this;
+    }
+
+    default AbstractItemBuilder removeEnchant(@NotNull Enchantment enchantment) {
+        meta().removeEnchant(enchantment);
         return this;
     }
 

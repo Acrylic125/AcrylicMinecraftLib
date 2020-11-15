@@ -1,6 +1,6 @@
 package com.acrylic.universal.shapes;
 
-import com.acrylic.universal.shapes.interfaces.ToAndFrom;
+import com.acrylic.universal.interfaces.ToAndFrom;
 import com.acrylic.universal.shapes.lines.Line;
 import lombok.Getter;
 import lombok.Setter;

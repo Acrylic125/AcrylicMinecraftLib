@@ -102,6 +102,7 @@
     </repositories>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <dependency>
             <groupId>com.github.Acrylic125</groupId>
             <artifactId>AcrylicLib</artifactId>

@@ -1,6 +1,6 @@
 package com.acrylic.universal.shapes.lines;
 
-import com.acrylic.universal.shapes.interfaces.ToAndFrom;
+import com.acrylic.universal.interfaces.ToAndFrom;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

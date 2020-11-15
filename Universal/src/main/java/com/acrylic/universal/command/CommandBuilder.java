@@ -24,7 +24,11 @@ public class CommandBuilder
     private long lastClocked = 0;
     private boolean shouldClock = false;
 
-    public CommandBuilder(String command) {
+    public static CommandBuilder create(String command) {
+        return new CommandBuilder(command);
+    }
+
+    protected CommandBuilder(String command) {
         super(command.toLowerCase());
     }
 

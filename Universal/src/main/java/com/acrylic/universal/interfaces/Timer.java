@@ -1,4 +1,4 @@
-package com.acrylic.universal.timer;
+package com.acrylic.universal.interfaces;
 
 import com.acrylic.time.Time;
 import com.acrylic.time.TimeConverter;

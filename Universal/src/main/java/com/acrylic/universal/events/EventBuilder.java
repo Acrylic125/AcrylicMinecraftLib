@@ -13,7 +13,6 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     private Predicate<T> filter;
     private EventPriority priority = EventPriority.NORMAL;
     private boolean shouldIgnoreCancel = false;
-    private String name;
 
     private long lastClocked = 0;
     private boolean shouldClock = false;
@@ -45,12 +44,6 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     }
 
     @Override
-    public AbstractEventBuilder<T> name(String name) {
-        this.name = name;
-        return this;
-    }
-
-    @Override
     public AbstractEventBuilder<T> ignoreCancel(boolean ignoreCancel) {
         this.shouldIgnoreCancel = ignoreCancel;
         return this;
@@ -69,11 +62,6 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     @Override
     public EventPriority getPriority() {
         return priority;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override

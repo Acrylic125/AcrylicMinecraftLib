@@ -1,14 +1,7 @@
 package com.acrylic.universal.command;
 
-import com.acrylic.universal.Universal;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.acrylic.universal.interfaces.PluginRegister;
 
-public interface AbstractCommandBuilder extends CommandBuilderExecutor {
-
-    void register(JavaPlugin plugin);
-
-    default void register() {
-        register(Universal.getPlugin());
-    }
+public interface AbstractCommandBuilder extends CommandBuilderExecutor, PluginRegister {
 
 }

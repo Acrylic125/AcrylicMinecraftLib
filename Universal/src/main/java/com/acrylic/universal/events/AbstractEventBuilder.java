@@ -1,28 +1,23 @@
 package com.acrylic.universal.events;
 
-import com.acrylic.universal.Universal;
-import com.acrylic.universal.timer.Timer;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventException;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import com.acrylic.universal.interfaces.PluginRegister;
+import com.acrylic.universal.interfaces.Timer;
+import com.acrylic.universal.reflection.ReflectionUtils;
+import org.bukkit.event.*;
 import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.spigotmc.CustomTimingsHandler;
 
-import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public interface AbstractEventBuilder<T extends Event> extends Listener, Timer {
+public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, PluginRegister {
 
     AbstractEventBuilder<T> handle(Consumer<T> eventHandler);
 
     AbstractEventBuilder<T> filter(Predicate<T> filter);
 
     AbstractEventBuilder<T> priority(EventPriority eventPriority);
-
-    AbstractEventBuilder<T> name(String name);
 
     AbstractEventBuilder<T> ignoreCancel(boolean ignoreCancel);
 
@@ -32,43 +27,26 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Timer {
 
     EventPriority getPriority();
 
-    String getName();
-
     boolean shouldIgnoreCancel();
 
     Class<T> getEventClass();
 
-    default AbstractEventBuilder<T> name() {
-        return name("Plugin: " + UUID.randomUUID() + " Event: Event" + "::" + UUID.randomUUID() + "(" + UUID.randomUUID() + ")");
-    }
-
-    default void register() {
-        register(Universal.getPlugin());
-    }
-
+    @Override
     @SuppressWarnings("unchecked")
     default void register(JavaPlugin plugin) {
-        String name = getName();
-        if (name == null) {
-            name();
-            name = getName();
-        }
-        final CustomTimingsHandler timings = new CustomTimingsHandler(name); // Spigot
+        final CustomTimingsHandler timings = new CustomTimingsHandler("Plugin: " + plugin.getDescription().getFullName() + " Event: " + getClass().getName() + "::" + getEventClass().getName() + "(" + getEventClass().getSimpleName() + ")");
         EventExecutor executor = (listener, event) -> {
             try {
                 boolean isAsync = event.isAsynchronous();
                 if (!isAsync)
                     timings.startTiming();
-                //
                 Consumer<T> action = getHandle();
-                if (action != null) {
+                if (action != null && event.getClass().equals(getEventClass())) {
                     T e = (T) event;
                     Predicate<T> filter = getFilter();
-                    if (filter == null || filter.test(e)) {
+                    if (filter == null || filter.test(e))
                         action.accept(e);
-                    }
                 }
-                //
                 if (!isAsync)
                     timings.stopTiming();
             } catch (Throwable t) {
@@ -76,6 +54,13 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Timer {
             }
         };
         plugin.getServer().getPluginManager().registerEvent(getEventClass(), this, getPriority(), executor, plugin);
+    }
+
+    default void unregister() {
+        HandlerList handlerList = ReflectionUtils.getField(getEventClass(), "handlers", HandlerList.class);
+        if (handlerList != null) {
+            handlerList.unregister(this);
+        }
     }
 
 }

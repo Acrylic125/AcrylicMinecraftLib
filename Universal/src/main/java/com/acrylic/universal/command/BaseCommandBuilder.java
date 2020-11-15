@@ -1,7 +1,7 @@
 package com.acrylic.universal.command;
 
 import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universal.timer.Timer;
+import com.acrylic.universal.interfaces.Timer;
 
 import java.util.List;
 import java.util.function.Predicate;

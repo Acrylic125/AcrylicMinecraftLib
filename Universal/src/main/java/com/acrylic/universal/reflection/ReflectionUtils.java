@@ -23,7 +23,6 @@ public class ReflectionUtils {
         Field found = null;
         while (found == null && clazz != null) {
             try {
-                Bukkit.broadcastMessage(clazz.getName());
                 found = clazz.getDeclaredField(fieldName);
             } catch (NoSuchFieldException ex) {
                 clazz = clazz.getSuperclass();
@@ -37,7 +36,6 @@ public class ReflectionUtils {
     @SuppressWarnings("unchecked")
     public <T> T getField(Class<?> clazz, String fieldName, Class<T> returnType) {
         Field field = getField(clazz, fieldName);
-        Bukkit.broadcastMessage(field + "");
         if (field != null && field.getType().isAssignableFrom(returnType)) {
             try {
                 return (T) field.get(null);
