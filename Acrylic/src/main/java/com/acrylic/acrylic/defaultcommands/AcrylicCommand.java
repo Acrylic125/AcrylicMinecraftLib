@@ -4,8 +4,9 @@ import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.events.EventBuilder;
-import com.acrylic.universal.gui.GUIBuilder;
+import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
+import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.Spiral;
 import com.acrylic.universal.shapes.lines.Line;
@@ -15,6 +16,7 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -47,32 +49,18 @@ public class AcrylicCommand {
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
 
-                    GUIBuilder.create(
-                            InventoryBuilder
-                                    .create()
-                                    .rows(3)
-                                    .title("Hello")
-                                    .build()
-                    ).clickListener(EventBuilder
-                            .listen(InventoryClickEvent.class).handle(event -> {
-                                event.setCancelled(true);
-                            })
-                    ).open(sender);
-
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
                         CommandBuilder.create("-list")
-                                .setDescription("This list.")
                                 .handle(commandExecutor ->  {
                             CommandSender sender = commandExecutor.getSender();
                             sender.sendMessage(ChatUtils.get("&3&lList of Tests:"));
                             commandExecutor.getParentCommandBuilder().iterateArguments(commandBuilderExecutor -> {
-                                sender.sendMessage(ChatUtils.get("  &3&l- &r&b" + commandBuilderExecutor.getName() + " &r&7"));
+                                sender.sendMessage(ChatUtils.get("  &3&l- &r&b" + commandBuilderExecutor.getName()));
                             });
                         }),
                         CommandBuilder.create("item")
-                                .setDescription("ItemBuilder test.")
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player player = (Player) commandExecutor.getSender();
@@ -84,7 +72,6 @@ public class AcrylicCommand {
                         }),
                         CommandBuilder.create("circle")
                                 .setTimerActive(true)
-                                .setDescription("Circles.")
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
@@ -97,7 +84,6 @@ public class AcrylicCommand {
                         }),
                         CommandBuilder.create("line")
                                 .setTimerActive(true)
-                                .setDescription("Line in the direction you face.")
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
@@ -110,7 +96,6 @@ public class AcrylicCommand {
                         }),
                         CommandBuilder.create("spiral")
                                 .setTimerActive(true)
-                                .setDescription("Spiral in the direction you face.")
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
@@ -126,7 +111,6 @@ public class AcrylicCommand {
                             });
                         }),
                         CommandBuilder.create("event")
-                                .setDescription("Event test.")
                                 .handle(commandExecutor -> {
                             EventBuilder
                                     .listen(EntityDamageByEntityEvent.class)
@@ -134,6 +118,34 @@ public class AcrylicCommand {
                                         Bukkit.broadcastMessage("Hit " + event.getDamager().getName());
                                     })
                                     .register();
+
+                        }),
+                        CommandBuilder.create("gui")
+                                .filter(AbstractCommandExecuted::isPlayer)
+                                .handle(commandExecutor -> {
+
+                                    Player sender = (Player) commandExecutor.getSender();
+                            GlobalGUIBuilder.create(
+                                    InventoryBuilder
+                                            .create()
+                                            .rows(3)
+                                            .title("Hello")
+                                            .build()
+                            ).clickListener(EventBuilder
+                                    .listen(InventoryClickEvent.class)
+                                    .filter(event -> event.getView().getPlayer().isOp())
+                                    .handle(event -> {
+                                        event.setCancelled(true);
+                                    })
+                            ).template(new GUITemplate()
+                                    .addGUIItem(1, ItemBuilder.of(Material.DIAMOND_BLOCK).build())
+                                    .addGUIItem(2, ItemBuilder.of(Material.DIAMOND_BLOCK).build())
+                                    .addGUIItem(5, ItemBuilder.of(Material.DIAMOND_BLOCK).build())
+                                    .addGUIItem(2, ItemBuilder.of(Material.GOLD_BLOCK).build())
+                            )
+                                    .removeListenersOnClose(true)
+                                    .update()
+                                    .open(sender);
 
                         })
 

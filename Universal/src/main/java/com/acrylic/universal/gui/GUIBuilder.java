@@ -1,21 +1,18 @@
 package com.acrylic.universal.gui;
 
 import com.acrylic.universal.events.AbstractEventBuilder;
+import com.acrylic.universal.events.EventBuilder;
+import com.acrylic.universal.gui.templates.AbstractGUITemplate;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class GUIBuilder implements AbstractGUIBuilder {
+public abstract class GUIBuilder implements AbstractGUIBuilder {
 
     private AbstractEventBuilder<InventoryClickEvent> inventoryClickListener;
     private AbstractEventBuilder<InventoryCloseEvent> closeListener;
-    private Inventory inventory;
-
-    public static GUIBuilder create(Inventory inventory) {
-        return (GUIBuilder) new GUIBuilder().inventory(inventory);
-    }
+    private AbstractEventBuilder<InventoryCloseEvent> removeListeners;
+    private AbstractGUITemplate template;
 
     @Override
     public AbstractGUIBuilder clickListener(AbstractEventBuilder<InventoryClickEvent> eventBuilder, JavaPlugin plugin) {
@@ -32,8 +29,8 @@ public class GUIBuilder implements AbstractGUIBuilder {
     }
 
     @Override
-    public AbstractGUIBuilder inventory(Inventory inventory) {
-        this.inventory = inventory;
+    public AbstractGUIBuilder template(AbstractGUITemplate template) {
+        this.template = template;
         return this;
     }
 
@@ -48,14 +45,22 @@ public class GUIBuilder implements AbstractGUIBuilder {
     }
 
     @Override
-    public Inventory getInventory() {
-        return inventory;
+    public AbstractGUITemplate getTemplate() {
+        return template;
     }
 
     @Override
-    public AbstractGUIBuilder setItem(int slot, ItemStack item) {
-        inventory.setItem(slot, item);
+    public AbstractGUIBuilder removeListenersOnClose(boolean b) {
+        if (b && removeListeners == null) {
+            removeListeners = EventBuilder
+                    .listen(InventoryCloseEvent.class)
+                    .handle(inventoryCloseEvent -> {
+                        removeListeners();
+                    });
+        } else if (!b && removeListeners != null) {
+            removeListeners.unregister();
+            removeListeners = null;
+        }
         return this;
     }
-
 }

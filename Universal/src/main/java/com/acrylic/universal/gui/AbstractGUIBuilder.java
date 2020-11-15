@@ -2,6 +2,7 @@ package com.acrylic.universal.gui;
 
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.events.AbstractEventBuilder;
+import com.acrylic.universal.gui.templates.AbstractGUITemplate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -15,15 +16,19 @@ public interface AbstractGUIBuilder {
 
     AbstractGUIBuilder closeListener(AbstractEventBuilder<InventoryCloseEvent> eventBuilder, JavaPlugin plugin);
 
-    AbstractGUIBuilder inventory(Inventory inventory);
+    AbstractGUIBuilder template(AbstractGUITemplate template);
 
     AbstractEventBuilder<InventoryClickEvent> getClickListener();
 
     AbstractEventBuilder<InventoryCloseEvent> getCloseListener();
 
-    Inventory getInventory();
+    AbstractGUITemplate getTemplate();
 
     AbstractGUIBuilder setItem(int slot, ItemStack item);
+
+    AbstractGUIBuilder open(Player... viewers);
+
+    AbstractGUIBuilder removeListenersOnClose(boolean b);
 
     /**
      * You should always remove the listeners if the UI is no
@@ -36,14 +41,6 @@ public interface AbstractGUIBuilder {
         AbstractEventBuilder<InventoryCloseEvent> closeListener = getCloseListener();
         if (closeListener != null)
             closeListener.unregister();
-    }
-
-    default AbstractGUIBuilder open(Player... viewers) {
-        Inventory inventory = getInventory();
-        for (Player viewer : viewers) {
-            viewer.openInventory(inventory);
-        }
-        return this;
     }
 
     /** DO NOT REGISTER THE EVENT! **/
