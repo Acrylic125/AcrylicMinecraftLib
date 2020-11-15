@@ -7,13 +7,22 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
 public abstract class AbstractGUITemplate implements Iterable<GUIItem> {
 
-    private final ArrayList<GUIItem> guiItems = new ArrayList<>();
+    private final Collection<GUIItem> guiItems;
+
+    public AbstractGUITemplate() {
+        guiItems = new ArrayList<>();
+    }
+
+    public AbstractGUITemplate(Collection<GUIItem> collection) {
+        guiItems = collection;
+    }
 
     public GUIItem getGUIItem(int slot) {
         for (GUIItem guiItem : guiItems)
