@@ -17,11 +17,13 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     private long lastClocked = 0;
     private boolean shouldClock = false;
 
+    private boolean hasRegisteredBefore = false;
+
     public static <T extends Event> EventBuilder<T> listen (Class<T> clazz) {
         return new EventBuilder<>(clazz);
     }
 
-    private EventBuilder(Class<T> clazz) {
+    public EventBuilder(Class<T> clazz) {
         this.clazz = clazz;
     }
 
@@ -50,6 +52,20 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     }
 
     @Override
+    public AbstractEventBuilder<T> copy(AbstractEventBuilder<T> eventBuilder) {
+        this.filter = eventBuilder.getFilter();
+        this.priority = eventBuilder.getPriority();
+        this.shouldIgnoreCancel = eventBuilder.shouldIgnoreCancel();
+        this.eventHandler = eventBuilder.getHandle();
+        return this;
+    }
+
+    @Override
+    public void setRegisteredBefore(boolean b) {
+        hasRegisteredBefore = b;
+    }
+
+    @Override
     public Consumer<T> getHandle() {
         return eventHandler;
     }
@@ -67,6 +83,11 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     @Override
     public boolean shouldIgnoreCancel() {
         return shouldIgnoreCancel;
+    }
+
+    @Override
+    public boolean hasRegisteredBefore() {
+        return hasRegisteredBefore;
     }
 
     @Override
@@ -93,5 +114,14 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     @Override
     public void clockTime() {
         lastClocked = System.currentTimeMillis();
+    }
+
+    @Override
+    public AbstractEventBuilder<T> clone() {
+        return new EventBuilder<T>(clazz)
+                .filter(filter)
+                .priority(priority)
+                .ignoreCancel(shouldIgnoreCancel)
+                .handle(eventHandler);
     }
 }

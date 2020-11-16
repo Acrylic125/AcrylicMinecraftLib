@@ -103,4 +103,5 @@ public class GlobalGUIBuilder extends GUIBuilder {
     public GlobalGUIBuilder removeListenersOnClose(boolean b) {
         return (GlobalGUIBuilder) super.removeListenersOnClose(b);
     }
+
 }

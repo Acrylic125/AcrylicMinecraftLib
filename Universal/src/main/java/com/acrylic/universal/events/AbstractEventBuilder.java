@@ -11,7 +11,7 @@ import org.spigotmc.CustomTimingsHandler;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, PluginRegister {
+public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, PluginRegister, Cloneable {
 
     AbstractEventBuilder<T> handle(Consumer<T> eventHandler);
 
@@ -21,6 +21,10 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, 
 
     AbstractEventBuilder<T> ignoreCancel(boolean ignoreCancel);
 
+    AbstractEventBuilder<T> copy(AbstractEventBuilder<T> eventBuilder);
+
+    void setRegisteredBefore(boolean b);
+
     Consumer<T> getHandle();
 
     Predicate<T> getFilter();
@@ -29,12 +33,16 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, 
 
     boolean shouldIgnoreCancel();
 
+    boolean hasRegisteredBefore();
+
     Class<T> getEventClass();
 
     @Override
     @SuppressWarnings("unchecked")
     default void register(JavaPlugin plugin) {
         final CustomTimingsHandler timings = new CustomTimingsHandler("Plugin: " + plugin.getDescription().getFullName() + " Event: " + getClass().getName() + "::" + getEventClass().getName() + "(" + getEventClass().getSimpleName() + ")");
+        if (hasRegisteredBefore())
+            unregister();
         EventExecutor executor = (listener, event) -> {
             try {
                 boolean isAsync = event.isAsynchronous();
@@ -54,6 +62,7 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, 
             }
         };
         plugin.getServer().getPluginManager().registerEvent(getEventClass(), this, getPriority(), executor, plugin);
+        setRegisteredBefore(true);
     }
 
     default void unregister() {
