@@ -1,6 +1,5 @@
 package com.acrylic.universal.gui.templates;
 
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -8,34 +7,34 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 
 /**
- * GUISubCollection only supports Chest/Shulker UIs.
+ * Refer to {@link GUISubCollectionTemplate} for more information.
  *
- * (3 Rows, 9 Columns)
+ * (3 Rows, 9 Columns, 14 Items)
  * ROWS : COLUMNS ------>
- *  | i i i i i i i i i
- *  | i i i i i i i i i
- *  | i i i i i i i i i
+ *  | i O i O i O i O i
+ *  | O i O i O i O i O
+ *  | i O i O i O i O i
  * \/
  *
- * (3 Rows, 9 Columns, 1 Left Offset (L), 2 Right Offset (R))
+ * (3 Rows, 9 Columns, 1 Left Offset (L), 2 Right Offset (R), 7 Items)
  * ROWS : COLUMNS ------>
- *  | L i i i i i i R R
- *  | L i i i i i i R R
- *  | L i i i i i i R R
+ *  | L i O i O i O R R
+ *  | L O i O i O i R R
+ *  | L i O O O O O R R
  * \/
  */
-public class GUISubCollectionTemplate extends AbstractGUISubCollectionTemplate {
+public class AlternateGUITemplate extends AbstractGUISubCollectionTemplate {
 
-    public GUISubCollectionTemplate() {
+    public AlternateGUITemplate() {
         super();
     }
 
-    public GUISubCollectionTemplate(int initialRow, int lastRow) {
+    public AlternateGUITemplate(int initialRow, int lastRow) {
         super(initialRow, lastRow);
     }
 
     @Override
-    public void applySubCollection(@NotNull final Inventory inventory, @NotNull final Collection<ItemStack> collection) {
+    public void applySubCollection(@NotNull Inventory inventory, @NotNull Collection<ItemStack> collection) {
         final int endingIndex = getTotalItemsInMenu();
         int currentSlot = getStartingSlot();
         float divisor = getTotalColumnsPerRow();
@@ -46,8 +45,9 @@ public class GUISubCollectionTemplate extends AbstractGUISubCollectionTemplate {
             inventory.setItem(currentSlot, itemStack);
             currentSlot++;
             index++;
-            if (index % divisor == 0)
+            if (index % divisor == 0) {
                 currentSlot += getTotalOffset();
+            }
         }
     }
 }

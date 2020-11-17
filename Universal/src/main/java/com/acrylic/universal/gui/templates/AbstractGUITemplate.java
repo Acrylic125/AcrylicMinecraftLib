@@ -1,13 +1,10 @@
 package com.acrylic.universal.gui.templates;
 
-import com.acrylic.universal.gui.GUIBuilder;
-import com.acrylic.universal.gui.GlobalGUIBuilder;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;

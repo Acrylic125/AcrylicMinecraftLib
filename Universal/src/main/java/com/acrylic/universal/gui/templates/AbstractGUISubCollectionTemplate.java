@@ -15,7 +15,7 @@ public abstract class AbstractGUISubCollectionTemplate extends AbstractGUITempla
 
     private final ArrayList<ItemStack> subCollection = new ArrayList<>();
     private int initialRow;
-    private int lastRow;
+    private int totalItemsInMenu;
     private int offsetLeft = 0;
     private int offsetRight = 0;
 
@@ -24,20 +24,34 @@ public abstract class AbstractGUISubCollectionTemplate extends AbstractGUITempla
     }
 
     public AbstractGUISubCollectionTemplate(int initialRow, int lastRow) {
+        setTotalItemsInMenu(initialRow, lastRow);
+    }
+
+    public int getStartingSlot() {
+        return getOffsetLeft() + (9 * (getInitialRow() - 1));
+    }
+
+    public void add(ItemStack item) {
+        subCollection.add(item);
+    }
+
+    public void setTotalItemsInMenu(int initialRow, int lastRow) {
+        assert initialRow <= lastRow : "The initial row must be smaller than the last row.";
+        assert initialRow > 0 : "The rows specified must be greater than 0.";
         this.initialRow = initialRow;
-        this.lastRow = lastRow;
+        this.totalItemsInMenu = (lastRow - initialRow + 1) * getTotalColumnsPerRow();
     }
 
     public int getTotalOffset() {
         return offsetLeft + offsetRight;
     }
 
-    public int getTotalRows() {
-        return lastRow - initialRow + 1;
+    public int getTotalColumnsPerRow() {
+        return AbstractInventoryBuilder.CHEST_COLUMNS_PER_ROW - getTotalOffset();
     }
 
     public int getTotalItemsInMenu() {
-        return (AbstractInventoryBuilder.CHEST_COLUMNS_PER_ROW - getTotalOffset()) * getTotalRows();
+        return totalItemsInMenu;
     }
 
     public ArrayList<ItemStack> getSubCollection() {
@@ -53,10 +67,10 @@ public abstract class AbstractGUISubCollectionTemplate extends AbstractGUITempla
     }
 
     @Override
-    public void apply(@NotNull Inventory inventory) {
+    public void apply(@NotNull final Inventory inventory) {
         apply(inventory, subCollection);
     }
 
-    public abstract void applySubCollection(Inventory inventory, Collection<ItemStack> collection);
+    public abstract void applySubCollection(@NotNull final Inventory inventory, @NotNull final Collection<ItemStack> collection);
 
 }

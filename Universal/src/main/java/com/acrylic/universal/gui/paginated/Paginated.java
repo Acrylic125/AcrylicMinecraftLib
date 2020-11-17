@@ -6,7 +6,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-public interface Paginated<T> extends paginatedcollection.Paginated<T> {
+/**
+ * This is adapted from {@link paginatedcollection.Paginated}, a page system implementation.
+ * Due to some incompatibilities, the system has been reimplemented into this
+ * interface.
+ *
+ * @param <T> The type.
+ */
+public interface Paginated<T> {
+
+    int getMaxElementsPerPage();
+
+    Collection<T> getCollection();
 
     default ArrayList<T> getPageList(int page) {
         ArrayList<T> list = new ArrayList<>();

@@ -6,6 +6,8 @@ import com.acrylic.universal.gui.exceptions.UnsupportedGUITemplate;
 import com.acrylic.universal.gui.templates.AbstractGUISubCollectionTemplate;
 import com.acrylic.universal.gui.templates.AbstractGUITemplate;
 import com.acrylic.universal.gui.templates.GUISubCollectionTemplate;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,4 +54,21 @@ public class PaginatedGUI extends PrivateGUIBuilder implements Paginated<ItemSta
         return subCollectionTemplate.getSubCollection();
     }
 
+    public PrivateGUIBuilder open(int page, Player... viewers) {
+        AbstractGUISubCollectionTemplate template = getTemplate();
+        boolean hasTemplate = template != null;
+        Collection<ItemStack> collection = getPageList(page);
+        for (Player viewer : viewers) {
+            Inventory inventory = getInventoryBuilder().build();
+            if (hasTemplate)
+                template.apply(inventory, collection);
+            viewer.openInventory(inventory);
+        }
+        return this;
+    }
+
+    @Override
+    public PrivateGUIBuilder open(Player... viewers) {
+        return open(1, viewers);
+    }
 }
