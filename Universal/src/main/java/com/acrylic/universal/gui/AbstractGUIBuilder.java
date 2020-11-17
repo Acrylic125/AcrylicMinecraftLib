@@ -6,7 +6,6 @@ import com.acrylic.universal.gui.templates.AbstractGUITemplate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,12 +42,10 @@ public interface AbstractGUIBuilder {
             closeListener.unregister();
     }
 
-    /** DO NOT REGISTER THE EVENT! **/
     default AbstractGUIBuilder clickListener(AbstractEventBuilder<InventoryClickEvent> eventBuilder) {
         return clickListener(eventBuilder, Universal.getPlugin());
     }
 
-    /** DO NOT REGISTER THE EVENT! **/
     default AbstractGUIBuilder closeListener(AbstractEventBuilder<InventoryCloseEvent> eventBuilder) {
         return closeListener(eventBuilder, Universal.getPlugin());
     }

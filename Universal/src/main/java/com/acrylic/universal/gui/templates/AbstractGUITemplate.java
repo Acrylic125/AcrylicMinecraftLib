@@ -14,15 +14,7 @@ import java.util.function.Consumer;
 
 public abstract class AbstractGUITemplate implements Iterable<GUIItem> {
 
-    private final Collection<GUIItem> guiItems;
-
-    public AbstractGUITemplate() {
-        guiItems = new ArrayList<>();
-    }
-
-    public AbstractGUITemplate(Collection<GUIItem> collection) {
-        guiItems = collection;
-    }
+    private final ArrayList<GUIItem> guiItems = new ArrayList<>();
 
     public GUIItem getGUIItem(int slot) {
         for (GUIItem guiItem : guiItems)

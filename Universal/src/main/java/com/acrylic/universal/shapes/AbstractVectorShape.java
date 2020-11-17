@@ -1,6 +1,5 @@
 package com.acrylic.universal.shapes;
 
-import com.acrylic.universal.AbstractIndefiniteShape;
 import com.acrylic.universal.math.Orientation3D;
 import lombok.Getter;
 import org.bukkit.Location;

@@ -1,4 +1,4 @@
-package com.acrylic.universal;
+package com.acrylic.universal.shapes;
 
 import com.acrylic.universal.shapes.AbstractShape;
 import lombok.Getter;

@@ -6,6 +6,8 @@ import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
+import com.acrylic.universal.gui.paginated.PaginatedGUI;
+import com.acrylic.universal.gui.templates.GUISubCollectionTemplate;
 import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.Spiral;
@@ -16,7 +18,6 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -48,6 +49,8 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
+
+                    new PaginatedGUI(InventoryBuilder.create().title("Test"));
 
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {

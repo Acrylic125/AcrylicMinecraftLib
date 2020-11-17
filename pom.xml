@@ -106,7 +106,7 @@
         <dependency>
             <groupId>com.github.Acrylic125</groupId>
             <artifactId>AcrylicLib</artifactId>
-            <version>v1.1a</version>
+            <version>v1.2a</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>

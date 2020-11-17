@@ -7,6 +7,8 @@ import org.bukkit.inventory.Inventory;
 
 public interface AbstractInventoryBuilder extends Cloneable {
 
+    int CHEST_COLUMNS_PER_ROW = 9;
+
     AbstractInventoryBuilder inventoryType(InventoryType inventoryType);
 
     AbstractInventoryBuilder rows(int rows);
@@ -24,7 +26,7 @@ public interface AbstractInventoryBuilder extends Cloneable {
         InventoryType type = getInventoryType();
         return (type != null) ?
                 Bukkit.createInventory(null, type, title) :
-                Bukkit.createInventory(null, getRows() * 9, title);
+                Bukkit.createInventory(null, getRows() * CHEST_COLUMNS_PER_ROW, title);
     }
 
 }

@@ -1,9 +1,6 @@
 package com.acrylic.universal.gui;
 
-import com.acrylic.universal.text.ChatUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 
 public class InventoryBuilder implements AbstractInventoryBuilder {
 

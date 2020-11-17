@@ -68,8 +68,8 @@ public class GlobalGUIBuilder extends GUIBuilder {
                 event -> event.getInventory().equals(inventory)
                 ;
         eventBuilder.filter(filter);
-
-        return (GlobalGUIBuilder) super.clickListener(eventBuilder, plugin);
+        super.clickListener(eventBuilder, plugin);
+        return this;
     }
 
     @Override
@@ -80,13 +80,15 @@ public class GlobalGUIBuilder extends GUIBuilder {
                 event -> event.getInventory().equals(inventory)
                 ;
         eventBuilder.filter(filter);
-
-        return (GlobalGUIBuilder) super.closeListener(eventBuilder, plugin);
+        super.closeListener(eventBuilder, plugin);
+        return this;
     }
 
     @Override
     public GlobalGUIBuilder template(AbstractGUITemplate template) {
-        return (GlobalGUIBuilder) super.template(template);
+        super.template(template);
+        template.apply(inventory);
+        return this;
     }
 
     @Override
@@ -101,7 +103,8 @@ public class GlobalGUIBuilder extends GUIBuilder {
 
     @Override
     public GlobalGUIBuilder removeListenersOnClose(boolean b) {
-        return (GlobalGUIBuilder) super.removeListenersOnClose(b);
+        super.removeListenersOnClose(b);
+        return this;
     }
 
 }

@@ -16,9 +16,9 @@ import java.util.function.Predicate;
 
 public class PrivateGUIBuilder extends GUIBuilder {
 
-    private final InventoryBuilder inventoryBuilder;
+    private final AbstractInventoryBuilder inventoryBuilder;
 
-    public PrivateGUIBuilder(InventoryBuilder inventoryBuilder) {
+    public PrivateGUIBuilder(AbstractInventoryBuilder inventoryBuilder) {
         this.inventoryBuilder = inventoryBuilder;
     }
 
