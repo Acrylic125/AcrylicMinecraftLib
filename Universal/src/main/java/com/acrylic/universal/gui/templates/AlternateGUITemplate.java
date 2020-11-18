@@ -1,5 +1,8 @@
 package com.acrylic.universal.gui.templates;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -23,30 +26,41 @@ import java.util.Collection;
  *  | L i O O O O O R R
  * \/
  */
+@Setter @Getter
 public class AlternateGUITemplate extends AbstractGUISubCollectionTemplate {
 
-    public AlternateGUITemplate() {
+    private int alternating;
+
+    public AlternateGUITemplate(int alternating) {
         super();
+        this.alternating = alternating;
     }
 
-    public AlternateGUITemplate(int initialRow, int lastRow) {
+    public AlternateGUITemplate(int alternating, int initialRow, int lastRow) {
         super(initialRow, lastRow);
+        this.alternating = alternating;
+    }
+
+    @Override
+    public int getTotalItemsInMenu() {
+        return super.getTotalItemsInMenu() / 2;
     }
 
     @Override
     public void applySubCollection(@NotNull Inventory inventory, @NotNull Collection<ItemStack> collection) {
         final int endingIndex = getTotalItemsInMenu();
         int currentSlot = getStartingSlot();
-        float divisor = getTotalColumnsPerRow();
+        float divisor = (getTotalColumnsPerRow() / (float) alternating);
         short index = 0;
         for (ItemStack itemStack : collection) {
             if (index > endingIndex)
                 break;
-            inventory.setItem(currentSlot, itemStack);
-            currentSlot++;
-            index++;
-            if (index % divisor == 0) {
-                currentSlot += getTotalOffset();
+            inventory.setItem((int) (currentSlot + (getTotalOffset() * Math.floor(index / divisor))), itemStack);
+            currentSlot += alternating;
+            for (int i = 0; i < alternating; i++) {
+                index++;
+                if (index % divisor == 0)
+                    currentSlot += getTotalOffset();
             }
         }
     }

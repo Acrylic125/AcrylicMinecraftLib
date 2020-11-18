@@ -1,25 +1,27 @@
-package com.acrylic.universal.shapes;
+package com.acrylic.universal.shapes.spiral;
 
 import com.acrylic.universal.interfaces.ToAndFrom;
+import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 @Setter @Getter
-public class Spiral extends Circle implements ToAndFrom {
+public abstract class AbstractSpiral extends Circle implements ToAndFrom {
 
     private float frequencyIncrement = 0;
     private float radiusIncrement = 0;
     private Line timeLine;
 
-    public Spiral(float radius, int frequency) {
+    public AbstractSpiral(float radius, int frequency) {
         super(radius, frequency);
     }
 
-    public Spiral(float radius, int frequency, float xRot, float yRot, float zRot) {
+    public AbstractSpiral(float radius, int frequency, float xRot, float yRot, float zRot) {
         super(radius, frequency, xRot, yRot, zRot);
     }
 
@@ -38,14 +40,22 @@ public class Spiral extends Circle implements ToAndFrom {
         return super.getLocation(location);
     }
 
+    public float getBaseRadius() {
+        return super.getRadius();
+    }
+
+    public float getBaseFrequency() {
+        return super.getFrequency();
+    }
+
     @Override
     public float getRadius() {
-        return super.getRadius() + (radiusIncrement * getIndex());
+        return getSpiralRadius();
     }
 
     @Override
     public float getFrequency() {
-        return super.getFrequency() + (frequencyIncrement * getIndex());
+        return getSpiralFrequency();
     }
 
     @Override
@@ -61,7 +71,7 @@ public class Spiral extends Circle implements ToAndFrom {
     @Override
     public Vector getAdditiveVector() {
         float radius = getRadius();
-        float rad = getRadiansBetween() * getIndex();
+        float rad = (getRadiansBetween() * getIndex()) + getOffset();
         double x = radius * Math.cos(rad);
         double z = radius * Math.sin(rad);
         return (super.shouldReuse()) ?
@@ -73,5 +83,10 @@ public class Spiral extends Circle implements ToAndFrom {
     public int getFullCycleIndex() {
         return (usingTimeLine()) ? timeLine.getFullCycleIndex() : (int) getFrequency();
     }
+
+    public abstract float getSpiralFrequency();
+
+    public abstract float getSpiralRadius();
+
 
 }

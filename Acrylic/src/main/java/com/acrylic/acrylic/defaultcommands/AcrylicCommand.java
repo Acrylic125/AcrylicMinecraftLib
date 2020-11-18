@@ -7,11 +7,10 @@ import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.paginated.PaginatedGUI;
-import com.acrylic.universal.gui.templates.GUISubCollectionTemplate;
+import com.acrylic.universal.gui.templates.AlternateGUITemplate;
 import com.acrylic.universal.gui.templates.GUITemplate;
-import com.acrylic.universal.gui.templates.MiddleGUITemplate;
 import com.acrylic.universal.shapes.Circle;
-import com.acrylic.universal.shapes.Spiral;
+import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.items.ItemBuilder;
@@ -30,9 +29,9 @@ public class AcrylicCommand {
     private final static PaginatedGUI ui;
 
     static {
-        MiddleGUITemplate ct = new MiddleGUITemplate();
+        AlternateGUITemplate ct = new AlternateGUITemplate(2);
         for (int i = 0; i < 10000; i++) {
-            ct.add(new ItemStack(Material.DIAMOND));
+            ct.add(new ItemStack(Material.DIAMOND, i + 1));
         }
         ct.setOffsetLeft(1);
         ct.setOffsetRight(0);
@@ -67,7 +66,6 @@ public class AcrylicCommand {
                     Player sender = (Player) commandExecutor.getSender();
 
                     ui.open(Integer.parseInt(commandExecutor.getArg(0)), sender);
-
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
@@ -119,10 +117,10 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
 
-                            Spiral spiral = new Spiral(0f, 10);
+                            MultiSpiral spiral = new MultiSpiral(0f, 10);
                             spiral.setOrientation(sender);
-                            spiral.setRadiusIncrement(0.1f);
-                            spiral.setFrequencyIncrement(0.08f);
+                            spiral.setRadiusIncrement(2f);
+                            spiral.setAngleOffset(Float.parseFloat(commandExecutor.getArg(0)));
                             spiral.setShouldUseTimeLine(true);
                             spiral.set(sender.getLocation(), sender.getLocation().add(sender.getLocation().getDirection().multiply(10)));
                             spiral.invokeAction(sender.getLocation(), (i, location) -> {
