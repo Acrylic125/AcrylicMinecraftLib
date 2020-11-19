@@ -3,6 +3,7 @@ package com.acrylic.universal.gui.templates;
 import com.acrylic.universal.gui.AbstractInventoryBuilder;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -58,12 +59,16 @@ public abstract class AbstractGUISubCollectionTemplate extends AbstractGUITempla
         return subCollection;
     }
 
-    public void apply(@NotNull Inventory inventory, Collection<ItemStack> collection) {
+    public void apply(@NotNull Inventory inventory, @NotNull Collection<ItemStack> collection, Player viewer) {
         final int size = inventory.getSize();
         final int maxSize = getTotalItemsInMenu();
         assert size <= maxSize : "The inventory does not have enough space!";
-        super.apply(inventory);
+        super.apply(inventory, viewer);
         applySubCollection(inventory, collection);
+    }
+
+    public void apply(@NotNull Inventory inventory, @NotNull Collection<ItemStack> collection) {
+        apply(inventory, collection, null);
     }
 
     @Override

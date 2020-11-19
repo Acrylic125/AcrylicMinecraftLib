@@ -1,5 +1,6 @@
 package com.acrylic.universal.gui.paginated;
 
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

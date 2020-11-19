@@ -1,5 +1,6 @@
 package com.acrylic.acrylic.defaultcommands;
 
+import com.acrylic.universal.Universal;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
@@ -7,8 +8,8 @@ import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.paginated.PaginatedGUI;
-import com.acrylic.universal.gui.templates.AlternateGUITemplate;
 import com.acrylic.universal.gui.templates.GUITemplate;
+import com.acrylic.universal.gui.templates.MiddleGUITemplate;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.shapes.lines.Line;
@@ -16,56 +17,113 @@ import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public class AcrylicCommand {
-
-    private final static PaginatedGUI ui;
-
-    static {
-        AlternateGUITemplate ct = new AlternateGUITemplate(2);
-        for (int i = 0; i < 10000; i++) {
-            ct.add(new ItemStack(Material.DIAMOND, i + 1));
-        }
-        ct.setOffsetLeft(1);
-        ct.setOffsetRight(0);
-        ct.setTotalItemsInMenu(2,5);
-        ui = new PaginatedGUI(InventoryBuilder.create().rows(6).
-                title("Test"),ct);
-    }
 
     public void registerMainCommand() {
         
         CommandBuilder.create("acrylic")
                 .setAliases("acryliccmd")
+                .permissions("acrylic.acrylic")
                 .arguments(new AbstractCommandBuilder[] {
-                        getTestCommandBuilder()
+                        getTestCommandBuilder(),
+                        getUtilsCommandBuilder()
                 })
                 .handle(commandExecutor -> {
-                    CommandSender sender = commandExecutor.getSender();
-                    sender.sendMessage(ChatUtils.get(
-                            "&3&l[ Acrylic ]\n" +
-                                    "&b/acrylic test &7Test command.\n" +
-                                    "    &f-list &7To see the list of test commands."
-                    ));
+                    sendHelp(commandExecutor.getSender());
                 })
         .register();
     }
 
+    private void sendHelp(CommandSender sender) {
+        sender.sendMessage(ChatUtils.get(
+                "&3&l[ Acrylic ]\n" +
+                        "&b/acrylic test &7Test command.\n" +
+                        "    &f-list &7To see the list of test commands.\n" +
+                        "&b/acrylic utils &7Utilities.\n" +
+                        "    &floop <player> <amt> <str> &7Makes the user execute 'str'&f amt&7 of times.\n" +
+                        "    &fsudo <player> <str> &7Makes the user execute 'str'"
+        ));
+    }
+
+    private void sudo(@NotNull Player sender, String player, String str, int amt) {
+        Player p = Bukkit.getPlayer(player);
+        if (p == null || !p.isOnline()) {
+            Universal.getMessageBuilder().sendErrorMessage("The user is not online.", sender);
+            return;
+        }
+        String name = p.getName();
+        if (str.startsWith("/")) {
+            str = str.replaceFirst("/","");
+            for (int i = 0; i < amt; i++)
+                p.performCommand(str);
+            sender.sendMessage(ChatUtils.get("&eMade &f" + name + "&r &eexecute command &f" + str + "&r&7 [" + amt + "x]"));
+        } else {
+            for (int i = 0; i < amt; i++)
+                p.chat(str);
+            sender.sendMessage(ChatUtils.get("&eMade &f" + name + "&r &esay &f" + str + "&r&7 [" + amt + "x]"));
+        }
+    }
+
+    private CommandBuilder getUtilsCommandBuilder() {
+        return CommandBuilder.create("utils")
+                .aliases("util", "utilities", "utility")
+                .handle(commandExecutor -> {
+                    sendHelp(commandExecutor.getSender());
+                }).arguments(new AbstractCommandBuilder[] {
+                        CommandBuilder.create("loop")
+                                .filter(AbstractCommandExecuted::isPlayer)
+                                .setTimerActive(true)
+                                .handle(commandExecutor -> {
+                            Player sender = (Player) commandExecutor.getSender();
+                            String arg1 = commandExecutor.getArg(0);
+                            String arg2 = commandExecutor.getArg(1);
+                            String str = commandExecutor.getArgs(2);
+                            if (arg1 == null || arg2 == null || str == null)
+                                sendHelp(sender);
+                            else {
+                                try {
+                                    int amt = Integer.parseInt(arg2);
+                                    sudo(sender, arg1, str, amt);
+                                } catch (NumberFormatException ex) {
+                                    sendHelp(sender);
+                                }
+                            }
+                        }),
+                        CommandBuilder.create("sudo")
+                                .filter(AbstractCommandExecuted::isPlayer)
+                                .setTimerActive(true)
+                                .handle(commandExecutor -> {
+                            Player sender = (Player) commandExecutor.getSender();
+                            String arg1 = commandExecutor.getArg(0);
+                            String str = commandExecutor.getArgs(1);
+                            if (arg1 == null || str == null)
+                                sendHelp(sender);
+                            else {
+                                try {
+                                    sudo(sender, arg1, str, 1);
+                                } catch (NumberFormatException ex) {
+                                    sendHelp(sender);
+                                }
+                            }
+                        })
+                });
+    }
 
     private CommandBuilder getTestCommandBuilder() {
         return CommandBuilder.create("test")
-                .setTimerActive(true)
+                .setTimerActive(false)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-
-                    ui.open(Integer.parseInt(commandExecutor.getArg(0)), sender);
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
@@ -117,7 +175,7 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
 
-                            MultiSpiral spiral = new MultiSpiral(0f, 10);
+                            MultiSpiral spiral = new MultiSpiral(0f, 7);
                             spiral.setOrientation(sender);
                             spiral.setRadiusIncrement(2f);
                             spiral.setAngleOffset(Float.parseFloat(commandExecutor.getArg(0)));
@@ -163,10 +221,7 @@ public class AcrylicCommand {
                                     .removeListenersOnClose(true)
                                     .update()
                                     .open(sender);
-
-                        })
-
-
+                        }),
 
                 });
     }

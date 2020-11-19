@@ -1,6 +1,5 @@
 package com.acrylic.universal.shapes;
 
-import com.acrylic.universal.shapes.AbstractShape;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;

@@ -37,8 +37,8 @@ public class GUISubCollectionTemplate extends AbstractGUISubCollectionTemplate {
     @Override
     public void applySubCollection(@NotNull final Inventory inventory, @NotNull final Collection<ItemStack> collection) {
         final int endingIndex = getTotalItemsInMenu();
+        final float divisor = getTotalColumnsPerRow();
         int currentSlot = getStartingSlot();
-        float divisor = getTotalColumnsPerRow();
         short index = 0;
         for (ItemStack itemStack : collection) {
             if (index > endingIndex)

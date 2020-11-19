@@ -1,8 +1,11 @@
 package com.acrylic.universal.shapes.spiral;
 
+/**
+ * The frequency is the amount of spirals.
+ */
 public class MultiSpiral extends AbstractSpiral {
 
-    private float angleOffset = 10f;
+    private float radianOffset = (float) Math.toRadians(10f);
 
     public MultiSpiral(float radius, int amountOfSpirals) {
         super(radius, amountOfSpirals);
@@ -13,11 +16,11 @@ public class MultiSpiral extends AbstractSpiral {
     }
 
     public void setAngleOffset(float angle) {
-        this.angleOffset = angle;
+        this.radianOffset = (float) Math.toRadians(angle);
     }
 
-    public float getAngleOffset() {
-        return angleOffset;
+    public float getRadianOffset() {
+        return radianOffset;
     }
 
     public int getAmountOfSpirals() {
@@ -30,7 +33,7 @@ public class MultiSpiral extends AbstractSpiral {
 
     @Override
     public float getOffset() {
-        return super.getOffset() + (getSpiralIndex() * angleOffset);
+        return super.getOffset() + (getSpiralIndex() * radianOffset);
     }
 
     @Override

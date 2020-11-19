@@ -38,8 +38,8 @@ public class MiddleGUITemplate extends AbstractGUISubCollectionTemplate {
     public void applySubCollection(@NotNull Inventory inventory, @NotNull Collection<ItemStack> collection) {
         final int endingIndex = getTotalItemsInMenu();
         final int size = collection.size();
+        final float divisor = getTotalColumnsPerRow();
         int currentSlot = getStartingSlot();
-        float divisor = getTotalColumnsPerRow();
         short index = 0;
         short rowsElapsed = 0;
         final short rowToCenter = (short) Math.floor(size / divisor);
