@@ -71,9 +71,6 @@ public class PaginatedGUI
         return (int) Math.max(this.highestPageTemplate, Math.ceil((float) getCollection().size() / getMaxElementsPerPage()));
     }
 
-    /**
-     * Dont use for this.
-     */
     @Deprecated
     @Override
     public PrivateGUIBuilder template(AbstractGUITemplate template) {
@@ -104,16 +101,7 @@ public class PaginatedGUI
 
     public PrivateGUIBuilder update(int page, Inventory inventory, Player viewer) {
         page = getPage(page);
-        AbstractGUISubCollectionTemplate template = getTemplate();
-        AbstractGUITemplate pageTemplate = pageTemplates.get(page);
-        AbstractButtons buttons = getButtons();
-        Collection<ItemStack> collection = getPageList(page);
-        if (template != null)
-            template.apply(inventory, collection, viewer);
-        if (pageTemplate != null)
-            pageTemplate.apply(inventory, viewer);
-        if (buttons != null)
-            applyButtons(inventory, this, page);
+        exactUpdate(page, getPageList(page), inventory, viewer);
         return this;
     }
 
@@ -123,12 +111,25 @@ public class PaginatedGUI
     }
 
     public PrivateGUIBuilder open(int page, Player... viewers) {
+        Collection<ItemStack> collection = getPageList(page);
         for (Player viewer : viewers) {
             Inventory inventory = getInventoryBuilder().build();
-            update(page, inventory, viewer);
+            exactUpdate(page, collection, inventory, viewer);
             viewer.openInventory(inventory);
         }
         return this;
+    }
+
+    private void exactUpdate(int exactPage, Collection<ItemStack> collection, Inventory inventory, Player viewer) {
+        AbstractGUISubCollectionTemplate template = getTemplate();
+        AbstractGUITemplate pageTemplate = pageTemplates.get(exactPage);
+        AbstractButtons buttons = getButtons();
+        if (template != null)
+            template.apply(inventory, collection, viewer);
+        if (pageTemplate != null)
+            pageTemplate.apply(inventory, viewer);
+        if (buttons != null)
+            applyButtons(inventory, this, exactPage);
     }
 
     @Override

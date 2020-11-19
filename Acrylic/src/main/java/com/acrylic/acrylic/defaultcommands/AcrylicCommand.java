@@ -4,6 +4,9 @@ import com.acrylic.universal.Universal;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
+import com.acrylic.universal.entityanimations.AbstractArmorStandAnimator;
+import com.acrylic.universal.entityanimations.ArmorStandAnimator;
+import com.acrylic.universal.entityanimations.EntityAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
@@ -22,6 +25,8 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -125,6 +130,11 @@ public class AcrylicCommand {
                 .setTimerActive(false)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
+                    AbstractArmorStandAnimator armorStandAnimator =
+                            new ArmorStandAnimator(sender.getLocation()).asAnimator()
+                            .name("&b&lHello")
+                            .asAnimator()
+                            ;
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
