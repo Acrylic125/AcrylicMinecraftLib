@@ -1,17 +1,17 @@
 package com.acrylic.universal.gui.guiitems;
 
 import lombok.Setter;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 @Setter
-public class GUIItem extends AbstractGUIItem {
+public class GUIItem implements AbstractGUIItem {
 
     private ItemStack item;
+    private final int slot;
 
     public GUIItem(int slot, ItemStack item) {
-        super(slot);
         this.item = item;
+        this.slot = slot;
     }
 
     @Override
@@ -19,4 +19,8 @@ public class GUIItem extends AbstractGUIItem {
         return item;
     }
 
+    @Override
+    public int getSlot() {
+        return slot;
+    }
 }

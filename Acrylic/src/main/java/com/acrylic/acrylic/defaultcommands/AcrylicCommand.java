@@ -198,9 +198,13 @@ public class AcrylicCommand {
                         CommandBuilder.create("gui")
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
-
                                     Player sender = (Player) commandExecutor.getSender();
-                            GlobalGUIBuilder.create(
+                                    GUITemplate guiTemplate = new GUITemplate();
+                            guiTemplate.addGUIItem(1, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
+                            guiTemplate.addGUIItem(2, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
+                            guiTemplate.addGUIItem(5, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
+                            guiTemplate.addGUIItem(2, ItemBuilder.of(Material.GOLD_BLOCK).build());
+                                    GlobalGUIBuilder.create(
                                     InventoryBuilder
                                             .create()
                                             .rows(3)
@@ -212,12 +216,7 @@ public class AcrylicCommand {
                                     .handle(event -> {
                                         event.setCancelled(true);
                                     })
-                            ).template(new GUITemplate()
-                                    .addGUIItem(1, ItemBuilder.of(Material.DIAMOND_BLOCK).build())
-                                    .addGUIItem(2, ItemBuilder.of(Material.DIAMOND_BLOCK).build())
-                                    .addGUIItem(5, ItemBuilder.of(Material.DIAMOND_BLOCK).build())
-                                    .addGUIItem(2, ItemBuilder.of(Material.GOLD_BLOCK).build())
-                            )
+                            ).template(guiTemplate)
                                     .removeListenersOnClose(true)
                                     .update()
                                     .open(sender);

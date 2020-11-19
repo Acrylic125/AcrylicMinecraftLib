@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 /**
  * This is a simple implementation for conditional item presets.
  */
-public class ConditionalGUIItem extends AbstractPlayerGUIItem {
+public class ConditionalGUIItem extends GUIItem implements PlayerGUIItem {
 
     /**
      * This is the conditionMap or the list of conditoons.

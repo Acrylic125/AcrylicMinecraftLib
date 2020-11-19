@@ -1,23 +1,16 @@
 package com.acrylic.universal.gui.guiitems;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-@Setter @Getter
-public abstract class AbstractGUIItem {
+public interface AbstractGUIItem {
 
-    private int slot;
+    int getSlot();
 
-    public AbstractGUIItem(int slot) {
-        this.slot = slot;
-    }
+    ItemStack getItem();
 
-    public void applyTo(Inventory inventory) {
+    default void applyTo(Inventory inventory) {
         inventory.setItem(getSlot(), getItem());
     }
-
-    public abstract ItemStack getItem();
 
 }
