@@ -43,7 +43,7 @@ public class MiddleGUITemplate extends AbstractGUISubCollectionTemplate {
         short index = 0;
         short rowsElapsed = 0;
         final short rowToCenter = (short) Math.floor(size / divisor);
-        final short centeringOffset = (short) (Math.floor(divisor / 2) - Math.ceil((size - (rowToCenter * divisor)) / 2f));
+        final short centeringOffset = (short) (Math.ceil(divisor / 2) - Math.ceil((size - (rowToCenter * divisor)) / 2f));
         for (ItemStack itemStack : collection) {
             if (index > endingIndex)
                 break;

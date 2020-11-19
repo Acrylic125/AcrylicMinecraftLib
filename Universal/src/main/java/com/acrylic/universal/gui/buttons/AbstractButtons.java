@@ -5,6 +5,7 @@ import com.acrylic.universal.gui.modules.AbstractGUIModule;
 import com.acrylic.universal.items.ItemUtils;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
+import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -26,13 +27,15 @@ public abstract class AbstractButtons implements AbstractGUIModule<AbstractButto
         assert clickedItem != null;
         AbstractButton button = queryButton(clickedItem);
         if (button != null)
-            button.getButtonAction().run(clickedInventory, clickEvent.getView(), guiBuilder);
+            button.getButtonAction().run(clickedItem, clickedInventory, clickEvent.getView(), guiBuilder);
     }
 
     public AbstractButton queryButton(@NotNull ItemStack item) {
-        NBTCompound compound = new NBTItem(item).getCompound(AbstractButton.ID);
-        String id = compound.getString(AbstractButton.ID);
-        String subId = compound.getString(AbstractButton.SUB_ID);
+        NBTCompound compound = new NBTItem(item).getCompound(AbstractButton.NBT_COMPOUND_NAME);
+        if (compound == null)
+            return null;
+        String id = compound.getString(AbstractButton.NBT_ID);
+        String subId = compound.getString(AbstractButton.NBT_SUB_ID);
         if (id != null && subId != null)
             for (AbstractButton button : buttons)
                 if (button.isThisButton(id, subId))

@@ -1,11 +1,16 @@
 package com.acrylic.universal.gui.paginated;
 
+import com.acrylic.universal.gui.AbstractGUIBuilder;
 import com.acrylic.universal.gui.AbstractInventoryBuilder;
 import com.acrylic.universal.gui.PrivateGUIBuilder;
+import com.acrylic.universal.gui.buttons.AbstractButtons;
+import com.acrylic.universal.gui.buttons.PageButton;
 import com.acrylic.universal.gui.exceptions.UnsupportedGUITemplate;
 import com.acrylic.universal.gui.templates.AbstractGUISubCollectionTemplate;
 import com.acrylic.universal.gui.templates.AbstractGUITemplate;
 import com.acrylic.universal.gui.templates.GUISubCollectionTemplate;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +20,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
-public class PaginatedGUI extends PrivateGUIBuilder implements Paginated<ItemStack> {
+@Setter @Getter
+public class PaginatedGUI
+        extends PrivateGUIBuilder
+        implements Paginated<ItemStack> {
 
     private final HashMap<Integer, AbstractGUITemplate> pageTemplates = new HashMap<>();
     private int highestPageTemplate = 0;
@@ -89,22 +97,23 @@ public class PaginatedGUI extends PrivateGUIBuilder implements Paginated<ItemSta
         return subCollectionTemplate.getSubCollection();
     }
 
-    public PrivateGUIBuilder open(int page, Player... viewers) {
+    @Override
+    public PrivateGUIBuilder update(Inventory inventory) {
+        return super.update(inventory);
+    }
+
+    public PrivateGUIBuilder update(int page, Inventory inventory, Player viewer) {
         page = getPage(page);
         AbstractGUISubCollectionTemplate template = getTemplate();
-        boolean hasTemplate = template != null;
         AbstractGUITemplate pageTemplate = pageTemplates.get(page);
-        boolean hasPageTemplate = pageTemplate != null;
-
+        AbstractButtons buttons = getButtons();
         Collection<ItemStack> collection = getPageList(page);
-        for (Player viewer : viewers) {
-            Inventory inventory = getInventoryBuilder().build();
-            if (hasTemplate)
-                template.apply(inventory, collection, viewer);
-            if (hasPageTemplate)
-                pageTemplate.apply(inventory, viewer);
-            viewer.openInventory(inventory);
-        }
+        if (template != null)
+            template.apply(inventory, collection, viewer);
+        if (pageTemplate != null)
+            pageTemplate.apply(inventory, viewer);
+        if (buttons != null)
+            applyButtons(inventory, this, page);
         return this;
     }
 
@@ -112,4 +121,25 @@ public class PaginatedGUI extends PrivateGUIBuilder implements Paginated<ItemSta
     public PrivateGUIBuilder open(Player... viewers) {
         return open(1, viewers);
     }
+
+    public PrivateGUIBuilder open(int page, Player... viewers) {
+        for (Player viewer : viewers) {
+            Inventory inventory = getInventoryBuilder().build();
+            update(page, inventory, viewer);
+            viewer.openInventory(inventory);
+        }
+        return this;
+    }
+
+    @Override
+    public void applyButtons(Inventory inventory, AbstractGUIBuilder builder) {
+        applyButtons(inventory, builder, 1);
+    }
+
+    public void applyButtons(Inventory inventory, AbstractGUIBuilder builder, int page) {
+        getButtons().forEach(button -> {
+            inventory.setItem(button.getSlot(), (button instanceof PageButton) ? ((PageButton) button).getItem(this, page) : button.getItem());
+        });
+    }
+
 }

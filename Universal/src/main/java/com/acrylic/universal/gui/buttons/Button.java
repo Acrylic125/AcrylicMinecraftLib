@@ -13,6 +13,12 @@ public class Button extends AbstractButton {
         setItem(item);
     }
 
+    public Button(int slot, @NotNull ItemStack item, ButtonAction buttonAction) {
+        super(slot);
+        setItem(item);
+        setButtonAction(buttonAction);
+    }
+
     public void setItem(@NotNull ItemStack item) {
         this.item = transformButton(item);
     }

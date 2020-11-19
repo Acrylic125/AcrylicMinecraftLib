@@ -10,7 +10,9 @@ public interface AbstractGUIItem {
     ItemStack getItem();
 
     default void applyTo(Inventory inventory) {
-        inventory.setItem(getSlot(), getItem());
+        ItemStack item = getItem();
+        if (item != null)
+            inventory.setItem(getSlot(), item);
     }
 
 }

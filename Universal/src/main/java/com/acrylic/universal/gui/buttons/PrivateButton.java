@@ -9,6 +9,18 @@ public class PrivateButton extends Button {
         super(slot, item);
     }
 
+    public ItemStack getDefaultItem() {
+        return super.getItem();
+    }
 
+    @Override
+    public String getId() {
+        return "PrivateButton";
+    }
+
+    @Override
+    public ItemStack getItem() {
+        return new ItemStack(getDefaultItem());
+    }
 
 }

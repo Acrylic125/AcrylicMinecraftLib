@@ -7,17 +7,19 @@ import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
-import com.acrylic.universal.gui.paginated.PaginatedGUI;
+import com.acrylic.universal.gui.PrivateGUIBuilder;
+import com.acrylic.universal.gui.buttons.Button;
+import com.acrylic.universal.gui.buttons.Buttons;
+import com.acrylic.universal.gui.buttons.PageButton;
 import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.gui.templates.MiddleGUITemplate;
 import com.acrylic.universal.shapes.Circle;
-import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.shapes.lines.Line;
+import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 public class AcrylicCommand {
 
     public void registerMainCommand() {
-        
         CommandBuilder.create("acrylic")
                 .setAliases("acryliccmd")
                 .permissions("acrylic.acrylic")
@@ -200,10 +201,10 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                                     Player sender = (Player) commandExecutor.getSender();
                                     GUITemplate guiTemplate = new GUITemplate();
-                            guiTemplate.addGUIItem(1, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
-                            guiTemplate.addGUIItem(2, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
-                            guiTemplate.addGUIItem(5, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
-                            guiTemplate.addGUIItem(2, ItemBuilder.of(Material.GOLD_BLOCK).build());
+                                    guiTemplate.addGUIItem(1, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
+                                    guiTemplate.addGUIItem(2, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
+                                    guiTemplate.addGUIItem(5, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
+                                    guiTemplate.addGUIItem(2, ItemBuilder.of(Material.GOLD_BLOCK).build());
                                     GlobalGUIBuilder.create(
                                     InventoryBuilder
                                             .create()

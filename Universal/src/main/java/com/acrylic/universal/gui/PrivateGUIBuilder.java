@@ -2,6 +2,7 @@ package com.acrylic.universal.gui;
 
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.events.AbstractEventBuilder;
+import com.acrylic.universal.gui.buttons.AbstractButtons;
 import com.acrylic.universal.gui.exceptions.NoTemplateDefined;
 import com.acrylic.universal.gui.templates.AbstractGUITemplate;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Getter
@@ -20,8 +22,22 @@ public class PrivateGUIBuilder extends GUIBuilder {
 
     private final AbstractInventoryBuilder inventoryBuilder;
 
+    public static PrivateGUIBuilder create(AbstractInventoryBuilder inventoryBuilder) {
+        return new PrivateGUIBuilder(inventoryBuilder);
+    }
+
     public PrivateGUIBuilder(AbstractInventoryBuilder inventoryBuilder) {
         this.inventoryBuilder = inventoryBuilder;
+    }
+
+    public PrivateGUIBuilder update(Inventory inventory) {
+        AbstractGUITemplate template = getTemplate();
+        AbstractButtons buttons = getButtons();
+        if (template != null)
+            template.apply(inventory);
+        if (buttons != null)
+            applyButtons(inventory, this);
+        return this;
     }
 
     @Override
@@ -35,12 +51,9 @@ public class PrivateGUIBuilder extends GUIBuilder {
 
     @Override
     public PrivateGUIBuilder open(Player... viewers) {
-        AbstractGUITemplate template = getTemplate();
-        boolean hasTemplate = template != null;
         for (Player viewer : viewers) {
             Inventory inventory = inventoryBuilder.build();
-            if (hasTemplate)
-                template.apply(inventory);
+            update(inventory);
             viewer.openInventory(inventory);
         }
         return this;
@@ -55,6 +68,13 @@ public class PrivateGUIBuilder extends GUIBuilder {
                 event -> ChatColor.stripColor(event.getView().getTitle()).equals(strippedTitle)
                 ;
         eventBuilder.filter(filter);
+        final Consumer<InventoryClickEvent> clickEventConsumer = eventBuilder.getHandle();;
+        eventBuilder.handle(event -> {
+            clickEventConsumer.accept(event);
+            if (getButtons() != null) {
+                getButtons().handle(event, this);
+            }
+        });
         super.clickListener(eventBuilder, plugin);
         return this;
     }

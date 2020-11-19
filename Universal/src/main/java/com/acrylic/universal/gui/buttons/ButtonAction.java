@@ -3,6 +3,7 @@ package com.acrylic.universal.gui.buttons;
 import com.acrylic.universal.gui.AbstractGUIBuilder;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
 
 @FunctionalInterface
 public interface ButtonAction {
@@ -13,6 +14,6 @@ public interface ButtonAction {
      * @param inventoryView The inventoryView from {@link org.bukkit.event.inventory.InventoryClickEvent} event.
      * @param guiBuilder The GUI.
      */
-    void run(Inventory inventory, InventoryView inventoryView, AbstractGUIBuilder guiBuilder);
+    void run(ItemStack clickedItem, Inventory inventory, InventoryView inventoryView, AbstractGUIBuilder guiBuilder);
 
 }

@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,9 +14,9 @@ import java.util.UUID;
 @Setter @Getter
 public abstract class AbstractButton implements AbstractGUIItem {
 
-    public static final String COMPOUND_NAME = "Button";
-    public static final String ID = "id";
-    public static final String SUB_ID = "subid";
+    public static final String NBT_COMPOUND_NAME = "Button";
+    public static final String NBT_ID = "id";
+    public static final String NBT_SUB_ID = "subid";
 
     private final int slot;
     private ButtonAction buttonAction;
@@ -27,9 +28,11 @@ public abstract class AbstractButton implements AbstractGUIItem {
 
     public ItemStack transformButton(@NotNull ItemStack item) {
         NBTItem nbtItem = new NBTItem(item);
-        NBTCompound compound = nbtItem.getCompound(COMPOUND_NAME);
-        compound.setString(ID, getId());
-        compound.setString(ID, subId);
+        NBTCompound compound = nbtItem.getCompound(NBT_COMPOUND_NAME);
+        if (compound == null)
+            compound = nbtItem.addCompound(NBT_COMPOUND_NAME);
+        compound.setString(NBT_ID, getId());
+        compound.setString(NBT_SUB_ID, subId);
         modifyButtonNBT(compound);
         return nbtItem.getItem();
     }

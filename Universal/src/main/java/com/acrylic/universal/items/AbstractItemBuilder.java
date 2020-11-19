@@ -71,7 +71,7 @@ public interface AbstractItemBuilder {
     }
 
     default AbstractItemBuilder name(String name) {
-        meta().setDisplayName(name);
+        meta().setDisplayName(ChatUtils.get(name));
         return this;
     }
 
