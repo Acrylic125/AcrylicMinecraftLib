@@ -21,7 +21,7 @@ public class BaseLine extends AbstractVectorShape {
     @Override
     public Vector getAdditiveVector() {
         int index = getIndex();
-        return (super.shouldReuse()) ?
+        return (super.shouldReuseVector()) ?
                 getReusableVector().setX(dV.getX() * index).setY(dV.getY() * index).setZ(dV.getZ() * index) :
                 new Vector(dV.getX() * index, dV.getY() * index, dV.getZ() * index);
     }

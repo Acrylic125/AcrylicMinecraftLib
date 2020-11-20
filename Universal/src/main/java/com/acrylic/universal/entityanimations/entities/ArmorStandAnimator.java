@@ -1,5 +1,6 @@
-package com.acrylic.universal.entityanimations;
+package com.acrylic.universal.entityanimations.entities;
 
+import com.acrylic.universal.entityanimations.EntityAnimator;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;

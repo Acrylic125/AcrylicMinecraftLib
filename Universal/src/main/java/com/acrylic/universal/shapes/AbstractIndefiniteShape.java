@@ -1,14 +1,12 @@
 package com.acrylic.universal.shapes;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.acrylic.universal.animations.LocationBasedAnimation;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.BiConsumer;
-
-@Setter @Getter
-public abstract class AbstractIndefiniteShape extends AbstractShape {
+public abstract class AbstractIndefiniteShape
+        extends AbstractShape
+        implements LocationBasedAnimation {
 
     private int index = 0;
     private int indexIncrement = 1;
@@ -22,16 +20,22 @@ public abstract class AbstractIndefiniteShape extends AbstractShape {
         return transformPoint(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()));
     }
 
-    public void invokeAction(int count, @NotNull final Location location, @NotNull final BiConsumer<Integer, Location> action) {
-        for (int i = 0; i < count; i++) {
-            action.accept(i, getLocation(location));
-        }
+    @Override
+    public void setIndex(int index) {
+        this.index = index;
     }
 
-    public void invokeAction(@NotNull final Location location, @NotNull final BiConsumer<Integer, Location> action) {
-        invokeAction(getFullCycleIndex(), location, action);
+    @Override
+    public void setIndexIncrement(int indexIncrement) {
+        this.indexIncrement = indexIncrement;
     }
 
+    @Override
+    public int getIndexIncrement() {
+        return indexIncrement;
+    }
+
+    @Override
     public int getIndex() {
         return index;
     }

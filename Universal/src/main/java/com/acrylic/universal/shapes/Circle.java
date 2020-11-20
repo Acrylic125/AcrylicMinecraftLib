@@ -44,9 +44,11 @@ public class Circle extends AbstractVectorShape {
     @Override
     public Vector getAdditiveVector() {
         float rad = getRadiansBetween() * getIndex();
+        float radius = getRadius();
+        float offset = getOffset();
         double x = radius * Math.cos(rad + offset);
         double z = radius * Math.sin(rad + offset);
-        return (super.shouldReuse()) ?
+        return (super.shouldReuseVector()) ?
                 getReusableVector().setX(x).setY(0).setZ(z) :
                 new Vector(x, 0, z);
     }

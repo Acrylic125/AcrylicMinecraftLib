@@ -68,17 +68,6 @@ public abstract class AbstractSpiral extends Circle implements ToAndFrom {
     }
 
     @Override
-    public Vector getAdditiveVector() {
-        float radius = getRadius();
-        float rad = (getRadiansBetween() * getIndex()) + getOffset();
-        double x = radius * Math.cos(rad);
-        double z = radius * Math.sin(rad);
-        return (super.shouldReuse()) ?
-                getReusableVector().setX(x).setY(0).setZ(z) :
-                new Vector(x, 0, z);
-    }
-
-    @Override
     public int getFullCycleIndex() {
         return (usingTimeLine()) ? timeLine.getFullCycleIndex() : (int) getFrequency();
     }

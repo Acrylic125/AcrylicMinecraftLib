@@ -1,20 +1,18 @@
-package com.acrylic.universal.entityanimations;
+package com.acrylic.universal.entityanimations.entities;
 
-import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universal.entityanimations.LivingEntityAnimator;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface AbstractArmorStandAnimator extends EntityAnimator {
+public interface AbstractArmorStandAnimator extends LivingEntityAnimator {
 
     AbstractArmorStandAnimator marker(boolean b);
 
     AbstractArmorStandAnimator small(boolean b);
 
     AbstractArmorStandAnimator basePlate(boolean b);
-
-    AbstractArmorStandAnimator visible(boolean b);
 
     AbstractArmorStandAnimator arms(boolean b);
 
@@ -31,13 +29,24 @@ public interface AbstractArmorStandAnimator extends EntityAnimator {
     AbstractArmorStandAnimator headPose(@NotNull EulerAngle eulerAngle);
 
     @Override
+    default AbstractArmorStandAnimator ai(boolean b) {
+        LivingEntityAnimator.super.ai(b);
+        return this;
+    }
+
+    @Override
+    AbstractArmorStandAnimator visible(boolean b);
+
+    @Override
     default AbstractArmorStandAnimator name(@Nullable String name) {
-        return (AbstractArmorStandAnimator) EntityAnimator.super.name(name);
+        LivingEntityAnimator.super.name(name);
+        return this;
     }
 
     @Override
     default AbstractArmorStandAnimator nameVisible(boolean b) {
-        return (AbstractArmorStandAnimator) EntityAnimator.super.nameVisible(b);
+        LivingEntityAnimator.super.nameVisible(b);
+        return this;
     }
 
     @Override
@@ -45,6 +54,10 @@ public interface AbstractArmorStandAnimator extends EntityAnimator {
 
     default AbstractArmorStandAnimator asAnimator() {
         return visible(false).arms(false).basePlate(false).gravity(false);
+    }
+
+    default AbstractArmorStandAnimator asHologram() {
+        return asAnimator().marker(true).small(true);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.acrylic.version_1_8.entity;
 
-import com.acrylic.universal.entityanimations.AbstractEntityEquipmentBuilder;
+import com.acrylic.universal.entityanimations.equipment.AbstractEntityEquipmentBuilder;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;

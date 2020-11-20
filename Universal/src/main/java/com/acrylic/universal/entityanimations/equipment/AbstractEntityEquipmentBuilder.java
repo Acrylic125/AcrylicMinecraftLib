@@ -1,7 +1,6 @@
-package com.acrylic.universal.entityanimations;
+package com.acrylic.universal.entityanimations.equipment;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 

@@ -4,18 +4,12 @@ import com.acrylic.universal.Universal;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
-import com.acrylic.universal.entityanimations.AbstractArmorStandAnimator;
-import com.acrylic.universal.entityanimations.ArmorStandAnimator;
-import com.acrylic.universal.entityanimations.EntityAnimator;
+import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
+import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
-import com.acrylic.universal.gui.PrivateGUIBuilder;
-import com.acrylic.universal.gui.buttons.Button;
-import com.acrylic.universal.gui.buttons.Buttons;
-import com.acrylic.universal.gui.buttons.PageButton;
 import com.acrylic.universal.gui.templates.GUITemplate;
-import com.acrylic.universal.gui.templates.MiddleGUITemplate;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
@@ -25,12 +19,9 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
@@ -135,6 +126,7 @@ public class AcrylicCommand {
                             .name("&b&lHello")
                             .asAnimator()
                             ;
+                    Bukkit.broadcastMessage(armorStandAnimator.getBukkitEntity().getEyeHeight(true) + "");
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

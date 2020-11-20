@@ -8,7 +8,8 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public abstract class AbstractVectorShape extends AbstractIndefiniteShape {
+public abstract class AbstractVectorShape
+        extends AbstractIndefiniteShape {
 
     private final Orientation3D orientation;
     private Vector reusableVector = null;
@@ -22,7 +23,7 @@ public abstract class AbstractVectorShape extends AbstractIndefiniteShape {
         orientation = new Orientation3D(xRot, yRot, zRot);
     }
 
-    public boolean shouldReuse() {
+    public boolean shouldReuseVector() {
         return reusableVector != null;
     }
 

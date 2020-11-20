@@ -1,16 +1,16 @@
 package com.acrylic.universal.entityanimations;
 
+import com.acrylic.universal.interfaces.Deletable;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.utils.TeleportationUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface EntityAnimator {
+public interface EntityAnimator extends Deletable {
 
     Entity getBukkitEntity();
 
@@ -24,15 +24,21 @@ public interface EntityAnimator {
         return this;
     }
 
-    default void teleport(Location location) {
-        TeleportationUtils.tp(getBukkitEntity(), location);
+    default void teleport(@NotNull Location location) {
+        Entity entity = getBukkitEntity();
+        if (entity != null)
+            TeleportationUtils.tp(entity, location);
     }
 
-    default void setEquipment(AbstractEntityEquipmentBuilder entityEquipment) {
+    default boolean isValid() {
         Entity entity = getBukkitEntity();
-        if (entity instanceof LivingEntity) {
-            entityEquipment.apply((LivingEntity) entity);
-        }
+        return entity != null && entity.isValid();
+    }
+
+    @Override
+    default void delete() {
+        if (isValid())
+            getBukkitEntity().remove();
     }
 
     @SuppressWarnings("unchecked")
