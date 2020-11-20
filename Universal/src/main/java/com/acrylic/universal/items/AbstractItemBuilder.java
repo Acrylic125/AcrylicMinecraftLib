@@ -21,6 +21,11 @@ public interface AbstractItemBuilder {
 
     ItemMeta meta();
 
+    default AbstractItemBuilder meta(Consumer<ItemMeta> metaConsumer) {
+        metaConsumer.accept(meta());
+        return this;
+    }
+
     AbstractItemBuilder damage(short damage);
 
     AbstractItemBuilder durability(short durability);
@@ -81,11 +86,6 @@ public interface AbstractItemBuilder {
             l.add(ChatUtils.get(s));
         }
         meta().setLore(l);
-        return this;
-    }
-
-    default AbstractItemBuilder meta(Consumer<ItemMeta> metaConsumer) {
-        metaConsumer.accept(meta());
         return this;
     }
 

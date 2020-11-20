@@ -41,6 +41,12 @@ public class PrivateGUIBuilder extends GUIBuilder {
     }
 
     @Override
+    public PrivateGUIBuilder template(AbstractGUITemplate template) {
+        super.template(template);
+        return this;
+    }
+
+    @Override
     public PrivateGUIBuilder setItem(int slot, ItemStack item) {
         AbstractGUITemplate template = getTemplate();
         if (template == null)
@@ -68,7 +74,7 @@ public class PrivateGUIBuilder extends GUIBuilder {
                 event -> ChatColor.stripColor(event.getView().getTitle()).equals(strippedTitle)
                 ;
         eventBuilder.filter(filter);
-        final Consumer<InventoryClickEvent> clickEventConsumer = eventBuilder.getHandle();;
+        final Consumer<InventoryClickEvent> clickEventConsumer = eventBuilder.getHandle();
         eventBuilder.handle(event -> {
             clickEventConsumer.accept(event);
             if (getButtons() != null) {
@@ -89,12 +95,6 @@ public class PrivateGUIBuilder extends GUIBuilder {
                 ;
         eventBuilder.filter(filter);
         super.closeListener(eventBuilder, plugin);
-        return this;
-    }
-
-    @Override
-    public PrivateGUIBuilder template(AbstractGUITemplate template) {
-        super.template(template);
         return this;
     }
 

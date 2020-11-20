@@ -28,13 +28,13 @@ public class Orientation2D {
         return this;
     }
 
-    public Orientation2D setZOrientation(TrigonometrySet trigonometrySet) {
-        zOrientation.cloneFrom(trigonometrySet);
+    public Orientation2D setXOrientation(float degree) {
+        xOrientation.set(degree);
         return this;
     }
 
-    public Orientation2D setXOrientation(float degree) {
-        xOrientation.set(degree);
+    public Orientation2D setZOrientation(TrigonometrySet trigonometrySet) {
+        zOrientation.cloneFrom(trigonometrySet);
         return this;
     }
 

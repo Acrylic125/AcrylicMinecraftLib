@@ -47,6 +47,13 @@ public class GlobalGUIBuilder extends GUIBuilder {
     }
 
     @Override
+    public GlobalGUIBuilder template(AbstractGUITemplate template) {
+        super.template(template);
+        template.apply(inventory);
+        return this;
+    }
+
+    @Override
     public GlobalGUIBuilder setItem(int slot, ItemStack item) {
         inventory.setItem(slot, item);
         return this;
@@ -81,13 +88,6 @@ public class GlobalGUIBuilder extends GUIBuilder {
                 ;
         eventBuilder.filter(filter);
         super.closeListener(eventBuilder, plugin);
-        return this;
-    }
-
-    @Override
-    public GlobalGUIBuilder template(AbstractGUITemplate template) {
-        super.template(template);
-        template.apply(inventory);
         return this;
     }
 

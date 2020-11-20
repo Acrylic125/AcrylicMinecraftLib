@@ -66,44 +66,6 @@ public class PaginatedGUI
         return super.template(template);
     }
 
-    public PrivateGUIBuilder update(int page, Inventory inventory, Player viewer) {
-        page = getPage(page);
-        exactUpdate(page, getPageList(page), inventory, viewer);
-        return this;
-    }
-    public PrivateGUIBuilder open(int page, Player... viewers) {
-        Collection<ItemStack> collection = getPageList(page);
-        for (Player viewer : viewers) {
-            Inventory inventory = getInventoryBuilder().build();
-            exactUpdate(page, collection, inventory, viewer);
-            viewer.openInventory(inventory);
-        }
-        return this;
-    }
-
-    private void exactUpdate(int exactPage, Collection<ItemStack> collection, Inventory inventory, Player viewer) {
-        AbstractGUISubCollectionTemplate template = getTemplate();
-        AbstractGUITemplate pageTemplate = pageTemplates.get(exactPage);
-        AbstractButtons buttons = getButtons();
-        if (template != null)
-            template.apply(inventory, collection, viewer);
-        if (pageTemplate != null)
-            pageTemplate.apply(inventory, viewer);
-        if (buttons != null)
-            applyButtons(inventory, this, exactPage);
-    }
-
-    public void applyButtons(Inventory inventory, AbstractGUIBuilder builder, int page) {
-        getButtons().forEach(button -> {
-            inventory.setItem(button.getSlot(), (button instanceof PageButton) ? ((PageButton) button).getItem(this, page) : button.getItem());
-        });
-    }
-
-    @Override
-    public int getMaxPage() {
-        return (int) Math.max(this.highestPageTemplate, Math.ceil((float) getCollection().size() / getMaxElementsPerPage()));
-    }
-
     @Deprecated
     @Override
     public PrivateGUIBuilder template(AbstractGUITemplate template) {
@@ -113,6 +75,11 @@ public class PaginatedGUI
     @Override
     public AbstractGUISubCollectionTemplate getTemplate() {
         return (AbstractGUISubCollectionTemplate) super.getTemplate();
+    }
+
+    @Override
+    public int getMaxPage() {
+        return (int) Math.max(this.highestPageTemplate, Math.ceil((float) getCollection().size() / getMaxElementsPerPage()));
     }
 
     @Override
@@ -132,14 +99,48 @@ public class PaginatedGUI
         return super.update(inventory);
     }
 
+    public PrivateGUIBuilder update(int page, Inventory inventory, Player viewer) {
+        page = getPage(page);
+        exactUpdate(page, getPageList(page), inventory, viewer);
+        return this;
+    }
+
+    private void exactUpdate(int exactPage, Collection<ItemStack> collection, Inventory inventory, Player viewer) {
+        AbstractGUISubCollectionTemplate template = getTemplate();
+        AbstractGUITemplate pageTemplate = pageTemplates.get(exactPage);
+        AbstractButtons buttons = getButtons();
+        if (template != null)
+            template.apply(inventory, collection, viewer);
+        if (pageTemplate != null)
+            pageTemplate.apply(inventory, viewer);
+        if (buttons != null)
+            applyButtons(inventory, this, exactPage);
+    }
+
     @Override
     public PrivateGUIBuilder open(Player... viewers) {
         return open(1, viewers);
     }
 
+    public PrivateGUIBuilder open(int page, Player... viewers) {
+        Collection<ItemStack> collection = getPageList(page);
+        for (Player viewer : viewers) {
+            Inventory inventory = getInventoryBuilder().build();
+            exactUpdate(page, collection, inventory, viewer);
+            viewer.openInventory(inventory);
+        }
+        return this;
+    }
+
     @Override
     public void applyButtons(Inventory inventory, AbstractGUIBuilder builder) {
         applyButtons(inventory, builder, 1);
+    }
+
+    public void applyButtons(Inventory inventory, AbstractGUIBuilder builder, int page) {
+        getButtons().forEach(button -> {
+            inventory.setItem(button.getSlot(), (button instanceof PageButton) ? ((PageButton) button).getItem(this, page) : button.getItem());
+        });
     }
 
 }

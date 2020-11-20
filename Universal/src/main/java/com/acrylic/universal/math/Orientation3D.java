@@ -22,6 +22,18 @@ public class Orientation3D extends Orientation2D {
         this(new TrigonometrySet(xOrientation), new TrigonometrySet(-yOrientation), new TrigonometrySet(zOrientation));
     }
 
+    @Override
+    public Orientation3D setXOrientation(TrigonometrySet trigonometrySet) {
+        super.setXOrientation(trigonometrySet);
+        return this;
+    }
+
+    @Override
+    public Orientation3D setXOrientation(float degree) {
+        super.setXOrientation(degree);
+        return this;
+    }
+
     public Orientation3D setYOrientation(TrigonometrySet trigonometrySet) {
         yOrientation.cloneFrom(trigonometrySet);
         return this;
@@ -32,27 +44,9 @@ public class Orientation3D extends Orientation2D {
         return this;
     }
 
-    public void cloneFrom(Orientation3D orientation3D) {
-        setXOrientation(orientation3D.getXOrientation());
-        setYOrientation(orientation3D.getYOrientation());
-        setZOrientation(orientation3D.getZOrientation());
-    }
-
-    @Override
-    public Orientation3D setXOrientation(TrigonometrySet trigonometrySet) {
-        super.setXOrientation(trigonometrySet);
-        return this;
-    }
-
     @Override
     public Orientation3D setZOrientation(TrigonometrySet trigonometrySet) {
         super.setZOrientation(trigonometrySet);
-        return this;
-    }
-
-    @Override
-    public Orientation3D setXOrientation(float degree) {
-        super.setXOrientation(degree);
         return this;
     }
 
@@ -70,6 +64,12 @@ public class Orientation3D extends Orientation2D {
         rotateAroundAxisX(vector, getXOrientation().getCos(), getXOrientation().getSin());
         rotateAroundAxisY(vector, getYOrientation().getCos(), getYOrientation().getSin());
         rotateAroundAxisZ(vector, getZOrientation().getCos(), getZOrientation().getSin());
+    }
+
+    public void cloneFrom(Orientation3D orientation3D) {
+        setXOrientation(orientation3D.getXOrientation());
+        setYOrientation(orientation3D.getYOrientation());
+        setZOrientation(orientation3D.getZOrientation());
     }
 
     public static void rotateAroundAxisX(Vector vector, double cos, double sin) {
