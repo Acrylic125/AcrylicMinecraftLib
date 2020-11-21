@@ -1,15 +1,18 @@
 package com.acrylic.universal.shapes;
 
-import lombok.Setter;
+import lombok.Getter;
 import org.bukkit.util.Vector;
 
-@Setter
+@Getter
 public class Circle extends AbstractVectorShape {
 
     public static final float CIRCLE_ANGLE = 360f;
 
     private float radius;
     private float offset;
+
+    private float lastCos;
+    private float lastSin;
 
     public Circle(float radius, int frequency) {
         super(frequency);
@@ -18,6 +21,10 @@ public class Circle extends AbstractVectorShape {
 
     public Circle(float radius, int frequency, float xRot, float yRot, float zRot) {
         super(frequency, xRot, yRot, zRot);
+        this.radius = radius;
+    }
+
+    public void setRadius(float radius) {
         this.radius = radius;
     }
 
@@ -46,8 +53,10 @@ public class Circle extends AbstractVectorShape {
         float rad = getRadiansBetween() * getIndex();
         float radius = getRadius();
         float offset = getOffset();
-        double x = radius * Math.cos(rad + offset);
-        double z = radius * Math.sin(rad + offset);
+        this.lastCos = (float) Math.cos(rad + offset);
+        this.lastSin = (float) Math.sin(rad + offset);
+        double x = radius * lastCos;
+        double z = radius * lastSin;
         return (super.shouldReuseVector()) ?
                 getReusableVector().setX(x).setY(0).setZ(z) :
                 new Vector(x, 0, z);

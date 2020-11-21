@@ -14,8 +14,12 @@ public interface EntityAnimator extends Deletable {
 
     Entity getBukkitEntity();
 
+    float getHeight();
+
+    float getHologramHeight();
+
     default EntityAnimator name(@Nullable String name) {
-        getBukkitEntity().setCustomName(ChatUtils.get(name));
+        getBukkitEntity().setCustomName((name == null) ? null : ChatUtils.get(name));
         return nameVisible(name != null);
     }
 

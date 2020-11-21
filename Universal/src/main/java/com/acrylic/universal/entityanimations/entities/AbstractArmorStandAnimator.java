@@ -60,4 +60,14 @@ public interface AbstractArmorStandAnimator extends LivingEntityAnimator {
         return asAnimator().marker(true).small(true);
     }
 
+    @Override
+    default float getHeight() {
+        return (getBukkitEntity().isSmall()) ? 1f : 2f;
+    }
+
+    @Override
+    default float getHologramHeight() {
+        return (getBukkitEntity().isSmall()) ? 1.2f : 2.2f;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.acrylic.acrylic.defaultcommands;
 
 import com.acrylic.universal.Universal;
+import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
@@ -14,14 +15,17 @@ import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
@@ -121,12 +125,7 @@ public class AcrylicCommand {
                 .setTimerActive(false)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    AbstractArmorStandAnimator armorStandAnimator =
-                            new ArmorStandAnimator(sender.getLocation()).asAnimator()
-                            .name("&b&lHello")
-                            .asAnimator()
-                            ;
-                    Bukkit.broadcastMessage(armorStandAnimator.getBukkitEntity().getEyeHeight(true) + "");
+
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
@@ -223,6 +222,24 @@ public class AcrylicCommand {
                                     .removeListenersOnClose(true)
                                     .update()
                                     .open(sender);
+                        }),
+                        CommandBuilder.create("handrotation")
+                                .filter(AbstractCommandExecuted::isPlayer)
+                                .handle(commandExecutor -> {
+                            Player sender = (Player) commandExecutor.getSender();
+                            AbstractArmorStandAnimator armorStandAnimator =
+                                    new ArmorStandAnimator(sender.getLocation()).asAnimator()
+                                            .asAnimator()
+                                    ;
+                            Location location = sender.getLocation();
+                            armorStandAnimator.setEquipment(new EntityEquipmentBuilder().setItemInHand(ItemBuilder.of(Material.DIAMOND_SWORD).build()));
+                            HandRotationAnimation handRotationAnimation = new HandRotationAnimation(armorStandAnimator);
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    handRotationAnimation.teleport(location);
+                                }
+                            }.runTaskTimer(Universal.getPlugin(), 1, 1);
                         }),
 
                 });
