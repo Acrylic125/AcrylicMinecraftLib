@@ -1,16 +1,11 @@
 package com.acrylic.universal.reflection;
 
 import lombok.experimental.UtilityClass;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
-/**
- * This class will be moved to AcrylicLib in the future.
- */
 @UtilityClass
-@Deprecated
 public class ReflectionUtils {
 
     /**
