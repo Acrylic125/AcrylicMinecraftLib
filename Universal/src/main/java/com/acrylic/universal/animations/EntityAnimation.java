@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class EntityAnimation
         extends Animation
-        implements Deletable, HologramSupport {
+        implements HologramSupport {
 
     private final EntityAnimator entityAnimator;
     private AbstractHolograms holograms;
@@ -37,6 +37,8 @@ public abstract class EntityAnimation
             holograms.teleport(location);
         getEntityAnimator().teleport(getLocation(new Location(location.getWorld(), location.getX(), location.getY() + offsetHeight, location.getZ(), location.getYaw(), location.getPitch())));
     }
+
+    public abstract Location getLocation(Location location);
 
     @Override
     public void setHologram(@Nullable AbstractHolograms abstractHolograms) {

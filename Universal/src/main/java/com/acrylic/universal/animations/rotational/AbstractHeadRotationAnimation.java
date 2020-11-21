@@ -22,11 +22,6 @@ public abstract class AbstractHeadRotationAnimation extends EntityAnimation {
     }
 
     @Override
-    public int getFullCycleIndex() {
-        return 1;
-    }
-
-    @Override
     public Location getLocation(@NotNull Location location) {
         location.setYaw(getEntityAnimator().getBukkitEntity().getLocation().getYaw() + yawFrequency);
         return location;

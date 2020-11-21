@@ -1,12 +1,12 @@
 package com.acrylic.universal.shapes;
 
-import com.acrylic.universal.animations.LocationBasedAnimation;
+import com.acrylic.universal.animations.InvocationLocationAnimation;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractIndefiniteShape
         extends AbstractShape
-        implements LocationBasedAnimation {
+        implements InvocationLocationAnimation {
 
     private int index = 0;
     private int indexIncrement = 1;

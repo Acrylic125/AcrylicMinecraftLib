@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
 
-public interface LocationBasedAnimation extends Index {
+public interface InvocationLocationAnimation extends Index {
 
     int getFullCycleIndex();
 

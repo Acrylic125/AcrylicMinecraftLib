@@ -5,7 +5,6 @@ import com.acrylic.universal.animations.exceptions.UnsupportedEntityType;
 import com.acrylic.universal.entityanimations.EntityAnimator;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.shapes.Circle;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -28,11 +27,6 @@ public abstract class AbstractHandRotationAnimation extends EntityAnimation {
         float[] properties = getEntityProperties(getEntityAnimator().getBukkitEntity());
         circle = new Circle(properties[0], 32);
         this.offsetRadii = properties[1];
-    }
-
-    @Override
-    public int getFullCycleIndex() {
-        return 1;
     }
 
     @Override
