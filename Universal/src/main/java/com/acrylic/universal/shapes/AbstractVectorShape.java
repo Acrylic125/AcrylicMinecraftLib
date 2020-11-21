@@ -72,10 +72,19 @@ public abstract class AbstractVectorShape
 
     @Override
     public Location transformPoint(Location location) {
-        return location.add(rotateAdditiveVector(getAdditiveVector()));
+        return transformPoint(location, getIndex());
     }
 
-    public abstract Vector getAdditiveVector();
+    @Override
+    public Location transformPoint(Location location, int index) {
+        return location.add(rotateAdditiveVector(getAdditiveVector(index)));
+    }
+
+    public abstract Vector getAdditiveVector(int index);
+
+    public Vector getAdditiveVector() {
+        return getAdditiveVector(getIndex());
+    }
 
 
 }

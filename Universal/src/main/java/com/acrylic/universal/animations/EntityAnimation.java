@@ -3,7 +3,6 @@ package com.acrylic.universal.animations;
 import com.acrylic.universal.animations.holograms.AbstractHolograms;
 import com.acrylic.universal.animations.holograms.HologramSupport;
 import com.acrylic.universal.entityanimations.EntityAnimator;
-import com.acrylic.universal.interfaces.Deletable;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,10 +31,30 @@ public abstract class EntityAnimation
         return entityAnimator;
     }
 
+    public void teleport(@NotNull Location location, float offsetHeight) {
+        getEntityAnimator().teleport(getLocation(new Location(location.getWorld(), location.getX(), location.getY() + this.offsetHeight + offsetHeight, location.getZ(), location.getYaw(), location.getPitch())));
+    }
+
     public void teleport(@NotNull Location location) {
+        teleport(location, 0f);
+    }
+
+    public void teleportHolograms(@NotNull Location location, float offsetHeight) {
         if (isUsingHolograms())
-            holograms.teleport(location);
-        getEntityAnimator().teleport(getLocation(new Location(location.getWorld(), location.getX(), location.getY() + offsetHeight, location.getZ(), location.getYaw(), location.getPitch())));
+            holograms.teleport(location, offsetHeight);
+    }
+
+    public void teleportHolograms(@NotNull Location location) {
+        teleportHolograms(location, 0f);
+    }
+
+    public void teleportWithHolograms(@NotNull Location location, float offsetHeightMain, float offsetHeightHologram) {
+        teleport(location, offsetHeightMain);
+        teleportHolograms(location, offsetHeightHologram);
+    }
+
+    public void teleportWithHolograms(@NotNull Location location) {
+        teleportWithHolograms(location, 0f, 0f);
     }
 
     public abstract Location getLocation(Location location);
@@ -52,6 +71,8 @@ public abstract class EntityAnimation
 
     @Override
     public void delete() {
+        if (isUsingHolograms())
+            holograms.delete();
         entityAnimator.delete();
     }
 

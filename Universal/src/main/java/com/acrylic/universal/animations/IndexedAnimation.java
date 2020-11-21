@@ -1,8 +1,10 @@
 package com.acrylic.universal.animations;
 
+import com.acrylic.universal.interfaces.Index;
+
 public abstract class IndexedAnimation
-        extends Animation
-        implements InvocationLocationAnimation {
+        extends NonContinuousAnimation
+        implements Index {
 
     private int index = 0;
     private int indexIncrement = 1;

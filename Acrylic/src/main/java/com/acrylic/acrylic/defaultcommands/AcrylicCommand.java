@@ -1,6 +1,8 @@
 package com.acrylic.acrylic.defaultcommands;
 
 import com.acrylic.universal.Universal;
+import com.acrylic.universal.animations.dangle.Dangle;
+import com.acrylic.universal.animations.holograms.Holograms;
 import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
@@ -25,6 +27,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -241,7 +244,32 @@ public class AcrylicCommand {
                                 }
                             }.runTaskTimer(Universal.getPlugin(), 1, 1);
                         }),
+                        CommandBuilder.create("dangle")
+                                .filter(AbstractCommandExecuted::isPlayer)
+                                .handle(commandExecutor -> {
+                            Player sender = (Player) commandExecutor.getSender();
+                            Dangle dangle = new Dangle();
+                            for (int i = 0; i < 100; i++) {
+                                AbstractArmorStandAnimator armorStandAnimator = new ArmorStandAnimator(sender.getLocation())
+                                        .asAnimator();
+                                HandRotationAnimation handRot = new HandRotationAnimation(armorStandAnimator);
+                                armorStandAnimator.setEquipment(new EntityEquipmentBuilder().setItemInHand(new ItemStack(Material.DIAMOND_PICKAXE)));
+                                dangle.addAnimation(handRot);
+                                Holograms holograms = new Holograms();
+                                holograms.addHologram(sender.getLocation(), 2f, "&eClick Me!", "&b&lDiamond pickaxe");
+                                handRot.setHologram(holograms);
+                            }
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    if (dangle.hasEnded()) {
+                                        cancel();
+                                    }
+                                    dangle.update(sender);
+                                }
+                            }.runTaskTimer(Universal.getPlugin(), 1, 1);
 
+                        })
                 });
     }
 

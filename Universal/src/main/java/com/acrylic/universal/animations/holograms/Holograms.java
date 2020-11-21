@@ -15,4 +15,5 @@ public class Holograms extends AbstractHolograms {
         hologram.setOffsetHeight(offsetHeight);
         addHologram(hologram);
     }
+
 }

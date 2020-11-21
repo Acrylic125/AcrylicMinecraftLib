@@ -17,7 +17,11 @@ public abstract class AbstractIndefiniteShape
 
     public Location getLocation(@NotNull final Location location) {
         index += indexIncrement;
-        return transformPoint(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()));
+        return getLocation(location, index);
+    }
+
+    public Location getLocation(@NotNull final Location location, int index) {
+        return transformPoint(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()), index);
     }
 
     @Override
@@ -41,6 +45,8 @@ public abstract class AbstractIndefiniteShape
     }
 
     public abstract Location transformPoint(Location location);
+
+    public abstract Location transformPoint(Location location, int index);
 
     public abstract int getFullCycleIndex();
 

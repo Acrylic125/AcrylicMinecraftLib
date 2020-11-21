@@ -49,8 +49,8 @@ public class Circle extends AbstractVectorShape {
     }
 
     @Override
-    public Vector getAdditiveVector() {
-        float rad = getRadiansBetween() * getIndex();
+    public Vector getAdditiveVector(int index) {
+        float rad = getRadiansBetween() * index;
         float radius = getRadius();
         float offset = getOffset();
         this.lastCos = (float) Math.cos(rad + offset);

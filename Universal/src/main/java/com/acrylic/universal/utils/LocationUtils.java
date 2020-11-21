@@ -3,7 +3,6 @@ package com.acrylic.universal.utils;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.util.Vector;
 
 @UtilityClass
 public class LocationUtils {
@@ -23,34 +22,20 @@ public class LocationUtils {
      */
     public float getFixedYaw(float yaw) {
         yaw = (yaw - 90.0F) % 360.0F;
-        if (yaw < 0.0D) {
+        if (yaw < 0.0D)
             yaw += 360.0D;
-        }
         yaw -= 90;
         return yaw;
     }
 
-
-
-    public void rotateAroundAxisX3D(Vector vector, double cos, double sin) {
-        double y = vector.getY() * cos - vector.getZ() * sin;
-        double z = vector.getY() * sin + vector.getZ() * cos;
-        vector.setY(y);
-        vector.setZ(z);
+    public static boolean isLocationInCuboid(Location toCheck, Location loc1, Location loc2) {
+        return isNumberInBetween(toCheck.getX(), loc1.getX(), loc2.getX()) &&
+                isNumberInBetween(toCheck.getY(), loc1.getY(), loc2.getY()) &&
+                isNumberInBetween(toCheck.getZ(), loc1.getZ(), loc2.getZ());
     }
 
-    public void rotateAroundAxisY3D(Vector vector, double cos, double sin) {
-        double x = vector.getX() * cos + vector.getZ() * sin;
-        double z = vector.getX() * -sin + vector.getZ() * cos;
-        vector.setX(x);
-        vector.setZ(z);
-    }
-
-    public void rotateAroundAxisZ3D(Vector vector, double cos, double sin) {
-        double x = vector.getX() * cos - vector.getY() * sin;
-        double y = vector.getX() * sin + vector.getY() * cos;
-        vector.setX(x);
-        vector.setY(y);
+    private static boolean isNumberInBetween(double toCheck, double a, double b) {
+        return ((Math.abs(a - toCheck) + Math.abs(b - toCheck)) <= Math.abs(a - b));
     }
 
 }

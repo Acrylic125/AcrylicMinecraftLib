@@ -58,7 +58,7 @@ public interface CommandBuilderExecutor extends CommandBuilderChecks {
                 clockTime();
             commandHandler.run(abstractCommandExecuted);
             if (isTimerActive)
-                System.out.println(ChatUtils.get("The command took " + getTimeFromLastClockedAsString()));
+                System.out.println(ChatUtils.get("The command took " + getTimeFromLastTimedAsString()));
         }
     }
 

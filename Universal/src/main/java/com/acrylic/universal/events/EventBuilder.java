@@ -14,7 +14,7 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     private EventPriority priority = EventPriority.NORMAL;
     private boolean shouldIgnoreCancel = false;
 
-    private long lastClocked = 0;
+    private long lastTimed = 0;
     private boolean shouldClock = false;
 
     private boolean hasRegisteredBefore = false;
@@ -107,13 +107,13 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     }
 
     @Override
-    public long getLastClocked() {
-        return lastClocked;
+    public long getLastTimed() {
+        return lastTimed;
     }
 
     @Override
-    public void clockTime() {
-        lastClocked = System.currentTimeMillis();
+    public void setLastTimed(long time) {
+        this.lastTimed = time;
     }
 
     @Override

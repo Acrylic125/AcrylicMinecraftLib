@@ -24,8 +24,8 @@ public class EquationLine extends Line {
     }
 
     @Override
-    public Vector getAdditiveVector() {
-        return vectorEquationLineFunction.evaluate(this, super.getAdditiveVector());
+    public Vector getAdditiveVector(int index) {
+        return vectorEquationLineFunction.evaluate(this, super.getAdditiveVector(index));
     }
 
 }
