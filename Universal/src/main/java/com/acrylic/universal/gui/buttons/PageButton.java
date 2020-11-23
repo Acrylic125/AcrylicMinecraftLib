@@ -46,13 +46,13 @@ public class PageButton extends PrivateButton {
     public PageButton(int slot, @NotNull ItemStack item, int pageIncrement) {
         super(slot, item);
         this.pageIncrement = pageIncrement;
-        setButtonAction((clickedItem, inventory, inventoryView, guiBuilder) -> {
+        setButtonAction((clickedItem, event, guiBuilder) -> {
             NBTItem nbtItem = new NBTItem(clickedItem);
             NBTCompound compound = nbtItem.getCompound(AbstractButton.NBT_COMPOUND_NAME);
             if (compound != null) {
                 int page = compound.getInteger(NBT_PAGE);
                 if (guiBuilder instanceof PaginatedGUI)
-                    ((PaginatedGUI) guiBuilder).update(page, inventory, (Player) inventoryView.getPlayer());
+                    ((PaginatedGUI) guiBuilder).update(page, event.getClickedInventory(), (Player) event.getView().getPlayer());
             }
         });
     }

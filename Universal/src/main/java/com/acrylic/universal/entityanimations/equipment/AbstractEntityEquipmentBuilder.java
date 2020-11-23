@@ -16,6 +16,8 @@ public interface AbstractEntityEquipmentBuilder {
 
     AbstractEntityEquipmentBuilder setItemInHand(ItemStack item);
 
+    AbstractEntityEquipmentBuilder setItemInOffHand(ItemStack item);
+
     ItemStack getHelmet();
 
     ItemStack getChestplate();
@@ -25,6 +27,8 @@ public interface AbstractEntityEquipmentBuilder {
     ItemStack getBoots();
 
     ItemStack getItemInHand();
+
+    ItemStack getItemInOffHand();
 
     void apply(@NotNull LivingEntity entity);
 

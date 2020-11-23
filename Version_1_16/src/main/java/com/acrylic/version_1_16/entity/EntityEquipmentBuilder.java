@@ -15,15 +15,6 @@ public class EntityEquipmentBuilder implements AbstractEntityEquipmentBuilder {
     private ItemStack itemInHand;
     private ItemStack itemOffHand;
 
-    public EntityEquipmentBuilder setOffhandItem(ItemStack item) {
-        this.itemOffHand = item;
-        return this;
-    }
-
-    public ItemStack getOffhandItem() {
-        return itemOffHand;
-    }
-
     @Override
     public EntityEquipmentBuilder setHelmet(ItemStack item) {
         this.helmet = item;
@@ -55,6 +46,12 @@ public class EntityEquipmentBuilder implements AbstractEntityEquipmentBuilder {
     }
 
     @Override
+    public EntityEquipmentBuilder setItemInOffHand(ItemStack item) {
+        this.itemOffHand = item;
+        return this;
+    }
+
+    @Override
     public ItemStack getHelmet() {
         return helmet;
     }
@@ -80,6 +77,11 @@ public class EntityEquipmentBuilder implements AbstractEntityEquipmentBuilder {
     }
 
     @Override
+    public ItemStack getItemInOffHand() {
+        return itemOffHand;
+    }
+
+    @Override
     public void apply(@NotNull LivingEntity entity) {
         EntityEquipment equipment = entity.getEquipment();
         assert equipment != null : "Unexpected equipment is null? of " + entity;
@@ -88,7 +90,7 @@ public class EntityEquipmentBuilder implements AbstractEntityEquipmentBuilder {
         equipment.setLeggings(getLeggings());
         equipment.setBoots(getBoots());
         equipment.setItemInMainHand(getItemInHand());
-        equipment.setItemInOffHand(getOffhandItem());
+        equipment.setItemInOffHand(getItemInHand());
     }
 
 }

@@ -249,7 +249,7 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
                             Dangle dangle = new Dangle();
-                            for (int i = 0; i < 100; i++) {
+                            for (int i = 0; i < 10; i++) {
                                 AbstractArmorStandAnimator armorStandAnimator = new ArmorStandAnimator(sender.getLocation())
                                         .asAnimator();
                                 HandRotationAnimation handRot = new HandRotationAnimation(armorStandAnimator);

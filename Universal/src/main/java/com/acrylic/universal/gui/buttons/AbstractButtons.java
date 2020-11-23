@@ -27,7 +27,7 @@ public abstract class AbstractButtons implements AbstractGUIModule<AbstractButto
         assert clickedItem != null;
         AbstractButton button = queryButton(clickedItem);
         if (button != null)
-            button.getButtonAction().run(clickedItem, clickedInventory, clickEvent.getView(), guiBuilder);
+            button.getButtonAction().run(clickedItem, clickEvent, guiBuilder);
     }
 
     public AbstractButton queryButton(@NotNull ItemStack item) {

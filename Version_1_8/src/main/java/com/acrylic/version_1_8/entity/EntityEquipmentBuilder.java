@@ -1,6 +1,7 @@
 package com.acrylic.version_1_8.entity;
 
 import com.acrylic.universal.entityanimations.equipment.AbstractEntityEquipmentBuilder;
+import com.acrylic.universal.versionstore.exceptions.WrongVersionException;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -45,6 +46,11 @@ public class EntityEquipmentBuilder implements AbstractEntityEquipmentBuilder {
     }
 
     @Override
+    public AbstractEntityEquipmentBuilder setItemInOffHand(ItemStack item) {
+        throw new WrongVersionException(9);
+    }
+
+    @Override
     public ItemStack getHelmet() {
         return helmet;
     }
@@ -67,6 +73,11 @@ public class EntityEquipmentBuilder implements AbstractEntityEquipmentBuilder {
     @Override
     public ItemStack getItemInHand() {
         return itemInHand;
+    }
+
+    @Override
+    public ItemStack getItemInOffHand() {
+        throw new WrongVersionException(9);
     }
 
     @Override
