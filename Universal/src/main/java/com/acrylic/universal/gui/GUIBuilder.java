@@ -3,6 +3,7 @@ package com.acrylic.universal.gui;
 import com.acrylic.universal.events.AbstractEventBuilder;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.gui.buttons.AbstractButtons;
+import com.acrylic.universal.gui.buttons.Buttons;
 import com.acrylic.universal.gui.buttons.GUIButtonImp;
 import com.acrylic.universal.gui.templates.AbstractGUITemplate;
 import lombok.Getter;
@@ -19,6 +20,11 @@ public abstract class GUIBuilder implements AbstractGUIBuilder, GUIButtonImp {
     private AbstractGUITemplate template;
     @Setter @Getter
     private AbstractButtons buttons = null;
+
+    public AbstractButtons getAndCreateIfNotExist() {
+        this.buttons = new Buttons();
+        return buttons;
+    }
 
     @Override
     public AbstractGUIBuilder clickListener(AbstractEventBuilder<InventoryClickEvent> eventBuilder, JavaPlugin plugin) {
