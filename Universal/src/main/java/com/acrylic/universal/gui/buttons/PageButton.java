@@ -6,6 +6,7 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -51,8 +52,10 @@ public class PageButton extends PrivateButton {
             NBTCompound compound = nbtItem.getCompound(AbstractButton.NBT_COMPOUND_NAME);
             if (compound != null) {
                 int page = compound.getInteger(NBT_PAGE);
-                if (guiBuilder instanceof PaginatedGUI)
+                if (guiBuilder instanceof PaginatedGUI) {
+                    event.getInventory().clear();
                     ((PaginatedGUI) guiBuilder).update(page, event.getClickedInventory(), (Player) event.getView().getPlayer());
+                }
             }
         });
     }
@@ -87,7 +90,8 @@ public class PageButton extends PrivateButton {
                 meta.setLore(lore);
             }
             String name = meta.getDisplayName();
-            meta.setDisplayName(ChatUtils.get(name.replace(VAR_PAGE, pageAsString).replace(VAR_LAST_PAGE, lastPageAsString)));
+            if (name != null)
+                meta.setDisplayName(ChatUtils.get(name.replace(VAR_PAGE, pageAsString).replace(VAR_LAST_PAGE, lastPageAsString)));
         }
         item.setItemMeta(meta);
         return item;

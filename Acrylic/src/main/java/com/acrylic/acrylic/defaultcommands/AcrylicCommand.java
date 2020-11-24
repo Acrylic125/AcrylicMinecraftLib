@@ -12,7 +12,11 @@ import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
+import com.acrylic.universal.gui.PrivateGUIBuilder;
+import com.acrylic.universal.gui.buttons.PageButton;
+import com.acrylic.universal.gui.paginated.PaginatedGUI;
 import com.acrylic.universal.gui.templates.GUITemplate;
+import com.acrylic.universal.gui.templates.MiddleGUITemplate;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
@@ -33,6 +37,19 @@ import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public class AcrylicCommand {
+
+    /**private static final PaginatedGUI gui;
+
+    static {
+        gui = new PaginatedGUI(InventoryBuilder.create().title("&5&lCandy&d&lCrate").rows(6));
+        gui.template(new MiddleGUITemplate(2, 5));
+        gui.clickListener(EventBuilder.listen(InventoryClickEvent.class).handle(event -> event.setCancelled(true)));
+        for (int i = 0; i < 112; i++) {
+            gui.getTemplate().getSubCollection().add(ItemBuilder.of(Material.EMERALD_BLOCK).getItem());
+        }
+        gui.getButtons().addItem(new PageButton(0, ItemBuilder.of(Material.ARROW).name("&c&l{PAGE} <<").lore("T").build(), -1));
+        gui.getButtons().addItem(new PageButton(8, ItemBuilder.of(Material.ARROW).name("&c&l{PAGE} >>").lore("T").build(), 1));
+    }**/
 
     public void registerMainCommand() {
         CommandBuilder.create("acrylic")
@@ -128,7 +145,7 @@ public class AcrylicCommand {
                 .setTimerActive(false)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-
+                    // gui.open(sender);
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

@@ -6,8 +6,6 @@ import com.acrylic.universal.gui.buttons.AbstractButtons;
 import com.acrylic.universal.gui.buttons.Buttons;
 import com.acrylic.universal.gui.buttons.GUIButtonImp;
 import com.acrylic.universal.gui.templates.AbstractGUITemplate;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,11 +16,14 @@ public abstract class GUIBuilder implements AbstractGUIBuilder, GUIButtonImp {
     private AbstractEventBuilder<InventoryCloseEvent> closeListener;
     private AbstractEventBuilder<InventoryCloseEvent> removeListeners;
     private AbstractGUITemplate template;
-    @Setter @Getter
-    private AbstractButtons buttons = null;
+    private AbstractButtons buttons = new Buttons();
 
-    public AbstractButtons getAndCreateIfNotExist() {
-        this.buttons = new Buttons();
+    public void setButtons(AbstractButtons buttons) {
+        this.buttons = buttons;
+    }
+
+    @Override
+    public AbstractButtons getButtons() {
         return buttons;
     }
 
