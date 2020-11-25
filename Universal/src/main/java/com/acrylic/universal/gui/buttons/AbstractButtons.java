@@ -5,7 +5,6 @@ import com.acrylic.universal.gui.modules.AbstractGUIModule;
 import com.acrylic.universal.items.ItemUtils;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

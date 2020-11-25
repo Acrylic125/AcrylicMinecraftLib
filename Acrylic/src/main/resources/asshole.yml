@@ -1,0 +1,7 @@
+default_value: 100
+default_map:
+  map_value: 1
+  values:
+    a: 10.0
+    b: "N"
+    c: "Hello"
