@@ -203,4 +203,11 @@ public class DefaultFileEditor implements FileEditor {
         });
     }
 
+    @Override
+    public String toString() {
+        return "DefaultFileEditor{" +
+                "contents=" + contents +
+                ", parent=" + parent +
+                '}';
+    }
 }

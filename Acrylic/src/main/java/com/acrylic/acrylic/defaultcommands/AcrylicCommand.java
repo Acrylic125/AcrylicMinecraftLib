@@ -10,35 +10,25 @@ import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
-import com.acrylic.universal.files.AbstractFile;
-import com.acrylic.universal.files.JSONFile;
-import com.acrylic.universal.files.YMLFile;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
-import com.acrylic.universal.gui.PrivateGUIBuilder;
-import com.acrylic.universal.gui.buttons.PageButton;
-import com.acrylic.universal.gui.paginated.PaginatedGUI;
 import com.acrylic.universal.gui.templates.GUITemplate;
-import com.acrylic.universal.gui.templates.MiddleGUITemplate;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
-import files.FileFactory;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -153,10 +143,6 @@ public class AcrylicCommand {
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
                     //gui.open(sender);
-                    Configuration configuration = new Configuration("asshole.yml", null);
-                    configuration.loadFromResources(Universal.getPlugin());
-                    configuration.getFileEditor().set("OffkeyValue", 2).set("ADValue", 10f);
-                    configuration.saveFile();
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
@@ -297,6 +283,13 @@ public class AcrylicCommand {
                                 }
                             }.runTaskTimer(Universal.getPlugin(), 1, 1);
 
+                        }),
+                        CommandBuilder.create("files")
+                                .handle(commandExecutor -> {
+                            Configuration configuration = new Configuration("acrylic.yml", null);
+                            configuration.loadFromResources(Universal.getPlugin());
+                            Bukkit.broadcastMessage(configuration.getFileEditor() + "");
+                            configuration.saveFile();
                         })
                 });
     }

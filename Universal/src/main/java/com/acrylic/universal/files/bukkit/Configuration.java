@@ -2,11 +2,14 @@ package com.acrylic.universal.files.bukkit;
 
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.files.YMLFile;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Configuration extends YMLFile implements BukkitConfiguration {
 
@@ -19,21 +22,12 @@ public class Configuration extends YMLFile implements BukkitConfiguration {
 
     public Configuration(@NotNull String path, @Nullable JavaPlugin plugin) {
         super(BukkitConfiguration.getPluginConfigurationPath((plugin == null) ? Universal.getPlugin() : plugin, path));
-        this.plugin = plugin;
+        this.plugin = (plugin == null) ? Universal.getPlugin() : plugin;
     }
 
     @Override
     public JavaPlugin getPlugin() {
         return plugin;
-    }
-
-    @Override
-    public void saveFile() {
-        try {
-            getFileEditor().saveToBufferedWriter(new BufferedWriter(new FileWriter(getFile())));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override
@@ -70,10 +64,11 @@ public class Configuration extends YMLFile implements BukkitConfiguration {
         if (streamFrom == null || copyTo == null)
             return;
         try {
-            OutputStream outputStream = new FileOutputStream(copyTo);
+            FileUtils.copyInputStreamToFile(streamFrom, copyTo);
+            /**OutputStream outputStream = new FileOutputStream(copyTo);
             outputStream.write(getInputBuffer(streamFrom));
             outputStream.flush();
-            outputStream.close();
+            outputStream.close();**/
         } catch (IOException ex) {
             ex.printStackTrace();
         }
