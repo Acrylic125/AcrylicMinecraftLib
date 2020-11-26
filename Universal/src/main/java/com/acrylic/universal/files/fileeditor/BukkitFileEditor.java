@@ -1,12 +1,21 @@
 package com.acrylic.universal.files.fileeditor;
 
+import com.acrylic.universal.files.parsers.ItemStackParser;
+import files.editor.Configurable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public interface BukkitFileEditor extends FileEditor {
+public interface BukkitFileEditor extends Configurable {
+
+    void setItem(@NotNull ItemStack item);
 
     ItemStack getItem(@NotNull String s);
 
-    void setItem(@NotNull ItemStack item);
+    ItemStackParser getItemParser(@NotNull String s);
+
+    default void setItem(@NotNull ItemStackParser item) {
+
+    }
+
 
 }

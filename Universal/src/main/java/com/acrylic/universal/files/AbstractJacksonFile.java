@@ -15,7 +15,7 @@ public abstract class AbstractJacksonFile extends AbstractFile {
     public AbstractJacksonFile(@NotNull String path, @NotNull ObjectMapper mapper) {
         super(path);
         this.mapper = mapper;
-       mapper.findAndRegisterModules();
+        mapper.findAndRegisterModules();
         mapper.enable(JsonParser.Feature.ALLOW_COMMENTS);
     }
 

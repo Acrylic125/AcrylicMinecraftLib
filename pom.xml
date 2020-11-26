@@ -157,11 +157,6 @@
             <version>2.5</version>
         </dependency>
         <dependency>
-            <groupId>org.ahocorasick</groupId>
-            <artifactId>ahocorasick</artifactId>
-            <version>0.4.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>

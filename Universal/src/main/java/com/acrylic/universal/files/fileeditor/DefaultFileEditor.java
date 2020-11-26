@@ -1,8 +1,10 @@
 package com.acrylic.universal.files.fileeditor;
 
+import com.acrylic.universal.files.parsers.ItemStackParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import files.editor.Configurable;
 import org.bukkit.Bukkit;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -201,6 +203,24 @@ public class DefaultFileEditor implements FileEditor {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void setItem(@NotNull ItemStack item) {
+
+    }
+
+    @Override
+    public ItemStack getItem(@NotNull String s) {
+        FileEditor fileEditor = getFileEditor(s);
+        if (fileEditor == null)
+            return null;
+        return new ItemStackParser(fileEditor).parse(fileEditor.getContents());
+    }
+
+    @Override
+    public ItemStackParser getItemParser(@NotNull String s) {
+        return new ItemStackParser(getFileEditor(s));
     }
 
     @Override

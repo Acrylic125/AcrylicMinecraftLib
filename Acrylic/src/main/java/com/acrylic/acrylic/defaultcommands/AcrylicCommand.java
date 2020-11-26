@@ -11,6 +11,7 @@ import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimato
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.files.bukkit.Configuration;
+import com.acrylic.universal.files.parsers.variables.AbsoluteConfigValue;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
@@ -20,7 +21,9 @@ import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
+import de.tr7zw.nbtapi.NBTItem;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,6 +34,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @UtilityClass
 public class AcrylicCommand {
@@ -143,6 +149,11 @@ public class AcrylicCommand {
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
                     //gui.open(sender);
+                    AbsoluteConfigValue<Integer> absoluteConfigValue = new AbsoluteConfigValue<>("4%4");
+                    Bukkit.broadcastMessage(absoluteConfigValue.get() + "");
+                   // Configuration configuration = new Configuration("itemtest.yml", null);
+                   // configuration.loadFromResources(Universal.getPlugin());
+                   // sender.getInventory().addItem(configuration.getFileEditor().getItem("test_1"));
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

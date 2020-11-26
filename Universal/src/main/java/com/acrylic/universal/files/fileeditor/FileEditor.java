@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.BufferedWriter;
 import java.util.Map;
 
-public interface FileEditor extends Configurable {
+public interface FileEditor extends BukkitFileEditor {
 
     @NotNull
     Map<String, Object> getContents();

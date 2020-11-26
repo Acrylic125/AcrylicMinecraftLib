@@ -6,6 +6,8 @@ test_1:
   item:
     name: "&e@range_variable_sample% Dust"
     quantity: "@absolute_variable_sample"
+    material: DIAMOND
+    damage: 0
     lore:
       - "&7Grants &a&l+@range_variable_sample%&r&7 to all enchants."
       - ""
