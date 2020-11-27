@@ -4,12 +4,16 @@ import com.acrylic.universal.files.parsers.exceptions.VariableParserException;
 import com.acrylic.weights.WeightObject;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.regex.Pattern;
+
 public abstract class AbstractConfigValue<T> implements WeightObject {
+
+    public static final Pattern PERCENTAGE = Pattern.compile("%");
 
     private final double weight;
 
     public AbstractConfigValue(@NotNull String val) {
-        String[] str = val.split("%");
+        String[] str = PERCENTAGE.split(val);
         try {
             this.weight = (str.length > 1) ? Double.parseDouble(str[0]) : 1;
         } catch (NumberFormatException ex) {

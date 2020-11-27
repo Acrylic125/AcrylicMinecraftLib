@@ -2,10 +2,8 @@ package com.acrylic.universal.files.parsers;
 
 import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.files.parsers.exceptions.ParserException;
-import com.acrylic.universal.files.parsers.variables.AbstractConfigVariable;
 import com.acrylic.universal.text.ChatUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
 
