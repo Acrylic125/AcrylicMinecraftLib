@@ -31,7 +31,7 @@ public class CommandUtils {
             //Unregister
             Command checkCommand = commandMap.getCommand(command.getName());
             if (checkCommand != null) {
-                Map<String, Command> knownCommands = (Map<String, Command>) getPrivateField(commandMap, "knownCommands");;
+                Map<String, Command> knownCommands = (Map<String, Command>) getPrivateField(commandMap, "knownCommands");
                 knownCommands.remove(command.getName());
                 for (String alias : command.getAliases()){
                     if (knownCommands.containsKey(alias) && knownCommands.get(alias).toString().contains(command.getName())){
