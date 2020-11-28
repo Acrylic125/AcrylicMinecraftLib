@@ -7,14 +7,14 @@ public interface AbstractCommandExecuted {
 
     CommandSender getSender();
 
-    String[] getArgs();
-
     CommandBuilderExecutor getParentCommandBuilder();
 
     default String getArg(int argument) {
         String[] args = getArgs();
         return (args.length > argument) ? args[argument] : null;
     }
+
+    String[] getArgs();
 
     default String getArgs(int from) {
         String[] args = getArgs();

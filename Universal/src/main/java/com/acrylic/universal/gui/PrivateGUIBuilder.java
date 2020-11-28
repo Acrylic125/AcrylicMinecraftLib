@@ -74,7 +74,6 @@ public class PrivateGUIBuilder extends GUIBuilder {
         Predicate<InventoryClickEvent> filter = (current != null) ?
                 event -> ChatColor.stripColor(event.getView().getTitle()).equals(strippedTitle) && current.test(event) :
                 event -> ChatColor.stripColor(event.getView().getTitle()).equals(strippedTitle);
-                ;
 
         eventBuilder.filter(filter);
         final Consumer<InventoryClickEvent> clickEventConsumer = eventBuilder.getHandle();

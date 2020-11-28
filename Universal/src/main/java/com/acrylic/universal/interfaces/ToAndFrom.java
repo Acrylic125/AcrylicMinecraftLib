@@ -8,11 +8,11 @@ public interface ToAndFrom {
 
     void setFrom(@NotNull Vector vector);
 
-    void setTo(@NotNull Vector vector);
-
     default void setFrom(@NotNull Location location) {
         setFrom(location.toVector());
     }
+
+    void setTo(@NotNull Vector vector);
 
     default void setTo(@NotNull Location location) {
         setTo(location.toVector());

@@ -50,47 +50,17 @@ public class ParserProducer<T> {
                 ? variables.getByte(str) : Byte.parseByte(str);
     }
 
-    public short getShort(@NotNull String str) {
-        return (shouldTryVariableQuery(str))
-                ? variables.getShort(str) : Short.parseShort(str);
-    }
-
-    public int getInteger(@NotNull String str) {
-        return (shouldTryVariableQuery(str))
-                ? variables.getInteger(str) : Integer.parseInt(str);
-    }
-
-    public long getLong(@NotNull String str) {
-        return (shouldTryVariableQuery(str))
-                ? variables.getWholeNumber(str) : Long.parseLong(str);
-    }
-
-    public float getFloat(@NotNull String str) {
-        return (shouldTryVariableQuery(str))
-                ? variables.getFloat(str) : Float.parseFloat(str);
-    }
-
-    public double getDouble(@NotNull String str) {
-        return (shouldTryVariableQuery(str))
-                ? variables.getNonWholeNumber(str) : Double.parseDouble(str);
-    }
-
-    public String getString(@NotNull String str) {
-        return (shouldTryVariableQuery(str))
-                ? variables.getString(str) : str;
-    }
-
-    public boolean getBoolean(@NotNull String str) {
-        return (shouldTryVariableQuery(str))
-                ? variables.getBoolean(str) : Boolean.parseBoolean(str);
-    }
-
     public byte getByte(@NotNull String str, @NotNull RuntimeException exception) {
         try {
             return getByte(str);
         } catch (NumberFormatException ex) {
             throw exception;
         }
+    }
+
+    public short getShort(@NotNull String str) {
+        return (shouldTryVariableQuery(str))
+                ? variables.getShort(str) : Short.parseShort(str);
     }
 
     public short getShort(@NotNull String str, @NotNull RuntimeException exception) {
@@ -101,12 +71,22 @@ public class ParserProducer<T> {
         }
     }
 
+    public int getInteger(@NotNull String str) {
+        return (shouldTryVariableQuery(str))
+                ? variables.getInteger(str) : Integer.parseInt(str);
+    }
+
     public int getInteger(@NotNull String str, @NotNull RuntimeException exception) {
         try {
             return getInteger(str);
         } catch (NumberFormatException ex) {
             throw exception;
         }
+    }
+
+    public long getLong(@NotNull String str) {
+        return (shouldTryVariableQuery(str))
+                ? variables.getWholeNumber(str) : Long.parseLong(str);
     }
 
     public long getLong(@NotNull String str, @NotNull RuntimeException exception) {
@@ -117,6 +97,11 @@ public class ParserProducer<T> {
         }
     }
 
+    public float getFloat(@NotNull String str) {
+        return (shouldTryVariableQuery(str))
+                ? variables.getFloat(str) : Float.parseFloat(str);
+    }
+
     private float getFloat(@NotNull String str, @NotNull RuntimeException exception) {
         try {
             return getFloat(str);
@@ -125,12 +110,27 @@ public class ParserProducer<T> {
         }
     }
 
+    public double getDouble(@NotNull String str) {
+        return (shouldTryVariableQuery(str))
+                ? variables.getNonWholeNumber(str) : Double.parseDouble(str);
+    }
+
     public double getDouble(@NotNull String str, @NotNull RuntimeException exception) {
         try {
             return getDouble(str);
         } catch (NumberFormatException ex) {
             throw exception;
         }
+    }
+
+    public String getString(@NotNull String str) {
+        return (shouldTryVariableQuery(str))
+                ? variables.getString(str) : str;
+    }
+
+    public boolean getBoolean(@NotNull String str) {
+        return (shouldTryVariableQuery(str))
+                ? variables.getBoolean(str) : Boolean.parseBoolean(str);
     }
 
 }

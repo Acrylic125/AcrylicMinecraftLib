@@ -11,15 +11,23 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public interface AbstractGUIBuilder {
 
+    AbstractEventBuilder<InventoryClickEvent> getClickListener();
+
     AbstractGUIBuilder clickListener(AbstractEventBuilder<InventoryClickEvent> eventBuilder, JavaPlugin plugin);
+
+    default AbstractGUIBuilder clickListener(AbstractEventBuilder<InventoryClickEvent> eventBuilder) {
+        return clickListener(eventBuilder, Universal.getPlugin());
+    }
+
+    AbstractEventBuilder<InventoryCloseEvent> getCloseListener();
 
     AbstractGUIBuilder closeListener(AbstractEventBuilder<InventoryCloseEvent> eventBuilder, JavaPlugin plugin);
 
+    default AbstractGUIBuilder closeListener(AbstractEventBuilder<InventoryCloseEvent> eventBuilder) {
+        return closeListener(eventBuilder, Universal.getPlugin());
+    }
+
     AbstractGUIBuilder template(AbstractGUITemplate template);
-
-    AbstractEventBuilder<InventoryClickEvent> getClickListener();
-
-    AbstractEventBuilder<InventoryCloseEvent> getCloseListener();
 
     AbstractGUITemplate getTemplate();
 
@@ -40,14 +48,6 @@ public interface AbstractGUIBuilder {
         AbstractEventBuilder<InventoryCloseEvent> closeListener = getCloseListener();
         if (closeListener != null)
             closeListener.unregister();
-    }
-
-    default AbstractGUIBuilder clickListener(AbstractEventBuilder<InventoryClickEvent> eventBuilder) {
-        return clickListener(eventBuilder, Universal.getPlugin());
-    }
-
-    default AbstractGUIBuilder closeListener(AbstractEventBuilder<InventoryCloseEvent> eventBuilder) {
-        return closeListener(eventBuilder, Universal.getPlugin());
     }
 
 }

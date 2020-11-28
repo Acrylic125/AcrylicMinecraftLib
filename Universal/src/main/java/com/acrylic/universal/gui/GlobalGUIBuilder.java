@@ -80,6 +80,11 @@ public class GlobalGUIBuilder extends GUIBuilder {
     }
 
     @Override
+    public GlobalGUIBuilder clickListener(AbstractEventBuilder<InventoryClickEvent> eventBuilder) {
+        return clickListener(eventBuilder, Universal.getPlugin());
+    }
+
+    @Override
     public GlobalGUIBuilder closeListener(AbstractEventBuilder<InventoryCloseEvent> eventBuilder, JavaPlugin plugin) {
         final Predicate<InventoryCloseEvent> current = eventBuilder.getFilter();
         Predicate<InventoryCloseEvent> filter = (current != null) ?
@@ -89,11 +94,6 @@ public class GlobalGUIBuilder extends GUIBuilder {
         eventBuilder.filter(filter);
         super.closeListener(eventBuilder, plugin);
         return this;
-    }
-
-    @Override
-    public GlobalGUIBuilder clickListener(AbstractEventBuilder<InventoryClickEvent> eventBuilder) {
-        return clickListener(eventBuilder, Universal.getPlugin());
     }
 
     @Override

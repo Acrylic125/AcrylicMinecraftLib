@@ -17,9 +17,9 @@ public interface AbstractItemBuilder {
 
     AbstractItemBuilder meta(ItemMeta meta);
 
-    ItemStack getItem();
-
     ItemMeta meta();
+
+    ItemStack getItem();
 
     default AbstractItemBuilder meta(Consumer<ItemMeta> metaConsumer) {
         metaConsumer.accept(meta());

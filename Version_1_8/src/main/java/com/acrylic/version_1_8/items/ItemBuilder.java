@@ -34,13 +34,13 @@ public class ItemBuilder implements AbstractItemBuilder {
     }
 
     @Override
-    public ItemStack getItem() {
-        return item;
+    public ItemMeta meta() {
+        return itemMeta;
     }
 
     @Override
-    public ItemMeta meta() {
-        return itemMeta;
+    public ItemStack getItem() {
+        return item;
     }
 
     @Override
