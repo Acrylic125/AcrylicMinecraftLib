@@ -2,6 +2,7 @@ package com.acrylic.universal.files.parsers.variables;
 
 import com.acrylic.universal.files.parsers.ConfigIdentifiers;
 import com.acrylic.weights.Weigher;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,10 +21,16 @@ public final class ConfigVariable<T> {
 
     private ConfigVariable(@NotNull String str, @Nullable Matcher matcher, @NotNull ConfigSupplierLogic<T> supplierLogic) {
         if (matcher != null)
-            str = matcher.replaceFirst(str);
+            str = matcher.replaceFirst("");
         String[] split = SPLIT_BETWEEN_VALUES.split(str);
         for (String v : split)
             weigher.add(supplierLogic.getConfigValue(v));
+    }
+
+    @Nullable
+    public T get() {
+        AbstractConfigValue<T> configValue = weigher.get();
+        return (configValue == null) ? null : configValue.get();
     }
 
     public static ConfigVariable<?> getInstance(@NotNull String str) {
@@ -32,8 +39,11 @@ public final class ConfigVariable<T> {
             return new ConfigVariable<>(str, wholeNumberMatcher, WHOLE_NUMBER_SUPPLIER);
         final Matcher nonWholeNumberMatcher = ConfigIdentifiers.NON_WHOLE_NUMBER_PATTERN.matcher(str);
         if (nonWholeNumberMatcher.find())
-            return new ConfigVariable<>(str, wholeNumberMatcher, NON_WHOLE_NUMBER_SUPPLIER);
-        return new ConfigVariable<>(str, ObjectValue::new);
+            return new ConfigVariable<>(str, nonWholeNumberMatcher, NON_WHOLE_NUMBER_SUPPLIER);
+        final Matcher booleanMatcher = ConfigIdentifiers.BOOLEAN_PATTERN.matcher(str);
+        if (booleanMatcher.find())
+            return new ConfigVariable<>(str, booleanMatcher, BooleanValue::new);
+        return new ConfigVariable<>(str, StringValue::new);
     }
 
     /**
@@ -44,7 +54,7 @@ public final class ConfigVariable<T> {
             if (AbstractRandomNumberValue.SPLITTER.matcher(toParse).find())
                 return new RandomWholeNumberValue(toParse);
             else if (AbstractRangeNumberValue.SPLITTER.matcher(toParse).find())
-                return new RandomWholeNumberValue(toParse);
+                return new RangeWholeNumberValue(toParse);
             else
                 return new StaticWholeNumberValue(toParse);
     };
@@ -53,7 +63,7 @@ public final class ConfigVariable<T> {
         if (AbstractRandomNumberValue.SPLITTER.matcher(toParse).find())
             return new RandomNonWholeNumberValue(toParse);
         else if (AbstractRangeNumberValue.SPLITTER.matcher(toParse).find())
-            return new RandomNonWholeNumberValue(toParse);
+            return new RangeNonWholeNumberValue(toParse);
         else
             return new StaticNonWholeNumberValue(toParse);
     };

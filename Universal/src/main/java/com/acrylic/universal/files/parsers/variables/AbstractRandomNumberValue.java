@@ -1,13 +1,15 @@
 package com.acrylic.universal.files.parsers.variables;
 
 import com.acrylic.universal.files.parsers.exceptions.VariableParserException;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Pattern;
 
-public abstract class AbstractRandomNumberValue<T extends Number> extends NumericConfigValue<T> {
+public abstract class AbstractRandomNumberValue<T extends Number>
+        extends NumericConfigValue<T> {
 
-    public static final Pattern SPLITTER = Pattern.compile("|");
+    public static final Pattern SPLITTER = Pattern.compile("\\|");
 
     public AbstractRandomNumberValue(@NotNull String val) {
         super(val);
@@ -22,7 +24,7 @@ public abstract class AbstractRandomNumberValue<T extends Number> extends Numeri
             }
             return values;
         } catch (NumberFormatException ex) {
-            throw new VariableParserException("The value range must both be a valid number.");
+            throw new VariableParserException("The values must all be a valid number.");
         }
     }
 

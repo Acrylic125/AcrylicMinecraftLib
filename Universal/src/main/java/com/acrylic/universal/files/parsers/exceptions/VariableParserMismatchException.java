@@ -1,17 +1,19 @@
 package com.acrylic.universal.files.parsers.exceptions;
 
+import org.jetbrains.annotations.NotNull;
+
 public class VariableParserMismatchException extends RuntimeException {
 
     public VariableParserMismatchException() {
     }
 
-    public VariableParserMismatchException(String to, String type) {
-        super(to + " meant to be of type " + type);
+    public VariableParserMismatchException(@NotNull String of, @NotNull String requiredType) {
+        super(of + " meant to be of type " + requiredType);
     }
 
     @Override
     public String toString() {
         String message = getMessage();
-        return "VariableParserMismatchException: Variable mismatch parsed exception. You are trying to cast a variable as a type that is not of that type. For example, (int) x as (boolean) z. " + ((message == null) ? "" : message);
+        return "VariableParserMismatchException: Variable mismatch parsed exception. The variable you are trying to use does not match the required type of this context. For example, (int) x as (boolean) z. " + ((message == null) ? "" : message);
     }
 }

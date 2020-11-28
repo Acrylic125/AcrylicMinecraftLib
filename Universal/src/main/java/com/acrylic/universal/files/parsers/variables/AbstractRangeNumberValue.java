@@ -1,6 +1,7 @@
 package com.acrylic.universal.files.parsers.variables;
 
 import com.acrylic.universal.files.parsers.exceptions.VariableParserException;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Pattern;

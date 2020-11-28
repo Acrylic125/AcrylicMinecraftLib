@@ -2,21 +2,21 @@ package com.acrylic.universal.files.parsers.variables;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ObjectValue extends AbstractConfigValue<String> {
+public class BooleanValue extends AbstractConfigValue<Boolean> {
 
-    private String obj;
+    private boolean obj;
 
-    public ObjectValue(@NotNull String val) {
+    public BooleanValue(@NotNull String val) {
         super(val);
     }
 
     @Override
     public void setup(String reformattedString) {
-        this.obj = reformattedString;
+        obj = Boolean.parseBoolean(reformattedString);
     }
 
     @Override
-    public String get() {
+    public Boolean get() {
         return obj;
     }
 }

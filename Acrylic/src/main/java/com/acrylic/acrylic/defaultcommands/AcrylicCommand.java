@@ -144,10 +144,9 @@ public class AcrylicCommand {
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
                     //gui.open(sender);
-                    Bukkit.broadcastMessage(new StaticNonWholeNumberValue("4%1").get() + "");
-                    // Configuration configuration = new Configuration("itemtest.yml", null);
-                   // configuration.loadFromResources(Universal.getPlugin());
-                   // sender.getInventory().addItem(configuration.getFileEditor().getItem("test_1"));
+                    Configuration configuration = new Configuration("itemtest.yml", null);
+                    configuration.loadFromResources(Universal.getPlugin());
+                    sender.getInventory().addItem(configuration.getFileEditor().getItem("test_1"));
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

@@ -2,8 +2,10 @@ package com.acrylic.universal.files.parsers;
 
 import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.files.parsers.exceptions.ParserException;
+import com.acrylic.universal.files.parsers.variables.VariableStore;
 import com.acrylic.universal.text.ChatUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,9 +48,9 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
     private static class ItemParser {
 
         private final Map<String, Object> parseFrom;
-        private final Map<String, Object> variables;
-        private final String[] replaceFrom = new String[1];
-        private final String[] replaceTo = new String[1];
+        private final VariableStore variables;
+        private final String[] replaceFrom;
+        private final String[] replaceTo;
 
         @SuppressWarnings("unchecked")
         public ItemParser(ItemStackParser itemStackParser, Map<String, Object> parseFrom) {
@@ -56,19 +58,14 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
             if (!(itemMap instanceof Map<?, ?>))
                 throw new ParserException("There is no item to serialize.");
             this.parseFrom = (Map<String, Object>) itemMap;
-            this.variables = new HashMap<>();
-           /** Map<String, AbstractConfigVariable> map = itemStackParser.getVariableMap();
-            this.replaceFrom = new String[map.size()];
-            this.replaceTo = new String[map.size()];
-            AtomicInteger index = new AtomicInteger(-1);
-            map.forEach((var, val) -> {
-                int i = index.addAndGet(1);
-                Object obj = val.getNumberValue();
-                this.replaceFrom[i] = "@" + var;
+            int s = itemStackParser.getVariableMap().size();
+            this.replaceFrom = new String[s];
+            this.replaceTo = new String[s];
+            this.variables = new VariableStore(itemStackParser, (i, var, val) -> {
+                this.replaceFrom[i] = var;
                 Bukkit.broadcastMessage(var);
-                this.replaceTo[i] = obj.toString();
-                variables.put(var, obj);
-            });**/
+                this.replaceTo[i] = val.toString();
+            });
        }
 
         public ItemStack getItem() {
@@ -106,12 +103,8 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
                 return 0;
             try {
                 String str = obj.toString();
-                if (str.contains("@")) {
-                    str = str.replaceFirst("@", "");
-                    Object o = variables.get(str);
-                    if (o instanceof Number)
-                        return ((Number) o).shortValue();
-                }
+                if (ConfigIdentifiers.VARIABLE_IDENTIFIER_PATTERN.matcher(str).find())
+                    return variables.getShort(str);
                 return Short.parseShort(str);
             } catch (IllegalArgumentException ex) {
                 throw new ParserException("The damage specified is not a valid material.");
@@ -124,12 +117,8 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
                 return 1;
             try {
                 String str = obj.toString();
-                if (str.contains("@")) {
-                    str = str.replaceFirst("@", "");
-                    Object o = variables.get(str);
-                    if (o instanceof Number)
-                        return ((Number) o).intValue();
-                }
+                if (ConfigIdentifiers.VARIABLE_IDENTIFIER_PATTERN.matcher(str).find())
+                    return variables.getInteger(str);
                 return Integer.parseInt(obj.toString());
             } catch (IllegalArgumentException ex) {
                 throw new ParserException("The amount specified is not a valid integer.");
