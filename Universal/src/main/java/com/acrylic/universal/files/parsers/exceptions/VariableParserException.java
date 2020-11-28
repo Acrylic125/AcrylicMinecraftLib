@@ -5,8 +5,8 @@ public class VariableParserException extends RuntimeException {
     public VariableParserException() {
     }
 
-    public VariableParserException(String error) {
-        super(error);
+    public VariableParserException(String error, String tried) {
+        super(error + " (Tried: " + tried + ")");
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.acrylic.universal.files.fileeditor;
 import com.acrylic.universal.files.parsers.ItemStackParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import files.editor.Configurable;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

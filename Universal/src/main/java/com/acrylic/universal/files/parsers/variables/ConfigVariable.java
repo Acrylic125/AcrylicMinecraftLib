@@ -1,8 +1,8 @@
 package com.acrylic.universal.files.parsers.variables;
 
 import com.acrylic.universal.files.parsers.ConfigIdentifiers;
+import com.acrylic.universal.files.parsers.exceptions.VariableParserException;
 import com.acrylic.weights.Weigher;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,21 +51,35 @@ public final class ConfigVariable<T> {
      */
     private static final ConfigSupplierLogic<Long> WHOLE_NUMBER_SUPPLIER =
          toParse -> {
-            if (AbstractRandomNumberValue.SPLITTER.matcher(toParse).find())
+            if (RandomNumberValue.SPLITTER.matcher(toParse).find())
                 return new RandomWholeNumberValue(toParse);
-            else if (AbstractRangeNumberValue.SPLITTER.matcher(toParse).find())
+            else if (RangeNumberValue.SPLITTER.matcher(toParse).find())
                 return new RangeWholeNumberValue(toParse);
             else
                 return new StaticWholeNumberValue(toParse);
     };
 
     private static final ConfigSupplierLogic<Double> NON_WHOLE_NUMBER_SUPPLIER = toParse -> {
-        if (AbstractRandomNumberValue.SPLITTER.matcher(toParse).find())
-            return new RandomNonWholeNumberValue(toParse);
-        else if (AbstractRangeNumberValue.SPLITTER.matcher(toParse).find())
-            return new RangeNonWholeNumberValue(toParse);
+        int dp = 2;
+        if (NonWholeNumber.START_DP_PATTERN.matcher(toParse).find() && NonWholeNumber.END_DP_PATTERN.matcher(toParse).find()) {
+            try {
+                String[] split = NonWholeNumber.END_DP_PATTERN.split(toParse);
+                if (split.length <= 1)
+                    throw new VariableParserException("Unbounded specification. You need to close the value with a '>'. For example, (float)<4>.", toParse);
+                dp = Integer.parseInt(NonWholeNumber.START_DP_PATTERN.matcher(split[0]).replaceFirst(""));
+                if (dp < 0 || dp > 16)
+                    throw new VariableParserException("You may only provide a decimal value between 0-16. For example, (float)<4>.", toParse);
+                toParse = split[1];
+            } catch (NumberFormatException ex) {
+                throw new VariableParserException("You may only specify a valid integer value for the amount of decimal place. For example, (float)<4>.", toParse);
+            }
+        }
+        if (RandomNumberValue.SPLITTER.matcher(toParse).find())
+            return new RandomNonWholeNumberValue(toParse, (short) dp);
+        else if (RangeNumberValue.SPLITTER.matcher(toParse).find())
+            return new RangeNonWholeNumberValue(toParse, (short) dp);
         else
-            return new StaticNonWholeNumberValue(toParse);
+            return new StaticNonWholeNumberValue(toParse, (short) dp);
     };
 
 

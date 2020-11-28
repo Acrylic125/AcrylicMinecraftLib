@@ -1,9 +1,8 @@
 package com.acrylic.universal.files.parsers.variables;
 
-import com.acrylic.universal.files.parsers.exceptions.VariableParserException;
 import org.jetbrains.annotations.NotNull;
 
-public class StaticWholeNumberValue extends AbstractStaticNumberValue<Long> {
+public class StaticWholeNumberValue extends WholeNumberValue implements StaticNumberValue {
 
     private long val;
 

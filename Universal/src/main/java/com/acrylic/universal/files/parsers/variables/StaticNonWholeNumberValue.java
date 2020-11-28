@@ -1,18 +1,17 @@
 package com.acrylic.universal.files.parsers.variables;
 
-import com.acrylic.universal.files.parsers.exceptions.VariableParserException;
 import org.jetbrains.annotations.NotNull;
 
-public class StaticNonWholeNumberValue extends AbstractStaticNumberValue<Double> {
+public class StaticNonWholeNumberValue extends NonWholeNumber implements StaticNumberValue {
 
     private double val;
 
-    public StaticNonWholeNumberValue(@NotNull String val) {
-        super(val);
+    public StaticNonWholeNumberValue(@NotNull String val, short dp) {
+        super(val, dp);
     }
 
     @Override
-    public Double get() {
+    public double getRawValue() {
         return val;
     }
 

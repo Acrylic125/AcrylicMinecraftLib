@@ -22,7 +22,7 @@ public class TeleportationUtils {
         }
     }
 
-    public static void tp (Entity entity, Location location) {
+    public static void tp(Entity entity, Location location) {
         try {
             setPositionRotation.invoke(getHandle.invoke(entity), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         } catch (NullPointerException | IllegalAccessException | InvocationTargetException ex) {
@@ -30,7 +30,7 @@ public class TeleportationUtils {
         }
     }
 
-    public static void tp (Entity entity, double x, double y, double z, float yaw, float pitch) {
+    public static void tp(Entity entity, double x, double y, double z, float yaw, float pitch) {
         try {
             setPositionRotation.invoke(getHandle.invoke(entity), x, y, z, yaw, pitch);
         } catch (NullPointerException | IllegalAccessException | InvocationTargetException ex) {
@@ -38,11 +38,11 @@ public class TeleportationUtils {
         }
     }
 
-    public static void tp (Entity entity, double x, double y, double z) {
+    public static void tp(Entity entity, double x, double y, double z) {
         tp(entity, x, y, z, 0, 0);
     }
 
-    public static void tp (Entity entity, float yaw, float pitch) {
+    public static void tp(Entity entity, float yaw, float pitch) {
         Location location = entity.getLocation();
         tp(entity, location.getX(), location.getY(), location.getZ(), yaw, pitch);
     }

@@ -3,7 +3,7 @@ package com.acrylic.universal.files.parsers.variables;
 import com.acrylic.math.ProbabilityKt;
 import org.jetbrains.annotations.NotNull;
 
-public class RangeWholeNumberValue extends AbstractRangeNumberValue<Long> {
+public class RangeWholeNumberValue extends WholeNumberValue implements RangeNumberValue {
 
     private long r1;
     private long r2;

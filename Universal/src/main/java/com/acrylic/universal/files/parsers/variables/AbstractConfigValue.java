@@ -17,10 +17,10 @@ public abstract class AbstractConfigValue<T> implements WeightObject {
         try {
             this.weight = (str.length > 1) ? Double.parseDouble(str[0]) : 1;
         } catch (NumberFormatException ex) {
-            throw new VariableParserException("a%b where b is the returning value, a must be a valid number.");
+            throw new VariableParserException("a%b where b is the returning value, a must be a valid number.", val);
         }
         if (weight <= 0)
-            throw new VariableParserException("a%b where b is the returning value, a must be a positive non zero number.");
+            throw new VariableParserException("a%b where b is the returning value, a must be a positive non zero number.", val);
         setup(str[str.length - 1]);
     }
 

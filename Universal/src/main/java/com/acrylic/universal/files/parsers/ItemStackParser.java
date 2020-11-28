@@ -4,16 +4,23 @@ import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.files.parsers.exceptions.ParserException;
 import com.acrylic.universal.files.parsers.variables.VariableStore;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universal.utils.MapClimber;
+import de.tr7zw.nbtapi.NBTCompound;
+import de.tr7zw.nbtapi.NBTItem;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
 
 public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
 
@@ -45,28 +52,12 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
     /**
      * Item Parser.
      */
-    private static class ItemParser {
-
-        private final Map<String, Object> parseFrom;
-        private final VariableStore variables;
-        private final String[] replaceFrom;
-        private final String[] replaceTo;
+    private static class ItemParser extends ParserProducer<ItemStack> {
 
         @SuppressWarnings("unchecked")
         public ItemParser(ItemStackParser itemStackParser, Map<String, Object> parseFrom) {
-            Object itemMap = parseFrom.get(COMPOUND_ITEM);
-            if (!(itemMap instanceof Map<?, ?>))
-                throw new ParserException("There is no item to serialize.");
-            this.parseFrom = (Map<String, Object>) itemMap;
-            int s = itemStackParser.getVariableMap().size();
-            this.replaceFrom = new String[s];
-            this.replaceTo = new String[s];
-            this.variables = new VariableStore(itemStackParser, (i, var, val) -> {
-                this.replaceFrom[i] = var;
-                Bukkit.broadcastMessage(var);
-                this.replaceTo[i] = val.toString();
-            });
-       }
+            super(itemStackParser, parseFrom.get(COMPOUND_ITEM));
+        }
 
         public ItemStack getItem() {
             Material material = getMaterial();
@@ -83,64 +74,116 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
                 itemMeta.setLore(lore);
                 item.setItemMeta(itemMeta);
             }
-            return item;
+            enchant(item);
+            return tags(item);
         }
 
         private Material getMaterial() {
-            Object obj = parseFrom.get(KEY_MATERIAL);
+            Object obj = getParseFrom().get(KEY_MATERIAL);
             if (obj == null)
                 return null;
             try {
                 return Material.valueOf(obj.toString().toUpperCase());
             } catch (IllegalArgumentException ex) {
-                throw new ParserException("The material specified is not a valid material.");
+                throw new ParserException(obj + " is not a valid material.");
             }
         }
 
         private short getDamage() {
-            Object obj = parseFrom.get(KEY_DAMAGE);
+            Object obj = getParseFrom().get(KEY_DAMAGE);
             if (obj == null)
                 return 0;
-            try {
-                String str = obj.toString();
-                if (ConfigIdentifiers.VARIABLE_IDENTIFIER_PATTERN.matcher(str).find())
-                    return variables.getShort(str);
-                return Short.parseShort(str);
-            } catch (IllegalArgumentException ex) {
-                throw new ParserException("The damage specified is not a valid material.");
-            }
+            return getShort(obj.toString(), new ParserException("The damage specified is not a valid material."));
         }
 
         private int getAmount() {
-            Object obj = parseFrom.get(KEY_QUANTITY);
+            Object obj = getParseFrom().get(KEY_QUANTITY);
             if (obj == null)
                 return 1;
-            try {
-                String str = obj.toString();
-                if (ConfigIdentifiers.VARIABLE_IDENTIFIER_PATTERN.matcher(str).find())
-                    return variables.getInteger(str);
-                return Integer.parseInt(obj.toString());
-            } catch (IllegalArgumentException ex) {
-                throw new ParserException("The amount specified is not a valid integer.");
-            }
+            return getInteger(obj.toString(), new ParserException("The amount specified is not a valid integer."));
         }
 
         private String getName() {
-            Object obj = parseFrom.get(KEY_NAME);
+            Object obj = getParseFrom().get(KEY_NAME);
             if (obj == null)
                 return null;
-            return ChatUtils.get(ChatUtils.get(ChatUtils.get(StringUtils.replaceEach(obj.toString(), replaceFrom, replaceTo))));
+            return ChatUtils.get(ChatUtils.get(scanStringForVariables(obj.toString())));
         }
 
         private List<String> getLore() {
-            Object obj = parseFrom.get(KEY_LORE);
+            Object obj = getParseFrom().get(KEY_LORE);
             if (obj instanceof List<?>) {
                 ArrayList<String> lore = new ArrayList<>();
-                ((List<?>) obj).forEach(o -> lore.add(ChatUtils.get(StringUtils.replaceEach(o.toString(), replaceFrom, replaceTo))));
+                ((List<?>) obj).forEach(o -> lore.add(ChatUtils.get(scanStringForVariables(o.toString()))));
                 return lore;
             }
             return null;
         }
+
+        private void enchant(ItemStack item) {
+            Object obj = getParseFrom().get(KEY_ENCHANTS);
+            if (obj instanceof Map<?, ?>) {
+                ((Map<?, ?>) obj).forEach((var, val) -> {
+                    try {
+                        Enchantment enchantment = Enchantment.getByName(var.toString().toUpperCase());
+                        if (enchantment != null)
+                            item.addEnchantment(enchantment, Short.parseShort(val.toString()));
+                        else {
+                            StringBuilder builder = new StringBuilder();
+                            for (Enchantment value : Enchantment.values())
+                                builder.append(value.getName()).append(" ");
+                            throw new ParserException(var + " is not a valid enchant. Here is a list of usable enchants: " + builder.toString());
+                        }
+                    } catch (NumberFormatException ex) {
+                        throw new ParserException(val + " is not a valid enchant level.");
+                    }
+                });
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        private ItemStack tags(ItemStack item) {
+            Object obj = getParseFrom().get(KEY_TAGS);
+            if (obj instanceof Map<?, ?>) {
+                NBTItem nbtItem = new NBTItem(item);
+                new MapClimber<>((Map<String, Object>) obj).iterate((node, key, value) -> {
+                    String parent = node.getParent();
+                    if (parent != null) {
+                        NBTCompound nbtCompound = nbtItem.getCompound(node.getParent());
+                        if (nbtCompound == null)
+                            nbtCompound = nbtItem.addCompound(parent);
+                        setNBTCompound(nbtCompound, key, value);
+                    } else
+                        setNBTCompound(nbtItem, key, value);
+                });
+                return nbtItem.getItem();
+            }
+            return item;
+        }
+
+        private void setNBTCompound(NBTCompound nbtCompound, String key, Object obj) {
+            String newObj = obj.toString();
+            if (scanForTags(ConfigIdentifiers.LONG_PATTERN.matcher(newObj), o -> nbtCompound.setLong(key, getLong(o)))) {}
+            else if (scanForTags(ConfigIdentifiers.INTEGER_PATTERN.matcher(newObj), o -> nbtCompound.setInteger(key, getInteger(o)))) {}
+            else if (scanForTags(ConfigIdentifiers.SHORT_PATTERN.matcher(newObj), o -> nbtCompound.setShort(key, getShort(o)))) {}
+            else if (scanForTags(ConfigIdentifiers.BYTE_PATTERN.matcher(newObj), o -> nbtCompound.setByte(key, getByte(o)))) {}
+            else if (scanForTags(ConfigIdentifiers.FLOAT_PATTERN.matcher(newObj), o -> nbtCompound.setFloat(key, getFloat(o)))) {}
+            else if (scanForTags(ConfigIdentifiers.DOUBLE_PATTERN.matcher(newObj), o -> nbtCompound.setDouble(key, getDouble(o)))) {}
+            else if (scanForTags(ConfigIdentifiers.BOOLEAN_PATTERN.matcher(newObj), o -> nbtCompound.setByte(key, getByte(o)))) {}
+            else
+                nbtCompound.setString(key, newObj);
+        }
+
+        private boolean scanForTags(Matcher matcher, Consumer<String> action) {
+            if (matcher.find()) {
+                String newKey = matcher.replaceFirst("");
+                action.accept(newKey);
+                return true;
+            }
+            return false;
+        }
+
+
     }
 
 }

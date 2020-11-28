@@ -3,17 +3,17 @@ package com.acrylic.universal.files.parsers.variables;
 import com.acrylic.math.ProbabilityKt;
 import org.jetbrains.annotations.NotNull;
 
-public class RangeNonWholeNumberValue extends AbstractRangeNumberValue<Double> {
+public class RangeNonWholeNumberValue extends NonWholeNumber implements RangeNumberValue {
 
     private double r1;
     private double r2;
 
-    public RangeNonWholeNumberValue(@NotNull String val) {
-        super(val);
+    public RangeNonWholeNumberValue(@NotNull String val, short dp) {
+        super(val, dp);
     }
 
     @Override
-    public Double get() {
+    public double getRawValue() {
         return ProbabilityKt.getRandom(r1, r2);
     }
 

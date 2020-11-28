@@ -3,16 +3,16 @@ package com.acrylic.universal.files.parsers.variables;
 import com.acrylic.math.ProbabilityKt;
 import org.jetbrains.annotations.NotNull;
 
-public class RandomNonWholeNumberValue extends AbstractRandomNumberValue<Double> {
+public class RandomNonWholeNumberValue extends NonWholeNumber implements RandomNumberValue {
 
     private double[] values;
 
-    public RandomNonWholeNumberValue(@NotNull String val) {
-        super(val);
+    public RandomNonWholeNumberValue(@NotNull String val, short dp) {
+        super(val, dp);
     }
 
     @Override
-    public Double get() {
+    public double getRawValue() {
         return values[ProbabilityKt.getRandom(0, values.length - 1)];
     }
     

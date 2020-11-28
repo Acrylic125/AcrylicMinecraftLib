@@ -12,7 +12,7 @@ public interface VariableParser {
     default Object processObject(@NotNull String var) {
         Object o = getObject(var);
         if (o == null)
-            throw new VariableParserException(var + " is not a valid variable.");
+            throw new VariableParserException(var + " is not a valid variable.", var);
         return o;
     }
 
