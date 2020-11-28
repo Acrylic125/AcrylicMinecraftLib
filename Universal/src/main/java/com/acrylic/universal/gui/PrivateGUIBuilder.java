@@ -88,6 +88,11 @@ public class PrivateGUIBuilder extends GUIBuilder {
     }
 
     @Override
+    public PrivateGUIBuilder clickListener(AbstractEventBuilder<InventoryClickEvent> eventBuilder) {
+        return clickListener(eventBuilder, Universal.getPlugin());
+    }
+
+    @Override
     public PrivateGUIBuilder closeListener(AbstractEventBuilder<InventoryCloseEvent> eventBuilder, JavaPlugin plugin) {
         final Predicate<InventoryCloseEvent> current = eventBuilder.getFilter();
         final String strippedTitle = ChatColor.stripColor(ChatUtils.get(inventoryBuilder.getTitle()));
@@ -98,11 +103,6 @@ public class PrivateGUIBuilder extends GUIBuilder {
         eventBuilder.filter(filter);
         super.closeListener(eventBuilder, plugin);
         return this;
-    }
-
-    @Override
-    public PrivateGUIBuilder clickListener(AbstractEventBuilder<InventoryClickEvent> eventBuilder) {
-        return clickListener(eventBuilder, Universal.getPlugin());
     }
 
     @Override

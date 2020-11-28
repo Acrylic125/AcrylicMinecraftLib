@@ -15,14 +15,6 @@ public abstract class AbstractHolograms
 
     private final ArrayList<AbstractHologram> holograms = new ArrayList<>();
 
-    public void addHologram(AbstractHologram hologram) {
-        holograms.add(hologram);
-    }
-
-    public void removeHologram(AbstractHologram hologram) {
-        holograms.remove(hologram);
-    }
-
     public void clear() {
         holograms.clear();
     }
@@ -34,6 +26,10 @@ public abstract class AbstractHolograms
 
     public void teleport(final Location location) {
         teleport(location, 0f);
+    }
+
+    public void addHologram(AbstractHologram hologram) {
+        holograms.add(hologram);
     }
 
     public void addHologram(@NotNull final Location location, float offsetHeight, String... text) {
@@ -50,6 +46,10 @@ public abstract class AbstractHolograms
     public abstract void addHologram(@NotNull final Location location, String text, float offsetHeight);
 
     public abstract void addHologram(AbstractHologram hologram, float offsetHeight);
+
+    public void removeHologram(AbstractHologram hologram) {
+        holograms.remove(hologram);
+    }
 
     @Override
     public void delete() {

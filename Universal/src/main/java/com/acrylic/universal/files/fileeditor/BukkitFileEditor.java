@@ -9,13 +9,14 @@ public interface BukkitFileEditor extends Configurable {
 
     void setItem(@NotNull ItemStack item);
 
+    default void setItem(@NotNull ItemStackParser item) {
+
+    }
+
     ItemStack getItem(@NotNull String s);
 
     ItemStackParser getItemParser(@NotNull String s);
 
-    default void setItem(@NotNull ItemStackParser item) {
-
-    }
 
 
 }

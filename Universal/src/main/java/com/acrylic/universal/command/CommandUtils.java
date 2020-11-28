@@ -21,6 +21,7 @@ public class CommandUtils {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     public void register(JavaPlugin plugin, Command command) {
         try {
             final Field bukkitCommandMap = plugin.getServer().getClass().getDeclaredField("commandMap");

@@ -19,12 +19,12 @@ public interface AbstractItemBuilder {
 
     ItemMeta meta();
 
-    ItemStack getItem();
-
     default AbstractItemBuilder meta(Consumer<ItemMeta> metaConsumer) {
         metaConsumer.accept(meta());
         return this;
     }
+
+    ItemStack getItem();
 
     AbstractItemBuilder damage(short damage);
 
