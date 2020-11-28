@@ -2,15 +2,11 @@ package com.acrylic.universal.files.parsers;
 
 import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.files.parsers.exceptions.ParserException;
-import com.acrylic.universal.files.parsers.variables.VariableStore;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.utils.MapClimber;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -18,7 +14,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
@@ -162,25 +157,32 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
         }
 
         private void setNBTCompound(NBTCompound nbtCompound, String key, Object obj) {
-            String newObj = obj.toString();
-            if (scanForTags(ConfigIdentifiers.LONG_PATTERN.matcher(newObj), o -> nbtCompound.setLong(key, getLong(o)))) {}
-            else if (scanForTags(ConfigIdentifiers.INTEGER_PATTERN.matcher(newObj), o -> nbtCompound.setInteger(key, getInteger(o)))) {}
-            else if (scanForTags(ConfigIdentifiers.SHORT_PATTERN.matcher(newObj), o -> nbtCompound.setShort(key, getShort(o)))) {}
-            else if (scanForTags(ConfigIdentifiers.BYTE_PATTERN.matcher(newObj), o -> nbtCompound.setByte(key, getByte(o)))) {}
-            else if (scanForTags(ConfigIdentifiers.FLOAT_PATTERN.matcher(newObj), o -> nbtCompound.setFloat(key, getFloat(o)))) {}
-            else if (scanForTags(ConfigIdentifiers.DOUBLE_PATTERN.matcher(newObj), o -> nbtCompound.setDouble(key, getDouble(o)))) {}
-            else if (scanForTags(ConfigIdentifiers.BOOLEAN_PATTERN.matcher(newObj), o -> nbtCompound.setByte(key, getByte(o)))) {}
-            else
-                nbtCompound.setString(key, newObj);
-        }
-
-        private boolean scanForTags(Matcher matcher, Consumer<String> action) {
-            if (matcher.find()) {
-                String newKey = matcher.replaceFirst("");
-                action.accept(newKey);
-                return true;
+            String objStr = obj.toString();
+            if (ConfigIdentifiers.BOOLEAN_PATTERN.matcher(objStr).find()) {
+                objStr = ConfigIdentifiers.BOOLEAN_PATTERN.matcher(objStr).replaceFirst("");
+                nbtCompound.setByte(key, getByte(objStr));
+            } else if (ConfigIdentifiers.LONG_PATTERN.matcher(objStr).find()) {
+                objStr = ConfigIdentifiers.LONG_PATTERN.matcher(objStr).replaceFirst("");
+                nbtCompound.setLong(key, getLong(objStr));
+            } else if (ConfigIdentifiers.INTEGER_PATTERN.matcher(objStr).find()) {
+                objStr = ConfigIdentifiers.INTEGER_PATTERN.matcher(objStr).replaceFirst("");
+                nbtCompound.setInteger(key, getInteger(objStr));
+            } else if (ConfigIdentifiers.SHORT_PATTERN.matcher(objStr).find()) {
+                objStr = ConfigIdentifiers.SHORT_PATTERN.matcher(objStr).replaceFirst("");
+                nbtCompound.setShort(key, getShort(objStr));
+            } else if (ConfigIdentifiers.BYTE_PATTERN.matcher(objStr).find()) {
+                objStr = ConfigIdentifiers.BYTE_PATTERN.matcher(objStr).replaceFirst("");
+                nbtCompound.setByte(key, getByte(objStr));
+            } else if (ConfigIdentifiers.DOUBLE_PATTERN.matcher(objStr).find()) {
+                objStr = ConfigIdentifiers.DOUBLE_PATTERN.matcher(objStr).replaceFirst("");
+                nbtCompound.setDouble(key, getDouble(objStr));
+            } else if (ConfigIdentifiers.FLOAT_PATTERN.matcher(objStr).find()) {
+                objStr = ConfigIdentifiers.FLOAT_PATTERN.matcher(objStr).replaceFirst("");
+                nbtCompound.setFloat(key, getFloat(objStr));
+            } else {
+                nbtCompound.setString(key, objStr);
             }
-            return false;
+
         }
 
 
