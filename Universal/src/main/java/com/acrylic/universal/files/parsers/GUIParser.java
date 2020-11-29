@@ -183,6 +183,8 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
                                     broadcast.forEach(msg -> Bukkit.broadcastMessage(parseStringDefaultVars(map.getString(msg, msg), clicker)));
                                 }));
                                 break;
+                            default:
+                                throw new ParserException(type + " is not a valid button type. You may specify either NONE, or PAGE_BUTTON.");
                         }
                     }
                 }
