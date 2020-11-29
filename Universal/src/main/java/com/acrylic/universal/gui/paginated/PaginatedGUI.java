@@ -66,9 +66,10 @@ public class PaginatedGUI
         return super.template(template);
     }
 
-    @Deprecated
     @Override
     public PrivateGUIBuilder template(AbstractGUITemplate template) {
+        if (template instanceof AbstractGUISubCollectionTemplate)
+            return template((AbstractGUISubCollectionTemplate) template);
         throw new UnsupportedGUITemplate();
     }
 

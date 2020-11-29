@@ -9,15 +9,26 @@ example_1:
     template:
       type: MIDDLE #NORMAL #SUBCOLLECION
       starting-row: 2
-      last-row: "@rows"
+      last-row: 2
     items:
       help_item:
+        slot: 7
         item:
           name: "&b&lHow to Use:"
           lore:
             - "&7You just click!"
           quantity: 1
           material: BOOK
+      sample_item:
+        slot: 2
+        item:
+          name: "&3&lHow to Manage?"
+          lore:
+            - "&7Left Click to manage"
+            - ""
+            - "&7By managing, you activate this!"
+          quantity: 1
+          material: COMPASS
     sub-collection-items:
       item_1:
         item:
@@ -29,26 +40,65 @@ example_1:
           name: "&bItem 2"
           quantity: 5
           material: DIAMOND
+      item_3:
+        item:
+          name: "&bItem 3"
+          quantity: 1
+          material: IRON_INGOT
+      item_4:
+        item:
+          name: "&bItem 4"
+          quantity: 1
+          material: IRON_INGOT
+      item_5:
+        item:
+          name: "&bItem 4"
+          quantity: 1
+          material: IRON_INGOT
+      item_6:
+        item:
+          name: "&bItem 4"
+          quantity: 1
+          material: IRON_INGOT
+      item_7:
+        item:
+          name: "&bItem 4"
+          quantity: 1
+          material: IRON_INGOT
+      item_8:
+        item:
+          name: "&bItem 4"
+          quantity: 1
+          material: IRON_INGOT
+      item_9:
+        item:
+          name: "&bItem 4"
+          quantity: 1
+          material: IRON_BLOCK
+      item_10:
+        item:
+          name: "&bItem 4"
+          quantity: 10
+          material: GOLD_INGOT
     buttons:
       test_button:
-        type: CONSOLE_COMMAND_BUTTON
-        slot: 4
-        command: "/shout %player%"
+        type: NONE
+        slot: 22
+        player-commands:
+          - "shout %player%"
+        console-commands:
+          - "w %player% Hello"
+        messages:
+          - "&eGood evening %player%!"
+        broadcast:
+          - "&b%player% is a pro!"
         item:
-          name: "&b&lClick to View Settings"
+          name: "&4&lClick to execute commands"
           quantity: 1
-          material: COMPASS
-      settings_button:
-        type: MENU_BUTTON
-        slot: 4
-        direct-to: "guitest.yml/example_1"
-        item:
-          name: "&b&lClick to View Settings"
-          quantity: 1
-          material: COMPASS
+          material: TNT
       next_page_button:
         type: PAGE_BUTTON
-        page-flip-by: -1
+        page-flip-by: 1
         slot: 8
         item:
           name: "&a&lNext Page >> ({PAGE})"
@@ -59,6 +109,6 @@ example_1:
         page-flip-by: -1
         slot: 0
         item:
-          name: "&a&lLast Page >> ({PAGE})"
+          name: "&c&lLast Page << ({PAGE})"
           quantity: 1
           material: ARROW

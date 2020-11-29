@@ -6,6 +6,7 @@ import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.javamaps.MapClimber;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -53,6 +54,10 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
 
     public ItemStackParser() { }
 
+    public ItemStackParser(Map<String, Object> map) {
+        super(map);
+    }
+
     public ItemStackParser(FileEditor fileEditor) {
         super(fileEditor);
     }
@@ -76,6 +81,8 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
 
         @SuppressWarnings("unchecked")
         public ItemParser(ItemStackParser itemStackParser, Map<String, Object> parseFrom) {
+            if (parseFrom == null)
+                throw new ParserException("Nothing to parse from!");
             parserMap = new ParserMap<>(itemStackParser, parseFrom.get(COMPOUND_ITEM));
         }
 

@@ -1,16 +1,24 @@
 package com.acrylic.universal.files.parsers;
 
+import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.files.parsers.exceptions.ParserException;
 import com.acrylic.universal.gui.*;
+import com.acrylic.universal.gui.buttons.AbstractButtons;
+import com.acrylic.universal.gui.buttons.Button;
+import com.acrylic.universal.gui.buttons.ButtonAction;
+import com.acrylic.universal.gui.buttons.PageButton;
 import com.acrylic.universal.gui.paginated.PaginatedGUI;
-import com.acrylic.universal.gui.templates.AbstractGUITemplate;
-import com.acrylic.universal.gui.templates.GUISubCollectionTemplate;
-import com.acrylic.universal.gui.templates.GUITemplate;
-import com.acrylic.universal.gui.templates.MiddleGUITemplate;
+import com.acrylic.universal.gui.templates.*;
+import com.acrylic.universal.text.ChatUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> {
 
@@ -19,9 +27,13 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
     public static final String KEY_ROWS = "rows";
     public static final String KEY_TITLE = "title";
     public static final String KEY_TEMPLATE = "template";
-    public static final String KEY_TEMPLATE_TYPE = "type";
     public static final String KEY_TEMPLATE_STARTING_ROW = "starting-row";
     public static final String KEY_TEMPLATE_LAST_ROW = "last-row";
+    public static final String KEY_SUB_COLLECTION_ITEMS = "sub-collection-items";
+    public static final String KEY_ITEMS = "items";
+    public static final String KEY_ITEM_SLOT = "slot";
+    public static final String KEY_TYPE = "type";
+    public static final String KEY_BUTTONS = "buttons";
 
     public GUIParser() { }
 
@@ -47,15 +59,21 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
         private final ParserMap<AbstractGUIBuilder> parserMap;
 
         public GUIProducer(GUIParser guiParser, Map<String, Object> parseFrom) {
-            Bukkit.broadcastMessage(parseFrom + "");
             parserMap = new ParserMap<>(guiParser, parseFrom.get(COMPOUND_GUI));
         }
 
         public AbstractGUIBuilder get() {
             AbstractGUIBuilder guiBuilder = getMainBuilder();
             AbstractGUITemplate template = getTemplate();
-            if (template != null)
+            if (template != null) {
+                if (template instanceof AbstractGUISubCollectionTemplate)
+                    applySubCollectionItems((AbstractGUISubCollectionTemplate) template);
+                applyItems(template);
                 guiBuilder.template(template);
+            }
+            guiBuilder.clickListener(EventBuilder.listen(InventoryClickEvent.class).handle(event -> event.setCancelled(true)));
+            if (guiBuilder instanceof PrivateGUIBuilder)
+                applyButtons((PrivateGUIBuilder) guiBuilder);
             return guiBuilder;
         }
 
@@ -77,7 +95,7 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
         private AbstractGUITemplate getTemplate() {
             ParserMap<AbstractGUIBuilder> map = parserMap.getParserMap(KEY_TEMPLATE);
             if (map != null) {
-                String type = map.parseString(map.getParseFrom().get(KEY_TEMPLATE_TYPE), "GLOBAL").toUpperCase();
+                String type = map.parseString(map.getParseFrom().get(KEY_TYPE), "GLOBAL").toUpperCase();
                 switch (type) {
                     case "NORMAL":
                         return new GUITemplate();
@@ -97,15 +115,85 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
         private AbstractGUIBuilder getMainBuilder() {
             String style = parserMap.getString(KEY_STYLE, "GLOBAL").toUpperCase();
             switch (style) {
-                case "GLOBAL":
-                    return new GlobalGUIBuilder(getInventoryBuilder());
-                case "PRIVATE":
-                    return new PrivateGUIBuilder(getInventoryBuilder());
-                case "PAGINATED":
-                    return new PaginatedGUI(getInventoryBuilder());
-                default:
-                    throw new ParserException(style + " is not a valid style. You may specify either GLOBAL, PRIVATE, or PAGINATED.");
+                case "GLOBAL": return new GlobalGUIBuilder(getInventoryBuilder());
+                case "PRIVATE": return new PrivateGUIBuilder(getInventoryBuilder());
+                case "PAGINATED": return new PaginatedGUI(getInventoryBuilder());
+                default: throw new ParserException(style + " is not a valid style. You may specify either GLOBAL, PRIVATE, or PAGINATED.");
             }
+        }
+
+        private void applySubCollectionItems(AbstractGUISubCollectionTemplate template) {
+            ParserMap<AbstractGUIBuilder> map = parserMap.getParserMap(KEY_SUB_COLLECTION_ITEMS);
+            if (map != null) {
+                for (String key : map.getParseFrom().keySet()) {
+                    Map<String, Object> itemMap = map.getMap(key);
+                    template.add(new ItemStackParser(itemMap).parse());
+                }
+            }
+        }
+
+
+        private void applyItems(AbstractGUITemplate template) {
+            ParserMap<AbstractGUIBuilder> map = parserMap.getParserMap(KEY_ITEMS);
+            if (map != null) {
+                for (String key : map.getParseFrom().keySet()) {
+                    ParserMap<AbstractGUIBuilder> itemMap = map.getParserMap(key);
+                    if (itemMap != null)
+                        template.addGUIItem(itemMap.getInteger(KEY_ITEM_SLOT, 0), new ItemStackParser(itemMap.getParseFrom()).parse());
+                }
+            }
+        }
+
+        /**
+         * PAGE_BUTTON, CONSOLE_COMMAND_BUTTON, PLAYER_COMMAND_BUTTON
+         *
+         * player-commands:
+         * - ???
+         * console-commands:
+         * - ???
+         * messages:
+         * - ???
+         * broadcast:
+         * - ???
+         */
+        private void applyButtons(PrivateGUIBuilder guiBuilder) {
+            ParserMap<AbstractGUIBuilder> map = parserMap.getParserMap(KEY_BUTTONS);
+            if (map != null) {
+                AbstractButtons buttons = guiBuilder.getButtons();
+                for (String key : map.getParseFrom().keySet()) {
+                    ParserMap<AbstractGUIBuilder> itemMap = map.getParserMap(key);
+                    if (itemMap != null) {
+                        String type = itemMap.getString(KEY_TYPE, "NONE").toUpperCase();
+                        Bukkit.broadcastMessage(type);
+                        switch (type) {
+                            case "PAGE_BUTTON":
+                                buttons.addItem(new PageButton(itemMap.getInteger(KEY_ITEM_SLOT, 0), new ItemStackParser(itemMap.getParseFrom()).parse(), itemMap.getInteger("page-flip-by", 1)));
+                                break;
+                            case "NONE":
+                                buttons.addItem(new Button(itemMap.getInteger(KEY_ITEM_SLOT, 0), new ItemStackParser(itemMap.getParseFrom()).parse()));
+                                final List<String> playerCommands = itemMap.getList("player-commands", new ArrayList<>(), String.class);
+                                final List<String> consoleCommands = itemMap.getList("console-commands", new ArrayList<>(), String.class);
+                                final List<String> messages = itemMap.getList("messages", new ArrayList<>(), String.class);
+                                final List<String> broadcast = itemMap.getList("broadcast", new ArrayList<>(), String.class);
+                                buttons.addItem(new Button(itemMap.getInteger(KEY_ITEM_SLOT, 0), new ItemStackParser(itemMap.getParseFrom()).parse(), (clickedItem, event, builder) -> {
+                                    Player clicker = (Player) event.getWhoClicked();
+                                    playerCommands.forEach(command -> Bukkit.dispatchCommand(event.getWhoClicked(), parseStringDefaultVars(command, clicker)));
+                                    consoleCommands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), parseStringDefaultVars(command, clicker)));
+                                    messages.forEach(msg -> clicker.sendMessage(parseStringDefaultVars(map.getString(msg, msg), clicker)));
+                                    broadcast.forEach(msg -> Bukkit.broadcastMessage(parseStringDefaultVars(map.getString(msg, msg), clicker)));
+                                }));
+                                break;
+                        }
+                    }
+                }
+                guiBuilder.setButtons(buttons);
+            }
+        }
+
+        private static final Pattern STRING_DEFAULT_VARS = Pattern.compile("%player%");
+
+        private String parseStringDefaultVars(String msg, Player clicker) {
+            return ChatUtils.get(STRING_DEFAULT_VARS.matcher(msg).replaceAll(clicker.getName()));
         }
 
     }

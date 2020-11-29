@@ -4,9 +4,13 @@ import com.acrylic.universal.files.parsers.exceptions.ParserException;
 import com.acrylic.universal.files.parsers.variables.VariableStore;
 import com.acrylic.universal.text.ChatUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public final class ParserMap<T> {
@@ -67,6 +71,29 @@ public final class ParserMap<T> {
 
     public boolean shouldTryVariableQuery(@NotNull String str) {
         return ConfigIdentifiers.VARIABLE_IDENTIFIER_PATTERN.matcher(str).find();
+    }
+
+    public List<?> parseList(@Nullable Object o) {
+        return (o instanceof List<?>) ? (List<?>) o : null;
+    }
+
+    public List<?> parseList(@Nullable Object str, @NotNull List<?> defaultValue) {
+        List<?> list = parseList(str);
+        return (list != null) ? list : defaultValue;
+    }
+
+    public List<?> getList(@NotNull String key, List<?> defaultValue) {
+        return parseList(parseFrom.get(key), defaultValue);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <K> List<K> getList(@NotNull String key, List<K> defaultValue, Class<K> type) {
+        ArrayList<K> list = new ArrayList<>();
+        for (Object o : getList(key, defaultValue)) {
+            if (type.isInstance(o))
+                list.add((K) o);
+        }
+        return list;
     }
 
     public byte parseByte(@NotNull String str) {
@@ -269,4 +296,13 @@ public final class ParserMap<T> {
         return parseBoolean(parseFrom.get(key), defaultValue);
     }
 
+    @Override
+    public String toString() {
+        return "ParserMap{" +
+                "parseFrom=" + parseFrom +
+                ", variables=" + variables +
+                ", replaceFrom=" + Arrays.toString(replaceFrom) +
+                ", replaceTo=" + Arrays.toString(replaceTo) +
+                '}';
+    }
 }

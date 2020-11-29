@@ -37,28 +37,6 @@ import org.jetbrains.annotations.NotNull;
 @UtilityClass
 public class AcrylicCommand {
 
-    private static FileEditor configEditor;
-
-    static {
-        Configuration configuration = new Configuration("guitest.yml", null);
-        configuration.loadFromResources(Universal.getPlugin());
-        configEditor = configuration.getFileEditor();
-    }
-
-    /**
-    private static final PaginatedGUI gui;
-
-    static {
-        gui = new PaginatedGUI(InventoryBuilder.create().title("&5&lCandy&d&lCrate").rows(6));
-        gui.template(new MiddleGUITemplate(2, 5));
-        gui.clickListener(EventBuilder.listen(InventoryClickEvent.class).handle(event -> event.setCancelled(true)));
-        for (int i = 0; i < 112; i++) {
-            gui.getTemplate().getSubCollection().add(ItemBuilder.of(Material.EMERALD_BLOCK).getItem());
-        }
-        gui.getButtons().addItem(new PageButton(0, ItemBuilder.of(Material.ARROW).name("&c&l{PAGE} <<").lore("T").build(), -1));
-        gui.getButtons().addItem(new PageButton(8, ItemBuilder.of(Material.ARROW).name("&c&l{PAGE} >>").lore("T").build(), 1));
-    }**/
-
     public void registerMainCommand() {
         CommandBuilder.create("acrylic")
                 .setAliases("acryliccmd")
@@ -153,10 +131,6 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    //gui.open(sender);
-                    AbstractGUIBuilder guiBuilder = configEditor.getGUIBuilder(commandExecutor.getArg(0));
-                    Bukkit.broadcastMessage(guiBuilder + "");
-                    //sender.getInventory().addItem(configEditor.getItem(commandExecutor.getArg(0)));
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
