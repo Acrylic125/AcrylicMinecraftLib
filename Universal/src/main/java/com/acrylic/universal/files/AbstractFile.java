@@ -1,8 +1,6 @@
 package com.acrylic.universal.files;
 
-import com.acrylic.universal.files.fileeditor.DefaultFileEditor;
 import com.acrylic.universal.files.fileeditor.FileEditor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

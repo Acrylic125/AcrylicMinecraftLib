@@ -1,6 +1,8 @@
 package com.acrylic.universal.files.fileeditor;
 
+import com.acrylic.universal.files.parsers.GUIParser;
 import com.acrylic.universal.files.parsers.ItemStackParser;
+import com.acrylic.universal.gui.AbstractGUIBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import files.editor.Configurable;
 import org.bukkit.inventory.ItemStack;
@@ -25,9 +27,12 @@ public class DefaultFileEditor implements FileEditor {
         try {
             this.contents = (HashMap<String, Object>) mapper.readValue(file, HashMap.class);
         } catch (IOException ex) {
+            ex.printStackTrace();
+            System.out.println("Administrator's Note: You need to surround the used variables with \"\". For example, \"@test\". The contents of the file editor object will be empty.");
             this.contents = new HashMap<>();
+        } finally {
+            this.parent = null;
         }
-        this.parent = null;
     }
 
     public DefaultFileEditor(@NotNull Map<String, Object> contents, @Nullable FileEditor parent) {
@@ -220,6 +225,19 @@ public class DefaultFileEditor implements FileEditor {
     @Override
     public ItemStackParser getItemParser(@NotNull String s) {
         return new ItemStackParser(getFileEditor(s));
+    }
+
+    @Override
+    public AbstractGUIBuilder getGUIBuilder(@NotNull String s) {
+        FileEditor fileEditor = getFileEditor(s);
+        if (fileEditor == null)
+            return null;
+        return new GUIParser(fileEditor).parse(fileEditor.getContents());
+    }
+
+    @Override
+    public GUIParser getGUIParser(@NotNull String s) {
+        return new GUIParser(getFileEditor(s));
     }
 
     @Override

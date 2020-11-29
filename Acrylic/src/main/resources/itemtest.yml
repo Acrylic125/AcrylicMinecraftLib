@@ -1,20 +1,21 @@
-test_1:
+example_1:
   variables:
-    range_variable_sample: (N)3-6,10-15
-    percentage_variable_sample: (N)3%45,10%30
-    absolute_variable_sample: (N)4
+    quantity: (int)4-20,4%1-2
+    success: (float)<2>1-100
+    power: (int)5%1|2,3%4-5,1%11-13,0.5%20|25
   item:
-    name: "&e@range_variable_sample% Dust"
-    quantity: "@absolute_variable_sample"
+    name: "&b&l@power% Power"
+    quantity: "@quantity"
     material: DIAMOND
     damage: 0
     lore:
-      - "&7Grants &a&l+@range_variable_sample%&r&7 to all enchants."
+      - "&7Grants &a&l+@power%&r&7 to all enchants."
       - ""
-      - "&a&lSuccess Rate: @percentage_variable_sample"
+      - "&7Drag and Drop to apply"
+      - "&a&lSuccess Rate: @success%"
     enchants:
       SHARPNESS: 5
     tags:
       test:
         sample_string_tag: "Hello! This tag is in the test compound."
-      percentage_variable_sample: "@percentage_variable_sample"
+      percentage_variable_sample: (int)@success

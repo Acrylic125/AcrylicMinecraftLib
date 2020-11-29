@@ -1,0 +1,64 @@
+example_1:
+  variables:
+    rows: (int)4-6
+    quantity: (int)4-20,4%1-2
+  gui:
+    rows: "@rows"
+    title: "&b&lExample GUI 1"
+    style: PAGINATED #PRIVATE, GLOBAL
+    template:
+      type: MIDDLE #NORMAL #SUBCOLLECION
+      starting-row: 2
+      last-row: "@rows"
+    items:
+      help_item:
+        item:
+          name: "&b&lHow to Use:"
+          lore:
+            - "&7You just click!"
+          quantity: 1
+          material: BOOK
+    sub-collection-items:
+      item_1:
+        item:
+          name: "Item 1"
+          quantity: 1
+          material: DIAMOND
+      item_2:
+        item:
+          name: "&bItem 2"
+          quantity: 5
+          material: DIAMOND
+    buttons:
+      test_button:
+        type: CONSOLE_COMMAND_BUTTON
+        slot: 4
+        command: "/shout %player%"
+        item:
+          name: "&b&lClick to View Settings"
+          quantity: 1
+          material: COMPASS
+      settings_button:
+        type: MENU_BUTTON
+        slot: 4
+        direct-to: "guitest.yml/example_1"
+        item:
+          name: "&b&lClick to View Settings"
+          quantity: 1
+          material: COMPASS
+      next_page_button:
+        type: PAGE_BUTTON
+        page-flip-by: -1
+        slot: 8
+        item:
+          name: "&a&lNext Page >> ({PAGE})"
+          quantity: 1
+          material: ARROW
+      last_page_button:
+        type: PAGE_BUTTON
+        page-flip-by: -1
+        slot: 0
+        item:
+          name: "&a&lLast Page >> ({PAGE})"
+          quantity: 1
+          material: ARROW

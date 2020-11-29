@@ -1,8 +1,7 @@
 package com.acrylic.universal.files.parsers.variables;
 
 import com.acrylic.universal.files.parsers.AbstractVariableParser;
-import com.acrylic.universal.utils.IndexMapConsumer;
-import org.bukkit.Bukkit;
+import com.acrylic.universal.javamaps.IndexMapConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

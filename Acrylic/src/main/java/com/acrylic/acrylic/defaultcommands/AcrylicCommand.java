@@ -12,7 +12,7 @@ import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.files.fileeditor.FileEditor;
-import com.acrylic.universal.files.parsers.variables.StaticNonWholeNumberValue;
+import com.acrylic.universal.gui.AbstractGUIBuilder;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
@@ -20,7 +20,6 @@ import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universal.utils.MapClimber;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import lombok.experimental.UtilityClass;
@@ -35,20 +34,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-
 @UtilityClass
 public class AcrylicCommand {
 
     private static FileEditor configEditor;
 
     static {
-        Configuration configuration = new Configuration("itemtest.yml", null);
+        Configuration configuration = new Configuration("guitest.yml", null);
         configuration.loadFromResources(Universal.getPlugin());
         configEditor = configuration.getFileEditor();
     }
 
-    /**private static final PaginatedGUI gui;
+    /**
+    private static final PaginatedGUI gui;
 
     static {
         gui = new PaginatedGUI(InventoryBuilder.create().title("&5&lCandy&d&lCrate").rows(6));
@@ -156,8 +154,9 @@ public class AcrylicCommand {
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
                     //gui.open(sender);
-
-                    sender.getInventory().addItem(configEditor.getItem("test"));
+                    AbstractGUIBuilder guiBuilder = configEditor.getGUIBuilder(commandExecutor.getArg(0));
+                    Bukkit.broadcastMessage(guiBuilder + "");
+                    //sender.getInventory().addItem(configEditor.getItem(commandExecutor.getArg(0)));
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

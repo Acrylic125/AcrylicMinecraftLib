@@ -65,10 +65,6 @@ public class Configuration extends YMLFile implements BukkitConfiguration {
             return;
         try {
             FileUtils.copyInputStreamToFile(streamFrom, copyTo);
-            /**OutputStream outputStream = new FileOutputStream(copyTo);
-            outputStream.write(getInputBuffer(streamFrom));
-            outputStream.flush();
-            outputStream.close();**/
         } catch (IOException ex) {
             ex.printStackTrace();
         }

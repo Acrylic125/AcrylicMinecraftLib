@@ -23,4 +23,8 @@ public interface FileEditor extends BukkitFileEditor {
 
     void saveToBufferedWriter(BufferedWriter bufferedWriter);
 
+    default void remove(@NotNull String var) {
+        getContents().remove(var);
+    }
+
 }

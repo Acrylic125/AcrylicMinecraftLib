@@ -54,8 +54,8 @@ public interface VariableParser {
     }
 
     default String getString(@NotNull String var) throws VariableParserMismatchException {
-        Object c = processObject(var);
-        return (c == null) ? null : c.toString();
+        Object c = getObject(var);
+        return (c == null) ? var : c.toString();
     }
 
 }

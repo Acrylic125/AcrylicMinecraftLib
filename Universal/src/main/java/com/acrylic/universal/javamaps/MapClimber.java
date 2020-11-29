@@ -1,4 +1,4 @@
-package com.acrylic.universal.utils;
+package com.acrylic.universal.javamaps;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

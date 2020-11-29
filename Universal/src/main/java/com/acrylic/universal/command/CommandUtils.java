@@ -1,7 +1,10 @@
 package com.acrylic.universal.command;
 
+import com.acrylic.universal.reflection.ReflectionUtils;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,9 +27,9 @@ public class CommandUtils {
     @SuppressWarnings("unchecked")
     public void register(JavaPlugin plugin, Command command) {
         try {
-            final Field bukkitCommandMap = plugin.getServer().getClass().getDeclaredField("commandMap");
+            Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             bukkitCommandMap.setAccessible(true);
-            SimpleCommandMap commandMap = (SimpleCommandMap) bukkitCommandMap.get(plugin.getServer());
+            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
 
             //Unregister
             Command checkCommand = commandMap.getCommand(command.getName());
@@ -40,8 +43,8 @@ public class CommandUtils {
                 }
             }
             //Register
-            bukkitCommandMap.setAccessible(false);
             commandMap.register(plugin.getName(), command);
+            bukkitCommandMap.setAccessible(false);
         } catch (NoSuchFieldException | IllegalAccessException ex) {
             ex.printStackTrace();
         }

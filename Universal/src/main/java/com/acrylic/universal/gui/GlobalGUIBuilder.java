@@ -25,11 +25,11 @@ public class GlobalGUIBuilder extends GUIBuilder {
         return new GlobalGUIBuilder(inventoryBuilder);
     }
 
-    public GlobalGUIBuilder(Inventory inventory) {
+    public GlobalGUIBuilder(@NotNull Inventory inventory) {
         this.inventory = inventory;
     }
 
-    public GlobalGUIBuilder(InventoryBuilder inventoryBuilder) {
+    public GlobalGUIBuilder(@NotNull AbstractInventoryBuilder inventoryBuilder) {
         this(inventoryBuilder.build());
     }
 
