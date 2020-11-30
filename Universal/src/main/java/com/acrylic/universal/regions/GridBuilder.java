@@ -102,7 +102,6 @@ public final class GridBuilder {
             cursor.setX((x * sizeX) + (x * offsetX) + originX);
             for (int y = 0; y < amtY; y++) {
                 cursor.setY((y * sizeY) + (y * offsetY) + originY);
-                Bukkit.broadcastMessage(cursor.getY() + "");
                 for (int z = 0; z < amtZ; z++) {
                     cursor.setZ((z * sizeZ) + (z * offsetZ) + originZ);
                     Location start = cursor.toLocation(world);
