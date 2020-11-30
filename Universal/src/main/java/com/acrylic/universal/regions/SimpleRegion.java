@@ -5,6 +5,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+/**
+ * Regions.
+ */
 public class SimpleRegion implements Region {
 
     private final Location start;
