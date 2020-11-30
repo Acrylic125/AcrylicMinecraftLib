@@ -3,6 +3,7 @@ package com.acrylic.universal.utils;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public class LocationUtils {
@@ -36,6 +37,10 @@ public class LocationUtils {
 
     private static boolean isNumberInBetween(double toCheck, double a, double b) {
         return ((Math.abs(a - toCheck) + Math.abs(b - toCheck)) <= Math.abs(a - b));
+    }
+
+    public static Location convertToFixedBlockLocation(@NotNull Location location) {
+        return location.add(-0.5, 0, -0.5);
     }
 
 }

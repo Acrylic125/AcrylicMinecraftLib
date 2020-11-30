@@ -16,10 +16,13 @@ import com.acrylic.universal.gui.AbstractGUIBuilder;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
+import com.acrylic.universal.regions.GridBuilder;
+import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universal.utils.LocationUtils;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import lombok.experimental.UtilityClass;
@@ -36,6 +39,8 @@ import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public class AcrylicCommand {
+
+    private static SimpleRegion region;
 
     public void registerMainCommand() {
         CommandBuilder.create("acrylic")

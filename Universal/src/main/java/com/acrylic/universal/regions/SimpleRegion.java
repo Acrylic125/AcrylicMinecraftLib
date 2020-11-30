@@ -1,18 +1,21 @@
 package com.acrylic.universal.regions;
 
+import com.acrylic.universal.utils.LocationUtils;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-/**
- * Regions.
- */
 public class SimpleRegion implements Region {
 
     private final Location start;
     private final Location end;
     private final UUID id = UUID.randomUUID();
+
+    public SimpleRegion(@NotNull Block start, @NotNull Block end) {
+        this(start.getLocation(), end.getLocation());
+    }
 
     public SimpleRegion(@NotNull Location start, @NotNull Location end) {
         this.start = start;

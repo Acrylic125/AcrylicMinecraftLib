@@ -1,6 +1,7 @@
 package com.acrylic.universal.regions;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -12,19 +13,11 @@ import java.util.function.BiConsumer;
 @Getter
 public final class GridBuilder {
 
-    private int offsetX = 0;
-    private int offsetY = 0;
-    private int offsetZ = 0;
-    private int amtX = 1;
-    private int amtY = 1;
-    private int amtZ = 1;
-    private int sizeX = 0;
-    private int sizeY = 0;
-    private int sizeZ = 0;
+    private int offsetX = 0, offsetY = 0, offsetZ = 0;
+    private int amtX = 1, amtY = 1, amtZ = 1;
+    private int sizeX = 0, sizeY = 0, sizeZ = 0;
 
-    private final int originX;
-    private final int originY;
-    private final int originZ;
+    private final int originX, originY, originZ;
     private final World world;
 
     public static GridBuilder create(@NotNull Location origin) {
@@ -85,17 +78,17 @@ public final class GridBuilder {
     }
 
     public GridBuilder setSizeX(int sizeX) {
-        this.sizeX = Math.max(sizeX, 1);
+        this.sizeX = sizeX;
         return this;
     }
 
     public GridBuilder setSizeY(int sizeY) {
-        this.sizeY = Math.max(sizeY, 1);
+        this.sizeY = sizeY;
         return this;
     }
 
     public GridBuilder setSizeZ(int sizeZ) {
-        this.sizeZ = Math.max(sizeZ, 1);
+        this.sizeZ = sizeZ;
         return this;
     }
 
@@ -106,17 +99,17 @@ public final class GridBuilder {
     public void createGrid(@NotNull BiConsumer<Location, Location> action) {
         Vector cursor = new Vector(originX, originY, originZ);
         for (int x = 0; x < amtX; x++) {
-            cursor.setX((x * sizeX) + (x * offsetX));
+            cursor.setX((x * sizeX) + (x * offsetX) + originX);
             for (int y = 0; y < amtY; y++) {
-                cursor.setX((y * sizeY) + (y * offsetY));
+                cursor.setY((y * sizeY) + (y * offsetY) + originY);
+                Bukkit.broadcastMessage(cursor.getY() + "");
                 for (int z = 0; z < amtZ; z++) {
-                    cursor.setZ((z * sizeZ) + (z * offsetZ));
+                    cursor.setZ((z * sizeZ) + (z * offsetZ) + originZ);
                     Location start = cursor.toLocation(world);
-                    Location end = cursor
-                            .setX(start.getX() + sizeX)
-                            .setY(start.getY() + sizeY)
-                            .setZ(start.getZ() + sizeZ)
-                            .toLocation(world);
+                    Location end = cursor.toLocation(world);
+                    end.setX(start.getX() + sizeX);
+                    end.setY(start.getY() + sizeY);
+                    end.setZ(start.getZ() + sizeZ);
                     action.accept(start, end);
                 }
             }
