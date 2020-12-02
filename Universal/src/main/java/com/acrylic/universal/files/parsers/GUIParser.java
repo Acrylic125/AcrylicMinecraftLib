@@ -6,7 +6,6 @@ import com.acrylic.universal.files.parsers.exceptions.ParserException;
 import com.acrylic.universal.gui.*;
 import com.acrylic.universal.gui.buttons.AbstractButtons;
 import com.acrylic.universal.gui.buttons.Button;
-import com.acrylic.universal.gui.buttons.ButtonAction;
 import com.acrylic.universal.gui.buttons.PageButton;
 import com.acrylic.universal.gui.paginated.PaginatedGUI;
 import com.acrylic.universal.gui.templates.*;
@@ -54,12 +53,10 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
     /**
      * GUI Parser.
      */
-    private static class GUIProducer {
-
-        private final ParserMap<AbstractGUIBuilder> parserMap;
+    private static class GUIProducer extends ParserMap {
 
         public GUIProducer(GUIParser guiParser, Map<String, Object> parseFrom) {
-            parserMap = new ParserMap<>(guiParser, parseFrom.get(COMPOUND_GUI));
+            super(guiParser, parseFrom.get(COMPOUND_GUI));
         }
 
         public AbstractGUIBuilder get() {
@@ -78,8 +75,8 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
         }
 
         private AbstractInventoryBuilder getInventoryBuilder() {
-            int rows = parserMap.getInteger(KEY_ROWS, new ParserException("The rows specified is not a valid integer."), 6);
-            String title = parserMap.getString(KEY_TITLE, null);
+            int rows = getInteger(KEY_ROWS, new ParserException("The rows specified is not a valid integer."), 6);
+            String title = getString(KEY_TITLE, null);
             AbstractInventoryBuilder inventoryBuilder = InventoryBuilder.create().rows(rows);
             if (title != null)
                 inventoryBuilder.title(title);
@@ -93,7 +90,7 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
          *   last-row: @rows
          */
         private AbstractGUITemplate getTemplate() {
-            ParserMap<AbstractGUIBuilder> map = parserMap.getParserMap(KEY_TEMPLATE);
+            ParserMap map = getParserMap(KEY_TEMPLATE);
             if (map != null) {
                 String type = map.parseString(map.getParseFrom().get(KEY_TYPE), "GLOBAL").toUpperCase();
                 switch (type) {
@@ -113,7 +110,7 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
 
         //PAGINATED, PRIVATE, GLOBAL
         private AbstractGUIBuilder getMainBuilder() {
-            String style = parserMap.getString(KEY_STYLE, "GLOBAL").toUpperCase();
+            String style = getString(KEY_STYLE, "GLOBAL").toUpperCase();
             switch (style) {
                 case "GLOBAL": return new GlobalGUIBuilder(getInventoryBuilder());
                 case "PRIVATE": return new PrivateGUIBuilder(getInventoryBuilder());
@@ -123,7 +120,7 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
         }
 
         private void applySubCollectionItems(AbstractGUISubCollectionTemplate template) {
-            ParserMap<AbstractGUIBuilder> map = parserMap.getParserMap(KEY_SUB_COLLECTION_ITEMS);
+            ParserMap map = getParserMap(KEY_SUB_COLLECTION_ITEMS);
             if (map != null) {
                 for (String key : map.getParseFrom().keySet()) {
                     Map<String, Object> itemMap = map.getMap(key);
@@ -134,10 +131,10 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
 
 
         private void applyItems(AbstractGUITemplate template) {
-            ParserMap<AbstractGUIBuilder> map = parserMap.getParserMap(KEY_ITEMS);
+            ParserMap map = getParserMap(KEY_ITEMS);
             if (map != null) {
                 for (String key : map.getParseFrom().keySet()) {
-                    ParserMap<AbstractGUIBuilder> itemMap = map.getParserMap(key);
+                    ParserMap itemMap = map.getParserMap(key);
                     if (itemMap != null)
                         template.addGUIItem(itemMap.getInteger(KEY_ITEM_SLOT, 0), new ItemStackParser(itemMap.getParseFrom()).parse());
                 }
@@ -157,14 +154,13 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
          * - ???
          */
         private void applyButtons(PrivateGUIBuilder guiBuilder) {
-            ParserMap<AbstractGUIBuilder> map = parserMap.getParserMap(KEY_BUTTONS);
+            ParserMap map = getParserMap(KEY_BUTTONS);
             if (map != null) {
                 AbstractButtons buttons = guiBuilder.getButtons();
                 for (String key : map.getParseFrom().keySet()) {
-                    ParserMap<AbstractGUIBuilder> itemMap = map.getParserMap(key);
+                    ParserMap itemMap = map.getParserMap(key);
                     if (itemMap != null) {
                         String type = itemMap.getString(KEY_TYPE, "NONE").toUpperCase();
-                        Bukkit.broadcastMessage(type);
                         switch (type) {
                             case "PAGE_BUTTON":
                                 buttons.addItem(new PageButton(itemMap.getInteger(KEY_ITEM_SLOT, 0), new ItemStackParser(itemMap.getParseFrom()).parse(), itemMap.getInteger("page-flip-by", 1)));

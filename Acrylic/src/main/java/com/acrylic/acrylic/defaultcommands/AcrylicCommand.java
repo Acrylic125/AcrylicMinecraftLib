@@ -40,7 +40,6 @@ import org.jetbrains.annotations.NotNull;
 @UtilityClass
 public class AcrylicCommand {
 
-    private static SimpleRegion region;
 
     public void registerMainCommand() {
         CommandBuilder.create("acrylic")

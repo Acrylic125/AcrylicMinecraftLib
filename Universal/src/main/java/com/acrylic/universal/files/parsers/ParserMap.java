@@ -4,7 +4,6 @@ import com.acrylic.universal.files.parsers.exceptions.ParserException;
 import com.acrylic.universal.files.parsers.variables.VariableStore;
 import com.acrylic.universal.text.ChatUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public final class ParserMap<T> {
+public class ParserMap {
 
     private final Map<String, Object> parseFrom;
     private final VariableStore variables;
@@ -21,7 +20,7 @@ public final class ParserMap<T> {
     private final String[] replaceTo;
 
     @SuppressWarnings("unchecked")
-    public ParserMap(AbstractVariableParser<T> parser, Object map) {
+    public ParserMap(AbstractVariableParser<?> parser, Object map) {
         if (!(map instanceof Map<?, ?>))
             throw new ParserException("There is no map to parse.");
         this.parseFrom = (Map<String, Object>) map;
@@ -49,11 +48,11 @@ public final class ParserMap<T> {
     }
 
     @Nullable
-    public ParserMap<T> getParserMap(@NotNull String var) {
+    public ParserMap getParserMap(@NotNull String var) {
         Map<String, Object> map = getMap(var);
         if (map == null)
             return null;
-        return new ParserMap<>(map, variables, replaceFrom, replaceTo);
+        return new ParserMap(map, variables, replaceFrom, replaceTo);
     }
 
     @NotNull

@@ -2,11 +2,9 @@ package com.acrylic.universal.files.parsers;
 
 import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.files.parsers.exceptions.ParserException;
-import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.javamaps.MapClimber;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -75,15 +73,10 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
     /**
      * Item Parser.
      */
-    private static class ItemParser {
+    private static class ItemParser extends ParserMap {
 
-        private final ParserMap<ItemStack> parserMap;
-
-        @SuppressWarnings("unchecked")
         public ItemParser(ItemStackParser itemStackParser, Map<String, Object> parseFrom) {
-            if (parseFrom == null)
-                throw new ParserException("Nothing to parse from!");
-            parserMap = new ParserMap<>(itemStackParser, parseFrom.get(COMPOUND_ITEM));
+            super(itemStackParser, parseFrom.get(COMPOUND_ITEM));
         }
 
         public ItemStack get() {
@@ -106,7 +99,7 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
         }
 
         private Material getMaterial() {
-            Object obj = parserMap.getParseFrom().get(KEY_MATERIAL);
+            Object obj = getParseFrom().get(KEY_MATERIAL);
             if (obj == null)
                 return null;
             try {
@@ -117,35 +110,35 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
         }
 
         private short getDamage() {
-            return parserMap.getShort(KEY_DAMAGE, new ParserException("The damage specified is not a valid material."), (short) 0);
+            return getShort(KEY_DAMAGE, new ParserException("The damage specified is not a valid material."), (short) 0);
         }
 
         private int getAmount() {
-            return parserMap.getInteger(KEY_QUANTITY, new ParserException("The amount specified is not a valid integer."), 1);
+            return getInteger(KEY_QUANTITY, new ParserException("The amount specified is not a valid integer."), 1);
         }
 
         private String getName() {
-            return parserMap.getString(KEY_NAME, null);
+            return getString(KEY_NAME, null);
         }
 
         private List<String> getLore() {
-            Object obj = parserMap.getParseFrom().get(KEY_LORE);
-            if (obj instanceof List<?>) {
+            List<?> list = getList(KEY_LORE, null);
+            if (list != null) {
                 ArrayList<String> lore = new ArrayList<>();
-                ((List<?>) obj).forEach(o -> lore.add(parserMap.parseString(o.toString())));
+                list.forEach(o -> lore.add(parseString(o.toString())));
                 return lore;
             }
             return null;
         }
 
         private void enchant(ItemStack item) {
-            Object obj = parserMap.getParseFrom().get(KEY_ENCHANTS);
-            if (obj instanceof Map<?, ?>) {
-                ((Map<?, ?>) obj).forEach((var, val) -> {
+            ParserMap obj = getParserMap(KEY_ENCHANTS);
+            if (obj != null) {
+                obj.getParseFrom().forEach((var, val) -> {
                     try {
-                        Enchantment enchantment = Enchantment.getByName(var.toString().toUpperCase());
+                        Enchantment enchantment = Enchantment.getByName(var.toUpperCase());
                         if (enchantment != null)
-                            item.addEnchantment(enchantment, Short.parseShort(val.toString()));
+                            item.addEnchantment(enchantment, obj.getShort(val.toString(), (short) 1));
                         else {
                             StringBuilder builder = new StringBuilder();
                             for (Enchantment value : Enchantment.values())
@@ -161,10 +154,10 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
 
         @SuppressWarnings("unchecked")
         private ItemStack tags(ItemStack item) {
-            Object obj = parserMap.getParseFrom().get(KEY_TAGS);
-            if (obj instanceof Map<?, ?>) {
+            Map<String, Object> obj = getMap(KEY_TAGS);
+            if (obj != null) {
                 NBTItem nbtItem = new NBTItem(item);
-                new MapClimber<>((Map<String, Object>) obj).iterate((node, key, value) -> {
+                new MapClimber<>(obj).iterate((node, key, value) -> {
                     String parent = node.getParent();
                     if (parent != null) {
                         NBTCompound nbtCompound = nbtItem.getCompound(node.getParent());
@@ -183,25 +176,25 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
             String objStr = obj.toString();
             if (ConfigIdentifiers.BOOLEAN_PATTERN.matcher(objStr).find()) {
                 objStr = ConfigIdentifiers.BOOLEAN_PATTERN.matcher(objStr).replaceFirst("");
-                nbtCompound.setByte(key, parserMap.parseByte(objStr));
+                nbtCompound.setBoolean(key, parseBoolean(objStr));
             } else if (ConfigIdentifiers.LONG_PATTERN.matcher(objStr).find()) {
                 objStr = ConfigIdentifiers.LONG_PATTERN.matcher(objStr).replaceFirst("");
-                nbtCompound.setLong(key, parserMap.parseLong(objStr));
+                nbtCompound.setLong(key, parseLong(objStr));
             } else if (ConfigIdentifiers.INTEGER_PATTERN.matcher(objStr).find()) {
                 objStr = ConfigIdentifiers.INTEGER_PATTERN.matcher(objStr).replaceFirst("");
-                nbtCompound.setInteger(key, parserMap.parseInteger(objStr));
+                nbtCompound.setInteger(key, parseInteger(objStr));
             } else if (ConfigIdentifiers.SHORT_PATTERN.matcher(objStr).find()) {
                 objStr = ConfigIdentifiers.SHORT_PATTERN.matcher(objStr).replaceFirst("");
-                nbtCompound.setShort(key, parserMap.parseShort(objStr));
+                nbtCompound.setShort(key, parseShort(objStr));
             } else if (ConfigIdentifiers.BYTE_PATTERN.matcher(objStr).find()) {
                 objStr = ConfigIdentifiers.BYTE_PATTERN.matcher(objStr).replaceFirst("");
-                nbtCompound.setByte(key, parserMap.parseByte(objStr));
+                nbtCompound.setByte(key, parseByte(objStr));
             } else if (ConfigIdentifiers.DOUBLE_PATTERN.matcher(objStr).find()) {
                 objStr = ConfigIdentifiers.DOUBLE_PATTERN.matcher(objStr).replaceFirst("");
-                nbtCompound.setDouble(key, parserMap.parseDouble(objStr));
+                nbtCompound.setDouble(key, parseDouble(objStr));
             } else if (ConfigIdentifiers.FLOAT_PATTERN.matcher(objStr).find()) {
                 objStr = ConfigIdentifiers.FLOAT_PATTERN.matcher(objStr).replaceFirst("");
-                nbtCompound.setFloat(key, parserMap.parseFloat(objStr));
+                nbtCompound.setFloat(key, parseFloat(objStr));
             } else {
                 nbtCompound.setString(key, objStr);
             }
