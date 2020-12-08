@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-@Setter @Getter
 public abstract class AbstractButton implements AbstractGUIItem {
 
     public static final String NBT_COMPOUND_NAME = "Button";
@@ -24,6 +23,22 @@ public abstract class AbstractButton implements AbstractGUIItem {
 
     public AbstractButton(int slot) {
         this.slot = slot;
+    }
+
+    public ButtonAction getButtonAction() {
+        return buttonAction;
+    }
+
+    public void setButtonAction(ButtonAction buttonAction) {
+        this.buttonAction = buttonAction;
+    }
+
+    public String getSubId() {
+        return subId;
+    }
+
+    public void setSubId(String subId) {
+        this.subId = subId;
     }
 
     public ItemStack transformButton(@NotNull ItemStack item) {

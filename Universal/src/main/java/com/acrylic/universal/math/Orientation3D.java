@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
  * This object handles the transformation of vectors
  * in 3D space.
  */
-@Getter
 public class Orientation3D extends Orientation2D {
 
     private final TrigonometrySet yOrientation;
@@ -37,6 +36,10 @@ public class Orientation3D extends Orientation2D {
     public Orientation3D setYOrientation(TrigonometrySet trigonometrySet) {
         yOrientation.cloneFrom(trigonometrySet);
         return this;
+    }
+
+    public TrigonometrySet getYOrientation() {
+        return yOrientation;
     }
 
     public Orientation3D setYOrientation(float degree) {

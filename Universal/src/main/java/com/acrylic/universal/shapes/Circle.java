@@ -3,7 +3,6 @@ package com.acrylic.universal.shapes;
 import lombok.Getter;
 import org.bukkit.util.Vector;
 
-@Getter
 public class Circle extends AbstractVectorShape {
 
     public static final float CIRCLE_ANGLE = 360f;
@@ -22,6 +21,18 @@ public class Circle extends AbstractVectorShape {
     public Circle(float radius, int frequency, float xRot, float yRot, float zRot) {
         super(frequency, xRot, yRot, zRot);
         this.radius = radius;
+    }
+
+    public static float getCircleAngle() {
+        return CIRCLE_ANGLE;
+    }
+
+    public float getLastCos() {
+        return lastCos;
+    }
+
+    public float getLastSin() {
+        return lastSin;
     }
 
     public void setRadius(float radius) {

@@ -1,11 +1,9 @@
 package com.acrylic.universal.shapes.lines;
 
 import com.acrylic.universal.shapes.functional.VectorEquationLineFunction;
-import lombok.Getter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
-@Getter
 public abstract class EquationLineExtension extends EquationLine {
 
     private float scalar = 1;
@@ -26,9 +24,17 @@ public abstract class EquationLineExtension extends EquationLine {
         return this;
     }
 
+    public float getScalar() {
+        return scalar;
+    }
+
     public EquationLineExtension setConstant(float constant) {
         this.constant = constant;
         return this;
+    }
+
+    public float getConstant() {
+        return constant;
     }
 
     public void update() {

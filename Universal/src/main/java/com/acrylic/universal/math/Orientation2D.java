@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
  * This object handles the transformation of vectors
  * in 2D space.
  */
-@Getter
 public class Orientation2D {
 
     private final TrigonometrySet xOrientation;
@@ -28,9 +27,17 @@ public class Orientation2D {
         return this;
     }
 
+    public TrigonometrySet getXOrientation() {
+        return xOrientation;
+    }
+
     public Orientation2D setXOrientation(float degree) {
         xOrientation.set(degree);
         return this;
+    }
+
+    public TrigonometrySet getZOrientation() {
+        return zOrientation;
     }
 
     public Orientation2D setZOrientation(TrigonometrySet trigonometrySet) {

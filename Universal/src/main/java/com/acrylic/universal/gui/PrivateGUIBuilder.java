@@ -19,7 +19,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-@Getter
 public class PrivateGUIBuilder extends GUIBuilder {
 
     private final AbstractInventoryBuilder inventoryBuilder;
@@ -30,6 +29,11 @@ public class PrivateGUIBuilder extends GUIBuilder {
 
     public PrivateGUIBuilder(AbstractInventoryBuilder inventoryBuilder) {
         this.inventoryBuilder = inventoryBuilder;
+    }
+
+
+    public AbstractInventoryBuilder getInventoryBuilder() {
+        return inventoryBuilder;
     }
 
     public PrivateGUIBuilder update(Inventory inventory) {

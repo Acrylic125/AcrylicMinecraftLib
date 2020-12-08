@@ -37,11 +37,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-@UtilityClass
 public class AcrylicCommand {
 
-
-    public void registerMainCommand() {
+    public static void registerMainCommand() {
         CommandBuilder.create("acrylic")
                 .setAliases("acryliccmd")
                 .permissions("acrylic.acrylic")
@@ -55,7 +53,7 @@ public class AcrylicCommand {
         .register();
     }
 
-    private void sendHelp(CommandSender sender) {
+    private static void sendHelp(CommandSender sender) {
         sender.sendMessage(ChatUtils.get(
                 "&3&l[ Acrylic ]\n" +
                         "&b/acrylic test &7Test command.\n" +
@@ -66,7 +64,7 @@ public class AcrylicCommand {
         ));
     }
 
-    private void sudo(@NotNull Player sender, String player, String str, int amt) {
+    private static void sudo(@NotNull Player sender, String player, String str, int amt) {
         Player p = Bukkit.getPlayer(player);
         if (p == null || !p.isOnline()) {
             Universal.getMessageBuilder().sendErrorMessage("The user is not online.", sender);
@@ -85,7 +83,7 @@ public class AcrylicCommand {
         }
     }
 
-    private CommandBuilder getUtilsCommandBuilder() {
+    private static CommandBuilder getUtilsCommandBuilder() {
         return CommandBuilder.create("utils")
                 .aliases("util", "utilities", "utility")
                 .handle(commandExecutor -> {
@@ -130,7 +128,7 @@ public class AcrylicCommand {
                 });
     }
 
-    private CommandBuilder getTestCommandBuilder() {
+    private static CommandBuilder getTestCommandBuilder() {
         return CommandBuilder.create("test")
                 .setTimerActive(true)
                 .handle(commandExecutor -> {

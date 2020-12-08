@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.util.Vector;
 
-@Setter @Getter
 public class BaseLine extends AbstractVectorShape {
 
     private Vector dV;
@@ -16,6 +15,14 @@ public class BaseLine extends AbstractVectorShape {
 
     public BaseLine(float frequency, float xRot, float yRot, float zRot) {
         super(frequency, xRot, yRot, zRot);
+    }
+
+    public Vector getDV() {
+        return dV;
+    }
+
+    public void setDV(Vector dV) {
+        this.dV = dV;
     }
 
     @Override

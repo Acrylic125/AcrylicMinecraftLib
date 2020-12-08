@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
-@UtilityClass
 public class ReflectionUtils {
 
     /**
@@ -14,7 +13,7 @@ public class ReflectionUtils {
      * @param fieldName The field name.
      * @return The field if found in the hierarchy.
      */
-    public Field getField(Class<?> clazz, @NotNull final String fieldName) {
+    public static Field getField(Class<?> clazz, @NotNull final String fieldName) {
         Field found = null;
         while (found == null && clazz != null) {
             try {
@@ -29,7 +28,7 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getField(Class<?> clazz, String fieldName, Class<T> returnType) {
+    public static  <T> T getField(Class<?> clazz, String fieldName, Class<T> returnType) {
         Field field = getField(clazz, fieldName);
         if (field != null && field.getType().isAssignableFrom(returnType)) {
             try {

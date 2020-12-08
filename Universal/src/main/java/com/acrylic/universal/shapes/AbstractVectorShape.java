@@ -7,7 +7,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-@Getter
 public abstract class AbstractVectorShape
         extends AbstractIndefiniteShape {
 
@@ -21,6 +20,14 @@ public abstract class AbstractVectorShape
     public AbstractVectorShape(float frequency, float xRot, float yRot, float zRot) {
         super(frequency);
         orientation = new Orientation3D(xRot, yRot, zRot);
+    }
+
+    public Orientation3D getOrientation() {
+        return orientation;
+    }
+
+    public Vector getReusableVector() {
+        return reusableVector;
     }
 
     public boolean shouldReuseVector() {

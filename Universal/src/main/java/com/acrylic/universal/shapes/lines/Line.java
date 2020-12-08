@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-@Getter
 public class Line extends BaseLine implements ToAndFrom {
 
     private Vector from;
@@ -28,16 +27,32 @@ public class Line extends BaseLine implements ToAndFrom {
         setFrom(from);
     }
 
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
     @Override
     public void setFrom(@NotNull Vector vector) {
         this.from = vector;
         calculate();
     }
 
+    public Vector getFrom() {
+        return from;
+    }
+
     @Override
     public void setTo(@NotNull Vector vector) {
         this.to = vector;
         calculate();
+    }
+
+    public Vector getTo() {
+        return to;
     }
 
     public void calculate() {

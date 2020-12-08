@@ -1,8 +1,6 @@
 package com.acrylic.universal.gui.templates;
 
 import com.acrylic.universal.gui.AbstractInventoryBuilder;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -11,13 +9,41 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Setter @Getter
 public abstract class AbstractGUISubCollectionTemplate extends AbstractGUITemplate {
 
     private final ArrayList<ItemStack> subCollection = new ArrayList<>();
     private int initialRow;
     private int totalItemsInMenu;
     private int offsetLeft = 0;
+
+    public int getInitialRow() {
+        return initialRow;
+    }
+
+    public void setInitialRow(int initialRow) {
+        this.initialRow = initialRow;
+    }
+
+    public void setTotalItemsInMenu(int totalItemsInMenu) {
+        this.totalItemsInMenu = totalItemsInMenu;
+    }
+
+    public int getOffsetLeft() {
+        return offsetLeft;
+    }
+
+    public void setOffsetLeft(int offsetLeft) {
+        this.offsetLeft = offsetLeft;
+    }
+
+    public int getOffsetRight() {
+        return offsetRight;
+    }
+
+    public void setOffsetRight(int offsetRight) {
+        this.offsetRight = offsetRight;
+    }
+
     private int offsetRight = 0;
 
     public AbstractGUISubCollectionTemplate() {

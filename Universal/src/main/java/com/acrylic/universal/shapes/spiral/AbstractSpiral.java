@@ -3,13 +3,10 @@ package com.acrylic.universal.shapes.spiral;
 import com.acrylic.universal.interfaces.ToAndFrom;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-@Setter @Getter
 public abstract class AbstractSpiral extends Circle implements ToAndFrom {
 
     private float frequencyIncrement = 0;
@@ -30,6 +27,30 @@ public abstract class AbstractSpiral extends Circle implements ToAndFrom {
 
     public void setShouldUseTimeLine(boolean shouldUseTimeLine) {
         timeLine = (shouldUseTimeLine) ? new Line(getFrequency()) : null;
+    }
+
+    public float getFrequencyIncrement() {
+        return frequencyIncrement;
+    }
+
+    public void setFrequencyIncrement(float frequencyIncrement) {
+        this.frequencyIncrement = frequencyIncrement;
+    }
+
+    public float getRadiusIncrement() {
+        return radiusIncrement;
+    }
+
+    public void setRadiusIncrement(float radiusIncrement) {
+        this.radiusIncrement = radiusIncrement;
+    }
+
+    public Line getTimeLine() {
+        return timeLine;
+    }
+
+    public void setTimeLine(Line timeLine) {
+        this.timeLine = timeLine;
     }
 
     @Override
