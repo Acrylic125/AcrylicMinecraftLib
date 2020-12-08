@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,6 +38,14 @@ public interface EntityAnimator extends Deletable {
     default boolean isValid() {
         Entity entity = getBukkitEntity();
         return entity != null && entity.isValid();
+    }
+
+    default void setVelocity(double x, double y, double z) {
+        setVelocity(new Vector(x, y, z));
+    }
+
+    default void setVelocity(@NotNull Vector velocity) {
+        getBukkitEntity().setVelocity(velocity);
     }
 
     @Override
