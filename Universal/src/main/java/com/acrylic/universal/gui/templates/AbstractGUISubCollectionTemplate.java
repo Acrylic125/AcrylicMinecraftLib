@@ -62,19 +62,19 @@ public abstract class AbstractGUISubCollectionTemplate extends AbstractGUITempla
         subCollection.add(item);
     }
 
-    public void setTotalItemsInMenu(int initialRow, int lastRow) {
-        assert initialRow <= lastRow : "The initial row must be smaller than the last row.";
-        assert initialRow > 0 : "The rows specified must be greater than 0.";
-        this.initialRow = initialRow;
-        this.totalItemsInMenu = (lastRow - initialRow + 1) * getTotalColumnsPerRow();
-    }
-
     public int getTotalOffset() {
         return offsetLeft + offsetRight;
     }
 
     public int getTotalColumnsPerRow() {
         return AbstractInventoryBuilder.CHEST_COLUMNS_PER_ROW - getTotalOffset();
+    }
+
+    public void setTotalItemsInMenu(int initialRow, int lastRow) {
+        assert initialRow <= lastRow : "The initial row must be smaller than the last row.";
+        assert initialRow > 0 : "The rows specified must be greater than 0.";
+        this.initialRow = initialRow;
+        this.totalItemsInMenu = (lastRow - initialRow + 1) * getTotalColumnsPerRow();
     }
 
     public int getTotalItemsInMenu() {

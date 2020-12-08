@@ -27,17 +27,13 @@ public class Orientation2D {
         return this;
     }
 
-    public TrigonometrySet getXOrientation() {
-        return xOrientation;
-    }
-
     public Orientation2D setXOrientation(float degree) {
         xOrientation.set(degree);
         return this;
     }
 
-    public TrigonometrySet getZOrientation() {
-        return zOrientation;
+    public TrigonometrySet getXOrientation() {
+        return xOrientation;
     }
 
     public Orientation2D setZOrientation(TrigonometrySet trigonometrySet) {
@@ -48,6 +44,10 @@ public class Orientation2D {
     public Orientation2D setZOrientation(float degree) {
         xOrientation.set(degree);
         return this;
+    }
+
+    public TrigonometrySet getZOrientation() {
+        return zOrientation;
     }
 
     /**

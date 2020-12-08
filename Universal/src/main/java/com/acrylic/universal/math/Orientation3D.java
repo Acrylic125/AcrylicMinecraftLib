@@ -38,13 +38,13 @@ public class Orientation3D extends Orientation2D {
         return this;
     }
 
-    public TrigonometrySet getYOrientation() {
-        return yOrientation;
-    }
-
     public Orientation3D setYOrientation(float degree) {
         yOrientation.set(-degree);
         return this;
+    }
+
+    public TrigonometrySet getYOrientation() {
+        return yOrientation;
     }
 
     @Override
