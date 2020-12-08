@@ -13,6 +13,7 @@ import com.acrylic.universal.text.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,11 @@ public final class GUIParser extends AbstractVariableParser<AbstractGUIBuilder> 
 
     public GUIParser() { }
 
-    public GUIParser(FileEditor fileEditor) {
+    public GUIParser(@NotNull Map<String, Object> map) {
+        super(map);
+    }
+
+    public GUIParser(@NotNull FileEditor fileEditor) {
         super(fileEditor);
     }
 

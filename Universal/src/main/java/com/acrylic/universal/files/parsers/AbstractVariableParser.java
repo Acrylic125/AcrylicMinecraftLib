@@ -4,7 +4,6 @@ import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.files.parsers.exceptions.ParserException;
 import com.acrylic.universal.files.parsers.variables.ConfigVariable;
 import com.acrylic.universal.files.parsers.variables.VariableParser;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
