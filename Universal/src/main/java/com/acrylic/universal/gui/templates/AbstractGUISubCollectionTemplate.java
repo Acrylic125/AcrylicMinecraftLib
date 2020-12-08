@@ -24,10 +24,6 @@ public abstract class AbstractGUISubCollectionTemplate extends AbstractGUITempla
         this.initialRow = initialRow;
     }
 
-    public void setTotalItemsInMenu(int totalItemsInMenu) {
-        this.totalItemsInMenu = totalItemsInMenu;
-    }
-
     public int getOffsetLeft() {
         return offsetLeft;
     }
@@ -68,6 +64,10 @@ public abstract class AbstractGUISubCollectionTemplate extends AbstractGUITempla
 
     public int getTotalColumnsPerRow() {
         return AbstractInventoryBuilder.CHEST_COLUMNS_PER_ROW - getTotalOffset();
+    }
+
+    public void setTotalItemsInMenu(int totalItemsInMenu) {
+        this.totalItemsInMenu = totalItemsInMenu;
     }
 
     public void setTotalItemsInMenu(int initialRow, int lastRow) {
