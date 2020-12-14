@@ -1,7 +1,7 @@
 package com.acrylic.universal.interfaces;
 
 import com.acrylic.time.Time;
-import com.acrylic.time.TimeConverter;
+import com.acrylic.universal.utils.TimeConverter;
 
 public interface Timed {
 
@@ -18,7 +18,7 @@ public interface Timed {
     }
 
     default String getTimeFromLastTimedAsString() {
-        return TimeConverter.GLOBAL.convert(getTimeFromLastTimed(), Time.MILLISECONDS).toString();
+        return TimeConverter.CONSOLE.convert(getTimeFromLastTimed()).toString();
     }
 
 }

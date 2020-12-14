@@ -1,8 +1,6 @@
 package com.acrylic.universal.shapes.lines;
 
 import com.acrylic.universal.shapes.AbstractVectorShape;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.util.Vector;
 
 public class BaseLine extends AbstractVectorShape {
