@@ -1,6 +1,6 @@
-name: Universal
+name: Acrylic
 version: ${project.version}
-main: com.acrylic.universal.Universal
+main: com.acrylic.acrylic.Acrylic
 api-version: 1.16
 authors: [ Acrylic ]
 description: Core module.

@@ -11,21 +11,17 @@ import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimato
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.files.bukkit.Configuration;
-import com.acrylic.universal.files.fileeditor.FileEditor;
-import com.acrylic.universal.gui.AbstractGUIBuilder;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
-import com.acrylic.universal.regions.GridBuilder;
-import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universal.utils.LocationUtils;
+import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universal.threads.TaskType;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
-import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,6 +32,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AcrylicCommand {
 
@@ -133,6 +131,17 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
+                    Scheduler.sync()
+                            .runRepeatingIndexedTask(1, 1, 10)
+                            .handle(task -> {
+                                TaskType taskType = task.getTaskType();
+                                if (taskType instanceof TaskType.IndexedRepeatingTask) {
+                                    ((TaskType.IndexedRepeatingTask) taskType).update();
+                                    if (!((TaskType.IndexedRepeatingTask) taskType).hasReachedIndex())
+                                        Bukkit.broadcastMessage("TTT " + ((TaskType.IndexedRepeatingTask) taskType).getIndex());
+                                }
+                            })
+                            .build();
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
