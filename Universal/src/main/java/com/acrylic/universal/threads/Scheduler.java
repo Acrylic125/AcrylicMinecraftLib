@@ -20,27 +20,27 @@ public interface Scheduler<T extends Scheduler<T>> extends Runnable {
     }
 
     default T runDelayedTask(long ticks) {
-        return taskType(TaskType.delayedTask(ticks));
+        return taskType(TaskType.delayedTask(convertTicksToTime(ticks, Time.NANOSECONDS)));
     }
 
     default T runDelayedTask(long time, Time timeUnit) {
-        return runDelayedTask(convertTime(time, timeUnit));
+        return taskType(TaskType.delayedTask(time * timeUnit.getNanoScale()));
     }
 
     default T runRepeatingTask(long delayTicks, long periodTicks) {
-        return taskType(TaskType.repeatTask(delayTicks, periodTicks));
+        return taskType(TaskType.repeatTask(convertTicksToTime(delayTicks, Time.NANOSECONDS), convertTicksToTime(periodTicks, Time.NANOSECONDS)));
     }
 
     default T runRepeatingTask(long delay, Time delayTimeUnit, long period, Time periodTimeUnit) {
-        return runRepeatingTask(convertTime(delay, delayTimeUnit), convertTime(period, periodTimeUnit));
+        return taskType(TaskType.repeatTask(delay * delayTimeUnit.getNanoScale(), period * periodTimeUnit.getNanoScale()));
     }
 
-    default T runRepeatingIndexedTask(long delayTicks, long periodTicks, int maxTicks) {
-        return taskType(TaskType.indexRepeatingTask(delayTicks, periodTicks, maxTicks));
+    default T runRepeatingIndexedTask(long delayTicks, long periodTicks, int maxIndex) {
+        return taskType(TaskType.indexRepeatingTask(convertTicksToTime(delayTicks, Time.NANOSECONDS), convertTicksToTime(periodTicks, Time.NANOSECONDS), maxIndex));
     }
 
     default T runRepeatingIndexedTask(long delay, Time delayTimeUnit, long period, Time periodTimeUnit, int maxIndex) {
-        return runRepeatingIndexedTask(convertTime(delay, delayTimeUnit), convertTime(period, periodTimeUnit), maxIndex);
+        return taskType(TaskType.indexRepeatingTask(delay * delayTimeUnit.getNanoScale(), period * periodTimeUnit.getNanoScale(), maxIndex));
     }
 
     T taskType(@NotNull TaskType taskType);
@@ -63,13 +63,23 @@ public interface Scheduler<T extends Scheduler<T>> extends Runnable {
     @SuppressWarnings("unchecked")
     @Override
     default void run() {
-        getHandle().run((T) this);
+        try {
+            getHandle().run((T) this);
+        } catch (Throwable t) {
+            System.out.println("[ SCHEDULER ERROR ]");
+            t.printStackTrace();
+            System.out.println("[ END OF SCHEDULER ERROR ]");
+        }
     }
 
     void build();
 
-    static long convertTime(long time, @NotNull Time timeUnit) {
-        return time * timeUnit.getNanoScale() / 20_000_000;
+    static long convertTimeToTicks(long time, @NotNull Time timeUnit) {
+        return time * timeUnit.getNanoScale() / 50_000_000;
+    }
+
+    static long convertTicksToTime(long ticks, @NotNull Time timeUnit) {
+        return (ticks * 50_000_000) / timeUnit.getNanoScale();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.acrylic.acrylic.defaultcommands;
 
+import com.acrylic.time.Time;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.animations.dangle.Dangle;
 import com.acrylic.universal.animations.holograms.Holograms;
@@ -18,6 +19,7 @@ import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universal.threads.ScheduleExecutor;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.threads.TaskType;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
@@ -33,7 +35,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class AcrylicCommand {
 
@@ -131,17 +135,23 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
+                    Bukkit.broadcastMessage(ScheduleExecutor.ASYNC_EXECUTOR.getTasks().size() + " s");
+                    long t = System.currentTimeMillis();
                     Scheduler.sync()
-                            .runRepeatingIndexedTask(1, 1, 10)
+                            .runRepeatingIndexedTask(1, Time.SECONDS, 100, Time.MILLISECONDS, 10)
                             .handle(task -> {
                                 TaskType taskType = task.getTaskType();
                                 if (taskType instanceof TaskType.IndexedRepeatingTask) {
-                                    ((TaskType.IndexedRepeatingTask) taskType).update();
-                                    if (!((TaskType.IndexedRepeatingTask) taskType).hasReachedIndex())
-                                        Bukkit.broadcastMessage("TTT " + ((TaskType.IndexedRepeatingTask) taskType).getIndex());
+                                    TaskType.IndexedRepeatingTask indexedRepeatingTask = (TaskType.IndexedRepeatingTask) taskType;
+                                    indexedRepeatingTask.update();
+                                    if (indexedRepeatingTask.hasReachedIndex()) {
+                                        task.cancel();
+                                        long ti = System.currentTimeMillis() - t;
+                                        Bukkit.broadcastMessage("T " + (ti) + " a " + (ti / 11));
+                                    }
                                 }
-                            })
-                            .build();
+                                Bukkit.broadcastMessage("T");
+                            }).build();
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

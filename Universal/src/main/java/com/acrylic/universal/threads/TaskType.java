@@ -1,19 +1,48 @@
 package com.acrylic.universal.threads;
 
+import com.acrylic.time.Time;
 import com.acrylic.universal.interfaces.Index;
 import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.Future;
+
+/**
+ * The TaskType of a scheduler describes how the task
+ * should run.
+ *
+ * By default, if the task type is empty/not defined,
+ * the scheduler will just execute the runnable.
+ *
+ * If the Task Type is {@link DelayedTask} then the runnable will
+ * run delay time after.
+ *
+ * @see DelayedTask for more info.
+ *
+ * If the Task Type is {@link RepeatingTask} then the runnable will
+ * run delay time after, every period time.
+ *
+ * @see RepeatingTask for more info.
+ *
+ * Synchronous Scheduler {@link SyncScheduleBuilder} ONLY WORKS
+ * WITH TICKS AS THE HIGHEST DEGREEOF ACCURACY OF TIME due to
+ * how Minecraft functions.
+ *
+ * ASynchronous Scheduler {@link AsyncScheduleBuilder} however,
+ * can have a highest degree of accuracy of Nanoseconds due to
+ * the use of a different {@link ScheduleExecutor}.
+ */
 public class TaskType {
 
     private static final TaskType EMPTY = new TaskType();
 
-    public void scheduleSync(@NotNull SyncScheduleBuilder scheduleBuilder) {
-        Bukkit.getScheduler().runTask(scheduleBuilder.getPlugin(), scheduleBuilder);
+    public BukkitTask scheduleSync(@NotNull SyncScheduleBuilder scheduleBuilder) {
+        return Bukkit.getScheduler().runTask(scheduleBuilder.getPlugin(), scheduleBuilder);
     }
 
-    public void scheduleASync(@NotNull AsyncScheduleBuilder scheduleBuilder) {
-
+    public Future<?> scheduleASync(@NotNull AsyncScheduleBuilder scheduleBuilder) {
+        return ScheduleExecutor.ASYNC_EXECUTOR.runTask(scheduleBuilder);
     }
 
     public static TaskType task() {
@@ -32,6 +61,16 @@ public class TaskType {
         return new IndexedRepeatingTask(delay, period, maxIndex);
     }
 
+    /**
+     * HOW IT WORKS:
+     *
+     * x ns delay,
+     *
+     * after x nanoseconds, the runnable gets executed.
+     *
+     * Representation:
+     * x ns -> RUN -> END
+     */
     public static class DelayedTask extends TaskType {
 
         private long delay;
@@ -49,16 +88,29 @@ public class TaskType {
         }
 
         @Override
-        public void scheduleSync(@NotNull SyncScheduleBuilder scheduleBuilder) {
-            Bukkit.getScheduler().runTaskLater(scheduleBuilder.getPlugin(), scheduleBuilder, delay);
+        public BukkitTask scheduleSync(@NotNull SyncScheduleBuilder scheduleBuilder) {
+            return Bukkit.getScheduler().runTaskLater(scheduleBuilder.getPlugin(), scheduleBuilder, Scheduler.convertTimeToTicks(delay, Time.NANOSECONDS));
         }
 
         @Override
-        public void scheduleASync(@NotNull AsyncScheduleBuilder scheduleBuilder) {
-
+        public Future<?> scheduleASync(@NotNull AsyncScheduleBuilder scheduleBuilder) {
+            return ScheduleExecutor.ASYNC_EXECUTOR.runTaskLater(scheduleBuilder, delay, Time.NANOSECONDS);
         }
     }
 
+    /**
+     * HOW IT WORKS:
+     *
+     * x ns delay
+     * y ns period
+     *
+     * After x nanoseconds, the first iteration of the
+     * runnable gets executed. Subsequent runnable executions
+     * gets executed y nanoseconds after each iteration.
+     *
+     * Representation:
+     * x ns -> RUN -> y ns -> RUN -> y ns .... etc...
+     */
     public static class RepeatingTask extends DelayedTask {
 
         private long period;
@@ -77,13 +129,13 @@ public class TaskType {
         }
 
         @Override
-        public void scheduleSync(@NotNull SyncScheduleBuilder scheduleBuilder) {
-            Bukkit.getScheduler().runTaskTimer(scheduleBuilder.getPlugin(), scheduleBuilder, getDelay(), getPeriod());
+        public BukkitTask scheduleSync(@NotNull SyncScheduleBuilder scheduleBuilder) {
+            return Bukkit.getScheduler().runTaskTimer(scheduleBuilder.getPlugin(), scheduleBuilder, Scheduler.convertTimeToTicks(getDelay(), Time.NANOSECONDS), Scheduler.convertTimeToTicks(getPeriod(), Time.NANOSECONDS));
         }
 
         @Override
-        public void scheduleASync(@NotNull AsyncScheduleBuilder scheduleBuilder) {
-            super.scheduleASync(scheduleBuilder);
+        public Future<?> scheduleASync(@NotNull AsyncScheduleBuilder scheduleBuilder) {
+            return ScheduleExecutor.ASYNC_EXECUTOR.runTaskTimer(scheduleBuilder, getDelay(), Time.NANOSECONDS, getPeriod(), Time.NANOSECONDS);
         }
     }
 
