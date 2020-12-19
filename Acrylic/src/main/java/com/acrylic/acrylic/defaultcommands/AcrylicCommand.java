@@ -15,6 +15,7 @@ import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
+import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
@@ -135,23 +136,6 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    Bukkit.broadcastMessage(ScheduleExecutor.ASYNC_EXECUTOR.getTasks().size() + " s");
-                    long t = System.currentTimeMillis();
-                    Scheduler.sync()
-                            .runRepeatingIndexedTask(1, Time.SECONDS, 100, Time.MILLISECONDS, 10)
-                            .handle(task -> {
-                                TaskType taskType = task.getTaskType();
-                                if (taskType instanceof TaskType.IndexedRepeatingTask) {
-                                    TaskType.IndexedRepeatingTask indexedRepeatingTask = (TaskType.IndexedRepeatingTask) taskType;
-                                    indexedRepeatingTask.update();
-                                    if (indexedRepeatingTask.hasReachedIndex()) {
-                                        task.cancel();
-                                        long ti = System.currentTimeMillis() - t;
-                                        Bukkit.broadcastMessage("T " + (ti) + " a " + (ti / 11));
-                                    }
-                                }
-                                Bukkit.broadcastMessage("T");
-                            }).build();
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
