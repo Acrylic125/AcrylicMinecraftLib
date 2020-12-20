@@ -1,18 +1,16 @@
 package com.acrylic.universal.utils;
 
-import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
-@UtilityClass
 public class LocationUtils {
 
-    public float getFixedYaw(Entity entity) {
+    public static float getFixedYaw(Entity entity) {
         return getFixedYaw(entity.getLocation());
     }
 
-    public float getFixedYaw(Location location) {
+    public static float getFixedYaw(Location location) {
         return getFixedYaw(location.getYaw());
     }
 
@@ -21,7 +19,7 @@ public class LocationUtils {
      * @param yaw Bukkit yaw
      * @return Returns the correct yaw from N=0
      */
-    public float getFixedYaw(float yaw) {
+    public static float getFixedYaw(float yaw) {
         yaw = (yaw - 90.0F) % 360.0F;
         if (yaw < 0.0D)
             yaw += 360.0D;

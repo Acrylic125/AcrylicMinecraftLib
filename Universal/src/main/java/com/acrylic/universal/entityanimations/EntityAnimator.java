@@ -13,6 +13,10 @@ import org.jetbrains.annotations.Nullable;
 
 public interface EntityAnimator extends Deletable {
 
+    default Location getLocation() {
+        return getBukkitEntity().getLocation();
+    }
+
     Entity getBukkitEntity();
 
     float getHeight();

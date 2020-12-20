@@ -19,6 +19,10 @@ public class QuadraticYLine extends EquationLineExtension {
         super(from, frequency);
     }
 
+    public QuadraticYLine(@NotNull Location from, @NotNull Location to, float frequency, float scalar, float constant) {
+        super(from, to, frequency, scalar, constant);
+    }
+
     public QuadraticYLine(@NotNull Location from, float frequency, float xRot, float yRot, float zRot) {
         super(from, frequency, xRot, yRot, zRot);
     }

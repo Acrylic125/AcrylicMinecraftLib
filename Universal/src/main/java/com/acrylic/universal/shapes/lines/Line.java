@@ -17,6 +17,12 @@ public class Line extends BaseLine implements ToAndFrom {
         super(frequency);
     }
 
+    public Line(@NotNull Location from, @NotNull Location to, float frequency) {
+        super(frequency);
+        setFrom(from);
+        setTo(to);
+    }
+
     public Line(@NotNull Location from, float frequency) {
         super(frequency);
         setFrom(from);
@@ -70,8 +76,7 @@ public class Line extends BaseLine implements ToAndFrom {
 
     @Override
     public int getFullCycleIndex() {
-        Bukkit.broadcastMessage(getFrequency() + " " + distance);
-        return (int) Math.ceil(distance * getFrequency());
+         return (int) Math.ceil(distance * getFrequency());
     }
 
 }

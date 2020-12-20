@@ -7,6 +7,7 @@ import com.acrylic.universal.animations.rotational.HeadRotationAnimation;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.regions.exceptions.InvalidLocationException;
+import com.acrylic.universal.threads.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -76,14 +77,13 @@ public interface Region {
 
     default void showMarkers(JavaPlugin plugin) {
         RegionDisplayPointerAnimation regionDisplayPointerAnimation = new RegionDisplayPointerAnimation(this);
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (regionDisplayPointerAnimation.hasEnded())
-                    cancel();
-                regionDisplayPointerAnimation.update();
-            }
-        }.runTaskTimer(plugin, 1, 1);
+        Scheduler.sync()
+                .runRepeatingTask(1, 1)
+                .handle(task -> {
+                    if (regionDisplayPointerAnimation.hasEnded())
+                        task.cancel();
+                    regionDisplayPointerAnimation.update();
+                }).build();
     }
 
     /**

@@ -18,17 +18,21 @@ import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
+import com.acrylic.universal.shapes.lines.QuadraticYLine;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.ScheduleExecutor;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.threads.TaskType;
+import com.acrylic.universal.utils.LocationConverter;
+import com.acrylic.universal.utils.LocationUtils;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -153,6 +157,7 @@ public class AcrylicCommand {
                             Player player = (Player) commandExecutor.getSender();
                             player.getInventory().addItem(
                                     ItemBuilder.of(Material.DIAMOND_SWORD)
+                                            .enchant(Enchantment.DAMAGE_ALL, 10)
                                             .shiny(true)
                                             .build()
                             );
@@ -175,8 +180,8 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
 
-                            Line line = new Line(sender.getLocation(), 1f);
-                            line.setTo(sender.getLocation().add(sender.getLocation().getDirection().multiply(15)));
+                            Line line = new QuadraticYLine(sender.getLocation(), sender.getLocation().add(sender.getLocation().getDirection().multiply(15)), 1f, -0.1f, 0);
+                            //line.setTo(sender.getLocation().add(sender.getLocation().getDirection().multiply(15)));
                             line.invokeAction(sender.getLocation(), (i, location) -> {
                                 sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
                             });
@@ -244,12 +249,11 @@ public class AcrylicCommand {
                             Location location = sender.getLocation();
                             armorStandAnimator.setEquipment(new EntityEquipmentBuilder().setItemInHand(ItemBuilder.of(Material.DIAMOND_SWORD).build()));
                             HandRotationAnimation handRotationAnimation = new HandRotationAnimation(armorStandAnimator);
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    handRotationAnimation.teleport(location);
-                                }
-                            }.runTaskTimer(Universal.getPlugin(), 1, 1);
+                            Scheduler.sync()
+                                    .runRepeatingTask(1, 1)
+                                    .handle(task -> {
+                                        handRotationAnimation.teleport(location);
+                                    }).build();
                         }),
                         CommandBuilder.create("dangle")
                                 .filter(AbstractCommandExecuted::isPlayer)
@@ -266,16 +270,12 @@ public class AcrylicCommand {
                                 holograms.addHologram(sender.getLocation(), 2f, "&eClick Me!", "&b&lDiamond pickaxe");
                                 handRot.setHologram(holograms);
                             }
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    if (dangle.hasEnded()) {
-                                        cancel();
-                                    }
-                                    dangle.update(sender);
-                                }
-                            }.runTaskTimer(Universal.getPlugin(), 1, 1);
-
+                            Scheduler.sync().runRepeatingTask(1, 1)
+                                    .handle(task -> {
+                                        if (dangle.hasEnded())
+                                            task.cancel();
+                                        dangle.update(sender);
+                                    }).build();
                         }),
                         CommandBuilder.create("files")
                                 .handle(commandExecutor -> {

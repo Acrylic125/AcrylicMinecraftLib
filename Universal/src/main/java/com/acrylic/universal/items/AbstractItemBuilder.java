@@ -71,7 +71,7 @@ public interface AbstractItemBuilder {
     }
 
     default AbstractItemBuilder enchant(@NotNull Enchantment enchantment, int level) {
-        meta().addEnchant(enchantment, level, false);
+        meta().addEnchant(enchantment, level, true);
         return this;
     }
 
@@ -82,9 +82,8 @@ public interface AbstractItemBuilder {
 
     default AbstractItemBuilder lore(String... lore) {
         final ArrayList<String> l = new ArrayList<>();
-        for (String s : lore) {
+        for (String s : lore)
             l.add(ChatUtils.get(s));
-        }
         meta().setLore(l);
         return this;
     }

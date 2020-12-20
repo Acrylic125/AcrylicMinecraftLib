@@ -14,6 +14,15 @@ public class EquationLine extends Line {
         this.vectorEquationLineFunction = vectorEquationLineFunction;
     }
 
+    public EquationLine(@NotNull Location from, @NotNull Location to, float frequency) {
+        this(from, to, frequency, null);
+    }
+
+    public EquationLine(@NotNull Location from, @NotNull Location to, float frequency, VectorEquationLineFunction function) {
+        super(from, to, frequency);
+        this.vectorEquationLineFunction = function;
+    }
+
     public EquationLine(@NotNull Location from, float frequency, VectorEquationLineFunction vectorEquationLineFunction, float xRot, float yRot, float zRot) {
         super(from, frequency, xRot, yRot, zRot);
         this.vectorEquationLineFunction = vectorEquationLineFunction;

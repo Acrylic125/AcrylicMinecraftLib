@@ -9,6 +9,14 @@ public abstract class EquationLineExtension extends EquationLine {
     private float scalar = 1;
     private float constant = 0;
 
+    public EquationLineExtension(@NotNull Location from, @NotNull Location to, float frequency, float scalar, float constant) {
+        super(from, to, frequency);
+        this.scalar = scalar;
+        this.constant = constant;
+        update();
+        calculate();
+    }
+
     public EquationLineExtension(@NotNull Location from, float frequency) {
         super(from, frequency, null);
         update();
