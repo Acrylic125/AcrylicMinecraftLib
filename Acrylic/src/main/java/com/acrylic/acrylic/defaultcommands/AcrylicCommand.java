@@ -26,6 +26,7 @@ import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.threads.TaskType;
 import com.acrylic.universal.utils.LocationConverter;
 import com.acrylic.universal.utils.LocationUtils;
+import com.acrylic.universal.utils.RomanNumberConverter;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -140,6 +141,7 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
+                    Bukkit.broadcastMessage( RomanNumberConverter.toRoman(Integer.parseInt(commandExecutor.getArg(0))));
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
