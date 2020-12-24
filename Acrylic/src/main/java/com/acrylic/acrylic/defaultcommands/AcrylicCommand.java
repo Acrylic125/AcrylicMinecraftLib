@@ -16,6 +16,7 @@ import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.items.ItemUtils;
+import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.lines.QuadraticYLine;
@@ -101,6 +102,7 @@ public class AcrylicCommand {
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .setTimerActive(true)
                                 .handle(commandExecutor -> {
+
                             Player sender = (Player) commandExecutor.getSender();
                             String arg1 = commandExecutor.getArg(0);
                             String arg2 = commandExecutor.getArg(1);
@@ -141,10 +143,29 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    Bukkit.broadcastMessage( RomanNumberConverter.toRoman(Integer.parseInt(commandExecutor.getArg(0))));
-                    sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
+                    SimpleRegion reg = new SimpleRegion(sender.getLocation(), sender.getLocation().add(30, 30, 30));
+                    Universal.getRegionMap().addRegion(reg);
+                   // sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
+                        CommandBuilder.create("item")
+                                .filter(AbstractCommandExecuted::isPlayer)
+                                .handle(commandExecutor -> {
+                            Player player = (Player) commandExecutor.getSender();
+                            player.getInventory().addItem(
+                                    ItemBuilder.of(Material.DIAMOND_SWORD)
+                                            .enchant(Enchantment.DAMAGE_ALL, 10)
+                                            .shiny(true)
+                                            .build()
+                            );
+                        }),
+                        CommandBuilder.create("region")
+                                .filter(AbstractCommandExecuted::isPlayer)
+                                .setTimerActive(true)
+                                .handle(commandExecutor -> {
+                            Player player = (Player) commandExecutor.getSender();
+                            Bukkit.broadcastMessage(Universal.getRegionMap().getRegions(player.getLocation()).size() + "");
+                        }),
                         CommandBuilder.create("-list")
                                 .handle(commandExecutor ->  {
                             CommandSender sender = commandExecutor.getSender();

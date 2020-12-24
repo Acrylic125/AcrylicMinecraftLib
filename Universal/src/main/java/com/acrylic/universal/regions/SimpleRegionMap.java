@@ -6,13 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class SimpleRegionMap implements RegionMap<SimpleRegion> {
+public class SimpleRegionMap<T extends Region>
+        implements RegionMap<T> {
 
-    private final Map<UUID, SimpleRegion> regionMap = new HashMap<>();
+    private final Map<UUID, T> regionMap = new HashMap<>();
 
     @NotNull
     @Override
-    public Map<UUID, SimpleRegion> getRegionMap() {
+    public Map<UUID, T> getRegionMap() {
         return regionMap;
     }
 }

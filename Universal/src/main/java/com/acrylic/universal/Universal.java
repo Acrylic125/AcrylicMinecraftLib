@@ -1,5 +1,9 @@
 package com.acrylic.universal;
 
+import com.acrylic.universal.regions.ChunkedRegionMap;
+import com.acrylic.universal.regions.RegionMap;
+import com.acrylic.universal.regions.SimpleRegionMap;
+import com.acrylic.universal.regions.Region;
 import com.acrylic.universal.text.AbstractMessageBuilder;
 import com.acrylic.universal.text.MessageBuilder;
 import com.acrylic.universal.versionstore.AbstractVersionStore;
@@ -12,6 +16,7 @@ public class Universal {
     private static JavaPlugin plugin;
     private static AbstractMessageBuilder messageBuilder = new MessageBuilder();
     private static AbstractVersionStore versionStore = new VersionStore();
+    private static RegionMap<Region> regionMap = new ChunkedRegionMap<>();
 
     public static void setPlugin(@NotNull JavaPlugin plugin) {
         Universal.plugin = plugin;
@@ -47,6 +52,11 @@ public class Universal {
         return (T) versionStore;
     }
 
+    public static void setRegionMap(RegionMap<Region> regionMap) {
+        Universal.regionMap = regionMap;
+    }
 
-
+    public static RegionMap<Region> getRegionMap() {
+        return regionMap;
+    }
 }

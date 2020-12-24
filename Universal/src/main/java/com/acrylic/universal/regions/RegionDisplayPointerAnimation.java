@@ -20,7 +20,7 @@ import java.util.List;
 public class RegionDisplayPointerAnimation extends IndexedAnimation {
 
     private final List<AbstractHeadRotationAnimation> animations = new ArrayList<>();
-    private int maxIndex = 300;
+    private int maxIndex = 1000;
 
     public RegionDisplayPointerAnimation(Region region) {
         int point = 0;

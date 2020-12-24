@@ -1,6 +1,5 @@
 package com.acrylic.universal.regions;
 
-import com.acrylic.universal.utils.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -38,5 +37,24 @@ public class SimpleRegion implements Region {
     @Override
     public UUID getId() {
         return id;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleRegion{" +
+                "start=" + start +
+                ", end=" + end +
+                ", id=" + id +
+                '}';
     }
 }

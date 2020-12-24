@@ -6,6 +6,7 @@ import com.acrylic.universal.animations.rotational.AbstractHeadRotationAnimation
 import com.acrylic.universal.animations.rotational.HeadRotationAnimation;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
+import com.acrylic.universal.regions.chunks.ChunkGenerator;
 import com.acrylic.universal.regions.exceptions.InvalidLocationException;
 import com.acrylic.universal.threads.Scheduler;
 import org.bukkit.Bukkit;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * L1 (0, 0, 0)    ------      l3 (1, 0, 0)
