@@ -2,9 +2,9 @@ package com.acrylic.universal.files.parsers.variables;
 
 import com.acrylic.universal.files.parsers.ConfigIdentifiers;
 import com.acrylic.universal.files.parsers.exceptions.VariableParserException;
-import com.acrylic.weights.Weigher;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import weights.Weigher;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

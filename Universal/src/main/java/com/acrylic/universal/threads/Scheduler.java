@@ -54,7 +54,25 @@ public interface Scheduler<T extends Scheduler<T>> extends Runnable {
 
     boolean isAsync();
 
+    default void handleThenBuild(@NotNull ExecutedTask<T> action) {
+        handle(action).build();
+    }
+
+    default void handleThenBuild(@NotNull Runnable action) {
+        handle(action).build();
+    }
+
     T handle(@NotNull ExecutedTask<T> action);
+
+    /**
+     * Please use handle(ExecutedTask) for a better alternative.
+     *
+     * @param runnable The runnable.
+     */
+    @Deprecated
+    default T handle(@NotNull Runnable runnable) {
+        return handle(task -> runnable.run());
+    }
 
     ExecutedTask<T> getHandle();
 

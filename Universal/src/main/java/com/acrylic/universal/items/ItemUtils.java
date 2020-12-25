@@ -13,7 +13,17 @@ import java.util.regex.Pattern;
 
 public class ItemUtils {
 
+    public static ItemTypeAnalyzer ITEM_TYPE_ANALYZER = new VanillaItemTypeAnalyzer();
+
     private static final Pattern MATERIAL_SPACING = Pattern.compile("_");
+
+    public static ItemTypeAnalyzer getItemTypeAnalyzer() {
+        return ITEM_TYPE_ANALYZER;
+    }
+
+    public static void setItemTypeAnalyzer(@NotNull ItemTypeAnalyzer itemTypeAnalyzer) {
+        ITEM_TYPE_ANALYZER = itemTypeAnalyzer;
+    }
 
     @NotNull
     public static String getNameWithAmount(@Nullable ItemStack item) {

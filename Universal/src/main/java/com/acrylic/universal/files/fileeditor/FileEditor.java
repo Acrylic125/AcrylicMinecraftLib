@@ -1,6 +1,5 @@
 package com.acrylic.universal.files.fileeditor;
 
-import files.editor.Configurable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

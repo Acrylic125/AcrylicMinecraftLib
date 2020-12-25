@@ -247,4 +247,10 @@ public class DefaultFileEditor implements FileEditor {
                 ", parent=" + parent +
                 '}';
     }
+
+    @Override
+    public boolean getBoolean(@NotNull String s) {
+        Object o = getObject(s);
+        return o instanceof Boolean && (boolean) o;
+    }
 }

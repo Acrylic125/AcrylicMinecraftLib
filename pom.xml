@@ -111,7 +111,7 @@
         <dependency>
             <groupId>com.github.Acrylic125</groupId>
             <artifactId>AcrylicLib</artifactId>
-            <version>v1.2a</version>
+            <version>v1.2b</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -2,6 +2,7 @@ package com.acrylic.universal.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -28,7 +29,7 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     }
 
     @Override
-    public AbstractEventBuilder<T> handle(Consumer<T> eventHandler) {
+    public AbstractEventBuilder<T> handle(@NotNull Consumer<T> eventHandler) {
         this.eventHandler = eventHandler;
         return this;
     }
@@ -40,7 +41,7 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     }
 
     @Override
-    public AbstractEventBuilder<T> priority(EventPriority eventPriority) {
+    public AbstractEventBuilder<T> priority(@NotNull EventPriority eventPriority) {
         this.priority = eventPriority;
         return this;
     }
@@ -52,7 +53,7 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     }
 
     @Override
-    public AbstractEventBuilder<T> copy(AbstractEventBuilder<T> eventBuilder) {
+    public AbstractEventBuilder<T> copy(@NotNull AbstractEventBuilder<T> eventBuilder) {
         this.filter = eventBuilder.getFilter();
         this.priority = eventBuilder.getPriority();
         this.shouldIgnoreCancel = eventBuilder.shouldIgnoreCancel();

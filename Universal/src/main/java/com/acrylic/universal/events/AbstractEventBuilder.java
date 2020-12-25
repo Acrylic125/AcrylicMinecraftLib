@@ -6,6 +6,8 @@ import com.acrylic.universal.reflection.ReflectionUtils;
 import org.bukkit.event.*;
 import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spigotmc.CustomTimingsHandler;
 
 import java.util.function.Consumer;
@@ -13,15 +15,23 @@ import java.util.function.Predicate;
 
 public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, PluginRegister, Cloneable {
 
-    AbstractEventBuilder<T> handle(Consumer<T> eventHandler);
+    default void handleThenRegister(@NotNull Consumer<T> eventHandler) {
+        handle(eventHandler).register();
+    }
 
-    AbstractEventBuilder<T> filter(Predicate<T> filter);
+    default void handleThenRegister(@NotNull Consumer<T> eventHandler, @NotNull JavaPlugin plugin) {
+        handle(eventHandler).register(plugin);
+    }
 
-    AbstractEventBuilder<T> priority(EventPriority eventPriority);
+    AbstractEventBuilder<T> handle(@NotNull Consumer<T> eventHandler);
+
+    AbstractEventBuilder<T> filter(@Nullable Predicate<T> filter);
+
+    AbstractEventBuilder<T> priority(@NotNull EventPriority eventPriority);
 
     AbstractEventBuilder<T> ignoreCancel(boolean ignoreCancel);
 
-    AbstractEventBuilder<T> copy(AbstractEventBuilder<T> eventBuilder);
+    AbstractEventBuilder<T> copy(@NotNull AbstractEventBuilder<T> eventBuilder);
 
     void setRegisteredBefore(boolean b);
 
@@ -39,7 +49,7 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, 
 
     @Override
     @SuppressWarnings("unchecked")
-    default void register(JavaPlugin plugin) {
+    default void register(@NotNull JavaPlugin plugin) {
         final CustomTimingsHandler timings = new CustomTimingsHandler("Plugin: " + plugin.getDescription().getFullName() + " Event: " + getClass().getName() + "::" + getEventClass().getName() + "(" + getEventClass().getSimpleName() + ")");
         if (hasRegisteredBefore())
             unregister();

@@ -1,7 +1,7 @@
 version: 1.0
-example-id: "ACC5dDkKELx$$f5JEnakLRVKFJVdcK3!1KSedjE$$1SK1AK0@ga1FKfMFSW1erkEEKq30!KDEKFIRIRI$I*FJI$#juufjRJUJR#J*Fju3juJRJF$R"
-creator:
-  name: "Acrylic"
-  isCreator: true
-  wealth: 69420.21
+armor-equip-event:
+  hot-swap: true #This is highly recommended.
+  trigger-on-leave: true
+  trigger-on-join: true
+
 

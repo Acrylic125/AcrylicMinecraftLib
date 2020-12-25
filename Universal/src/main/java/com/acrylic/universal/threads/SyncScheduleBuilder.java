@@ -1,6 +1,5 @@
 package com.acrylic.universal.threads;
 
-import com.acrylic.time.Time;
 import org.bukkit.Bukkit;
 
 public class SyncScheduleBuilder extends AbstractScheduleBuilder<SyncScheduleBuilder> {
