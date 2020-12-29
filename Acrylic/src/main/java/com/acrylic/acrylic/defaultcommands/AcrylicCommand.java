@@ -21,6 +21,7 @@ import com.acrylic.universal.shapes.lines.QuadraticYLine;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universal.utils.BlockIterator;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -131,7 +132,6 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    ItemUtils.giveItem(sender, ItemBuilder.of(Material.DIAMOND_BLOCK).build(), true, 5_000);
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

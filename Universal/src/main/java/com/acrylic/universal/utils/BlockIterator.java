@@ -1,5 +1,6 @@
 package com.acrylic.universal.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -79,7 +80,7 @@ public final class BlockIterator {
             for (int y = -this.y; y <= this.y2; y++) {
                 cursor.setY(bY + y);
                 for (int z = -this.z; z <= this.z2; z++) {
-                    cursor.setY(bZ + z);
+                    cursor.setZ(bZ + z);
                     action.accept(cursor);
                 }
             }
