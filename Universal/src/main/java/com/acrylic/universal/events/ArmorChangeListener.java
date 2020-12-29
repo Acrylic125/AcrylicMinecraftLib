@@ -26,15 +26,11 @@ public class ArmorChangeListener {
     private boolean HANDLE_ON_JOIN = true;
 
     public ArmorChangeListener(@NotNull Configuration configuration) {
-        try {
-            FileEditor fileEditor = configuration.getFileEditor().getFileEditor("armor-equip-event");
+        configuration.getFileEditor().getFileEditor("armor-equip-event").safeFileAccess(fileEditor -> {
             HOT_SWAP_ENABLED = fileEditor.getBoolean("hot-swap");
             HANDLE_ON_JOIN = fileEditor.getBoolean("trigger-on-join");
             HANDLE_ON_QUIT = fileEditor.getBoolean("trigger-on-leave");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("Failed to load from config.");
-        }
+        });
         listenInventoryClickEvent();
         listenRightClickEvent();
         listenDragEvent();

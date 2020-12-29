@@ -1,6 +1,6 @@
 package com.acrylic.universal.files.parsers.variables;
 
-import com.acrylic.math.ProbabilityKt;
+import math.ProbabilityKt;
 import org.jetbrains.annotations.NotNull;
 
 public class RandomWholeNumberValue extends WholeNumberValue implements RandomNumberValue {

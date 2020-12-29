@@ -20,6 +20,8 @@ public interface Paginated<T> {
 
     Collection<T> getCollection();
 
+    void setCollection(@NotNull Collection<T> collection);
+
     default ArrayList<T> getPageList(int page) {
         ArrayList<T> list = new ArrayList<>();
         iterate(page, list::add);

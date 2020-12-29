@@ -4,16 +4,20 @@ import com.acrylic.universal.Universal;
 import com.acrylic.acrylic.defaultcommands.AcrylicCommand;
 import com.acrylic.universal.events.ArmorChangeListener;
 import com.acrylic.universal.files.bukkit.Configuration;
+import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.items.ItemUtils;
+import com.acrylic.universal.items.itemdropproection.ItemDropChecker;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.items.VanillaItemTypeAnalyzer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.function.Consumer;
 
 public final class Acrylic extends JavaPlugin {
 
@@ -32,6 +36,13 @@ public final class Acrylic extends JavaPlugin {
         }
         System.out.println("Loading Armor Change Listener.");
         new ArmorChangeListener(configuration);
+        System.out.println("Checking Item Drop Protection.");
+        configuration.getFileEditor().getFileEditor("item-drop-protection").safeFileAccess(fileEditor -> {
+            if (fileEditor.getBoolean("use-default-implementation")) {
+                Universal.setItemDropChecker(new ItemDropChecker());
+                System.out.println("Using default item drop checker implementation.");
+            }
+        });
         System.out.println(ChatUtils.get(
                 "\n" +
                         "&3AcrylicMinecraftLib has &a&lStarted&r&3!\n" +
@@ -47,4 +58,5 @@ public final class Acrylic extends JavaPlugin {
                         "&7Developed by &bAcrylic\n" +
                         ""));
     }
+
 }

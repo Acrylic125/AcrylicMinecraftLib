@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public abstract class AbstractGUISubCollectionTemplate extends AbstractGUITemplate {
 
-    private final ArrayList<ItemStack> subCollection = new ArrayList<>();
+    private Collection<ItemStack> subCollection = new ArrayList<>();
     private int initialRow;
     private int totalItemsInMenu;
     private int offsetLeft = 0;
@@ -81,7 +81,11 @@ public abstract class AbstractGUISubCollectionTemplate extends AbstractGUITempla
         return totalItemsInMenu;
     }
 
-    public ArrayList<ItemStack> getSubCollection() {
+    public void setSubCollection(@NotNull Collection<ItemStack> collection) {
+        this.subCollection = collection;
+    }
+
+    public Collection<ItemStack> getSubCollection() {
         return subCollection;
     }
 

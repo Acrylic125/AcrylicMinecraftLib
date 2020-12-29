@@ -1,5 +1,6 @@
 package com.acrylic.universal;
 
+import com.acrylic.universal.items.itemdropproection.ItemDropChecker;
 import com.acrylic.universal.regions.ChunkedRegionMap;
 import com.acrylic.universal.regions.RegionMap;
 import com.acrylic.universal.regions.SimpleRegionMap;
@@ -10,6 +11,7 @@ import com.acrylic.universal.versionstore.AbstractVersionStore;
 import com.acrylic.universal.versionstore.VersionStore;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Universal {
 
@@ -17,6 +19,7 @@ public class Universal {
     private static AbstractMessageBuilder messageBuilder = new MessageBuilder();
     private static AbstractVersionStore versionStore = new VersionStore();
     private static RegionMap<Region> regionMap = new ChunkedRegionMap<>();
+    private static ItemDropChecker itemDropChecker;
 
     public static void setPlugin(@NotNull JavaPlugin plugin) {
         Universal.plugin = plugin;
@@ -58,5 +61,17 @@ public class Universal {
 
     public static RegionMap<Region> getRegionMap() {
         return regionMap;
+    }
+
+    public static ItemDropChecker getItemDropChecker() throws IllegalStateException {
+        if (itemDropChecker == null)
+            throw new IllegalStateException("The item drop checker is not defined in the Universal class!");
+        return itemDropChecker;
+    }
+
+    public static void setItemDropChecker(@NotNull ItemDropChecker itemDropChecker) {
+        if (Universal.itemDropChecker != null)
+            Universal.itemDropChecker.unregister();
+        Universal.itemDropChecker = itemDropChecker;
     }
 }

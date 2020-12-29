@@ -70,8 +70,4 @@ public class Configuration extends YMLFile implements BukkitConfiguration {
         }
     }
 
-
-
-
-
 }

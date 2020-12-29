@@ -9,6 +9,10 @@ public interface Timed {
 
     void setLastTimed(long time);
 
+    default void clockTime(long addTime) {
+        setLastTimed(System.currentTimeMillis() + addTime);
+    }
+
     default void clockTime() {
         setLastTimed(System.currentTimeMillis());
     }

@@ -3,5 +3,7 @@ armor-equip-event:
   hot-swap: true #This is highly recommended.
   trigger-on-leave: true
   trigger-on-join: true
+item-drop-protection:
+  use-default-implementation: true
 
 

@@ -1,14 +1,22 @@
 package com.acrylic.universal.items;
 
+import com.acrylic.universal.items.itemdropproection.ItemDropProtected;
+import com.acrylic.universal.items.itemdropproection.PlayerItemDropProtected;
 import com.acrylic.universal.text.ChatUtils;
 import org.apache.commons.lang.WordUtils;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class ItemUtils {
@@ -60,6 +68,98 @@ public class ItemUtils {
 
     public static boolean isNotAir(@Nullable ItemStack item) {
         return !isAir(item);
+    }
+
+    @NotNull
+    public static ItemStack[] getInventory(@NotNull Player player) {
+        return player.getInventory().getContents();
+    }
+
+    public static int getAmount(@NotNull Player player, @Nullable ItemStack item) {
+        if (isAir(item))
+            return 0;
+        int total = 0;
+        for (ItemStack inventoryItem : getInventory(player)) {
+            if (!isAir(inventoryItem) && inventoryItem.isSimilar(item))
+                total += inventoryItem.getAmount();
+        }
+        return total;
+    }
+
+    public static void giveItem(@NotNull Player player, @NotNull ItemStack item) {
+        giveItem(player, item, null);
+    }
+
+    public static void giveItem(@NotNull Player player, @NotNull ItemStack item, @Nullable ItemGiveAction then) {
+        player.getInventory().addItem(item);
+        if (then != null)
+            then.accept(item, player, hasEnoughSpace(player,item), false, -1);
+    }
+
+    public static void giveItem(@NotNull Player player, @NotNull ItemStack... item) {
+        player.getInventory().addItem(item);
+    }
+
+    public static boolean giveItem(@NotNull Player player, @NotNull ItemStack item, boolean dropProtection) {
+        return giveItem(player, item, dropProtection, -1);
+    }
+
+
+    public static boolean giveItem(@NotNull Player player, @NotNull ItemStack item, boolean dropProtection, long time) {
+        return giveItem(player, item, dropProtection, time, null);
+    }
+
+    /**
+     * @param dropProtection If the item dropped should have drop protection support.
+     * @return See above.
+     */
+    public static boolean giveItem(@NotNull Player player, @NotNull ItemStack item, boolean dropProtection, long time, @Nullable ItemGiveAction then) {
+        boolean hasEnoughSpace = hasEnoughSpace(player,item);
+        if (hasEnoughSpace)
+            player.getInventory().addItem(item);
+        else
+            dropItem(player, item, dropProtection, time);
+        if (then != null)
+            then.accept(item, player, hasEnoughSpace, dropProtection, time);
+        return hasEnoughSpace;
+    }
+
+    @NotNull
+    public static Item dropItem(@NotNull Location location, @NotNull ItemStack item) {
+        return Objects.requireNonNull(location.getWorld()).dropItem(location, item);
+    }
+
+    public static void dropItem(@NotNull Player player, @NotNull ItemStack item, boolean dropProtection) {
+        dropItem(player.getLocation(), item, dropProtection, -1, player);
+    }
+
+    public static void dropItem(@NotNull Player player, @NotNull ItemStack item, boolean dropProtection, long time) {
+        dropItem(player.getLocation(), item, dropProtection, time, player);
+    }
+
+    public static void dropItem(@NotNull Location location, @NotNull ItemStack item, boolean dropProtection, long time, @NotNull Player... player) {
+        Item dropItem = dropItem(location, item);
+        if (dropProtection) {
+            PlayerItemDropProtected dropProtected = (time > 0) ? ItemDropProtected.getDropProtectedItem(dropItem, time) : ItemDropProtected.getDropProtectedItem(dropItem);
+            dropProtected.addEntity(player);
+        }
+    }
+
+    public static boolean hasEnoughSpace(@NotNull Player player, @Nullable ItemStack item) {
+        return hasEnoughSpace(player.getInventory(), item);
+    }
+
+    public static boolean hasEnoughSpace(@NotNull Inventory inventory, @Nullable ItemStack item) {
+        if (ItemUtils.isAir(item))
+            return true;
+        int quantityToCompare = 0;
+        for (ItemStack inventoryItem : inventory) {
+            if (ItemUtils.isAir(inventoryItem))
+                quantityToCompare += item.getMaxStackSize();
+            else if (inventoryItem.isSimilar(item))
+                quantityToCompare += (item.getMaxStackSize() - inventoryItem.getAmount());
+        }
+        return item.getAmount() <= quantityToCompare;
     }
 
 }
