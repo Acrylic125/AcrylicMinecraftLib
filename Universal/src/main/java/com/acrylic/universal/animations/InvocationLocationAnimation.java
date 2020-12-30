@@ -4,7 +4,6 @@ import com.acrylic.universal.Universal;
 import com.acrylic.universal.interfaces.Index;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.threads.TaskType;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +29,14 @@ public interface InvocationLocationAnimation extends Index {
         Scheduler.sync()
                 .runRepeatingIndexedTask(delayTicks, periodTicks, count)
                 .plugin(plugin)
-                .handleThenBuild(task -> action.accept(((TaskType.IndexedRepeatingTask) task.getTaskType()).getIndex(), getLocation(location)));
+                .handleThenBuild(task -> {
+                    TaskType.IndexedRepeatingTask taskType = ((TaskType.IndexedRepeatingTask) task.getTaskType());
+                    taskType.increaseIndex();
+                    if (taskType.hasReachedIndex())
+                        task.cancel();
+                    else
+                        action.accept(((TaskType.IndexedRepeatingTask) task.getTaskType()).getIndex(), getLocation(location));
+                });
     }
 
     default void invokeWithScheduler(int delayTicks, int periodTicks, int count, @NotNull final Location location, @NotNull final BiConsumer<Integer, Location> action) {
