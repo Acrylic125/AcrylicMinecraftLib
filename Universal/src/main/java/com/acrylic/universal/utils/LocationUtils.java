@@ -38,7 +38,7 @@ public class LocationUtils {
     }
 
     public static Location convertToFixedBlockLocation(@NotNull Location location) {
-        return location.add(-0.5, 0, -0.5);
+        return location.add(0.5f, 0.5f, 0.5f);
     }
 
 }

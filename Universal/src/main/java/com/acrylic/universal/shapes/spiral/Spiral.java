@@ -1,11 +1,10 @@
 package com.acrylic.universal.shapes.spiral;
 
 import com.acrylic.universal.interfaces.ToAndFrom;
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter @Getter
-public class Spiral extends AbstractSpiral implements ToAndFrom {
+public class Spiral
+        extends AbstractSpiral
+        implements ToAndFrom {
 
     public Spiral(float radius, int frequency) {
         super(radius, frequency);
@@ -17,12 +16,12 @@ public class Spiral extends AbstractSpiral implements ToAndFrom {
 
     @Override
     public float getSpiralFrequency() {
-        return super.getRadius() + (getFrequency() * getIndex());
+        return getInitialFrequency() + (getFrequencyIncrement() * getIndex());
     }
 
     @Override
     public float getSpiralRadius() {
-        return super.getRadius() + (getRadiusIncrement() * getIndex());
+        return getInitialRadius() + (getRadiusIncrement() * getIndex());
     }
 
 }

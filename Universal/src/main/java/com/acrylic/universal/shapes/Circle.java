@@ -1,6 +1,5 @@
 package com.acrylic.universal.shapes;
 
-import lombok.Getter;
 import org.bukkit.util.Vector;
 
 public class Circle extends AbstractVectorShape {
@@ -49,6 +48,10 @@ public class Circle extends AbstractVectorShape {
 
     public float getRadius() {
         return radius;
+    }
+
+    public float getInitialRadius() {
+        return this.radius;
     }
 
     public float getAnglesBetween() {

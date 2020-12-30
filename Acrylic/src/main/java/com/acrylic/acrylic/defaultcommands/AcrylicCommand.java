@@ -19,9 +19,11 @@ import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.lines.QuadraticYLine;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
+import com.acrylic.universal.shapes.spiral.Spiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.utils.BlockIterator;
+import com.acrylic.universal.utils.LocationConverter;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -132,6 +134,14 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
+                    Spiral spiral = new Spiral(0f, 20);
+                    spiral.setOrientation(sender);
+                    spiral.setRadiusIncrement(0.1f);
+                    spiral.setShouldUseTimeLine(true);
+                    spiral.set(sender.getLocation(), sender.getLocation().add(sender.getLocation().getDirection().multiply(10)));
+                    spiral.invokeWithScheduler(1, 1, 100, sender.getLocation(), (i, location) -> {
+                        sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
+                    });
                     sender.sendMessage(ChatUtils.get("&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!"));
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

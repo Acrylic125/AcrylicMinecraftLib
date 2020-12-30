@@ -12,6 +12,10 @@ public abstract class AbstractShape {
         return frequency;
     }
 
+    public float getInitialFrequency() {
+        return this.frequency;
+    }
+
     public void setFrequency(float frequency) {
         this.frequency = frequency;
     }

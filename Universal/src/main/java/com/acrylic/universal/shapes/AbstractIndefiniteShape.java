@@ -1,6 +1,7 @@
 package com.acrylic.universal.shapes;
 
 import com.acrylic.universal.animations.InvocationLocationAnimation;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,7 @@ public abstract class AbstractIndefiniteShape
     }
 
     public Location getLocation(@NotNull final Location location, int index) {
-        return transformPoint(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()), index);
+       return transformPoint(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()), index);
     }
 
     @Override

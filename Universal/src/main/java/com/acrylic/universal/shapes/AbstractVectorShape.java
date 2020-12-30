@@ -2,6 +2,7 @@ package com.acrylic.universal.shapes;
 
 import com.acrylic.universal.math.Orientation3D;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;

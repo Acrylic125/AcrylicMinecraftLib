@@ -24,11 +24,11 @@ public class MultiSpiral extends AbstractSpiral {
     }
 
     public int getAmountOfSpirals() {
-        return (int) getBaseFrequency();
+        return (int) getInitialFrequency();
     }
 
     public int getSpiralIndex() {
-        return (int) Math.floor((super.getIndex()) / getBaseFrequency());
+        return (int) Math.floor((super.getIndex()) / getInitialFrequency());
     }
 
     @Override
@@ -38,12 +38,12 @@ public class MultiSpiral extends AbstractSpiral {
 
     @Override
     public float getSpiralFrequency() {
-        return getBaseFrequency() + (getFrequencyIncrement() * getSpiralIndex());
+        return getInitialFrequency() + (getFrequencyIncrement() * getSpiralIndex());
     }
 
     @Override
     public float getSpiralRadius() {
-        return getBaseRadius() + (getRadiusIncrement() * getSpiralIndex());
+        return getInitialRadius() + (getRadiusIncrement() * getSpiralIndex());
     }
 
 }

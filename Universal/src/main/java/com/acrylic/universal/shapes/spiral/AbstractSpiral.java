@@ -3,11 +3,16 @@ package com.acrylic.universal.shapes.spiral;
 import com.acrylic.universal.interfaces.ToAndFrom;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
+import com.acrylic.universal.utils.LocationConverter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractSpiral extends Circle implements ToAndFrom {
+public abstract class AbstractSpiral
+        extends Circle
+        implements ToAndFrom {
 
     private float frequencyIncrement = 0;
     private float radiusIncrement = 0;
@@ -49,7 +54,7 @@ public abstract class AbstractSpiral extends Circle implements ToAndFrom {
         return timeLine;
     }
 
-    public void setTimeLine(Line timeLine) {
+    public void setTimeLine(@Nullable Line timeLine) {
         this.timeLine = timeLine;
     }
 
@@ -58,14 +63,6 @@ public abstract class AbstractSpiral extends Circle implements ToAndFrom {
         if (usingTimeLine())
             location = timeLine.getLocation(location);
         return super.getLocation(location);
-    }
-
-    public float getBaseRadius() {
-        return super.getRadius();
-    }
-
-    public float getBaseFrequency() {
-        return super.getFrequency();
     }
 
     @Override
