@@ -1,5 +1,6 @@
 package com.acrylic.universal.reflection;
 
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -7,6 +8,16 @@ import java.lang.reflect.Field;
 import java.util.function.Consumer;
 
 public class ReflectionUtils {
+
+    @NotNull
+    public static Object getFixedWrapperObjects(@NotNull Object value, @NotNull Class<?> aClass, @NotNull Class<?> bClass) {
+        if (aClass.equals(float.class) && bClass.equals(Double.class)) {
+            return ((Double) value).floatValue();
+        } else if (aClass.equals(int.class) && bClass.equals(Long.class)) {
+            return ((Long) value).intValue();
+        }
+        return value;
+    }
 
     public static void iterateSuperClasses(@NotNull Class<?> clazz, Consumer<Class<?>> actionOfEachClass) {
         while (clazz != null) {
@@ -22,6 +33,10 @@ public class ReflectionUtils {
     public static void setField(@NotNull Field field, @Nullable Object obj, @Nullable Object value) {
         try {
             field.setAccessible(true);
+            Class<?> fieldType = field.getType();
+            Class<?> valueType = (value == null) ? null : value.getClass();
+            if (valueType != null)
+                value = getFixedWrapperObjects(value, fieldType, valueType);
             field.set(obj, value);
         } catch (IllegalAccessException ex) {
             ex.printStackTrace();
