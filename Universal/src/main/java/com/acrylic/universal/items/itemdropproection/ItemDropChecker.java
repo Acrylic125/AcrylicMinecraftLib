@@ -35,6 +35,7 @@ public class ItemDropChecker {
     private void initialize() {
         syncScheduleBuilderScheduler = Scheduler.sync()
                 .runRepeatingTask(1, 1)
+                .setName("ItemDropChecker : Running Scheduler")
                 .handle(task -> itemDropProtectionMap.check());
         syncScheduleBuilderScheduler.build();
     }
@@ -43,6 +44,7 @@ public class ItemDropChecker {
         entityPickupItemEventBuilder = (Universal.getVersionStore().isLegacyVersion()) ?
                 EventBuilder.listen(PlayerPickupItemEvent.class)
                         .priority(EventPriority.HIGHEST)
+                        .setEventName("ItemDropChecker : PickUp Listener")
                         .handle(event -> {
                             ItemDropProtected itemDropProtected = itemDropProtectionMap.getItem(event.getItem());
                             if (itemDropProtected != null && !itemDropProtected.isAllowedToPickup(event.getPlayer()))
@@ -51,6 +53,7 @@ public class ItemDropChecker {
                 :
                 EventBuilder.listen(EntityPickupItemEvent.class)
                         .priority(EventPriority.HIGHEST)
+                        .setEventName("ItemDropChecker : PickUp Listener")
                         .handle(event -> {
                             ItemDropProtected itemDropProtected = itemDropProtectionMap.getItem(event.getItem());
                             if (itemDropProtected != null && !itemDropProtected.isAllowedToPickup(event.getEntity()))
@@ -62,6 +65,7 @@ public class ItemDropChecker {
     private void listenItemMerge() {
         mergeEventBuilder = EventBuilder.listen(ItemMergeEvent.class)
                 .priority(EventPriority.HIGHEST)
+                .setEventName("ItemDropChecker : Item Merge Listener")
                 .handle(event -> {
                     ItemDropProtected itemDropProtected = itemDropProtectionMap.getItem(event.getEntity()),
                             targetItemDropProtected = itemDropProtectionMap.getItem(event.getTarget());

@@ -1,5 +1,6 @@
 package com.acrylic.universal;
 
+import co.aikar.timings.lib.TimingManager;
 import com.acrylic.universal.items.itemdropproection.ItemDropChecker;
 import com.acrylic.universal.regions.ChunkedRegionMap;
 import com.acrylic.universal.regions.RegionMap;
@@ -20,6 +21,7 @@ public class Universal {
     private static AbstractVersionStore versionStore = new VersionStore();
     private static RegionMap<Region> regionMap = new ChunkedRegionMap<>();
     private static ItemDropChecker itemDropChecker;
+    private static TimingManager timingManager;
 
     public static void setPlugin(@NotNull JavaPlugin plugin) {
         Universal.plugin = plugin;
@@ -74,4 +76,13 @@ public class Universal {
             Universal.itemDropChecker.unregister();
         Universal.itemDropChecker = itemDropChecker;
     }
+
+    public static void setTimingManager(@NotNull TimingManager timingManager) {
+        Universal.timingManager = timingManager;
+    }
+
+    public static TimingManager getTimingManager() {
+        return timingManager;
+    }
+
 }

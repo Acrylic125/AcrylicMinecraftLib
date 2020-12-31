@@ -1,11 +1,14 @@
 package com.acrylic.acrylic;
 
+import co.aikar.timings.lib.TimingManager;
+import com.acrylic.acrylic.test.Animal;
 import com.acrylic.acrylic.test.Dog;
 import com.acrylic.universal.Universal;
 import com.acrylic.acrylic.defaultcommands.AcrylicCommand;
 import com.acrylic.universal.events.ArmorChangeListener;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.files.configloader.ConfigLoader;
+import com.acrylic.universal.files.configloader.ObjectPathPair;
 import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.items.itemdropproection.ItemDropChecker;
@@ -27,6 +30,8 @@ public final class Acrylic extends JavaPlugin {
     public void onEnable() {
         Universal.setPlugin(this);
         AcrylicCommand.registerMainCommand();
+        System.out.println("Setting up Aikar's Timings.");
+        Universal.setTimingManager(TimingManager.of(this));
         System.out.println("Loading Config...");
         Configuration configuration = new Configuration("acrylic.yml", this);
         configuration.loadFromResources(this);
@@ -38,7 +43,7 @@ public final class Acrylic extends JavaPlugin {
         }
         System.out.println("Loading Armor Change Listener.");
         ArmorChangeListener armorChangeListener = new ArmorChangeListener();
-        ConfigLoader.getObjectLoader(ArmorChangeListener.class, armorChangeListener).loadThenSave();
+        ConfigLoader.getObjectLoader(ArmorChangeListener.class).loadObjectThenSave(armorChangeListener);
         System.out.println("Checking Item Drop Protection.");
         configuration.getFileEditor().getFileEditor("item-drop-protection").safeFileAccess(fileEditor -> {
             if (fileEditor.getBoolean("use-default-implementation")) {

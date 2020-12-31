@@ -1,5 +1,8 @@
 package com.acrylic.universal.events;
 
+import co.aikar.timings.lib.MCTiming;
+import co.aikar.timings.lib.TimingManager;
+import com.acrylic.universal.Universal;
 import com.acrylic.universal.interfaces.PluginRegister;
 import com.acrylic.universal.interfaces.Timer;
 import com.acrylic.universal.reflection.ReflectionUtils;
@@ -10,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spigotmc.CustomTimingsHandler;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -47,17 +51,47 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, 
 
     Class<T> getEventClass();
 
+    AbstractEventBuilder<T> plugin(@NotNull JavaPlugin plugin);
+
+    JavaPlugin getPlugin();
+
+    String getEventName();
+
+    AbstractEventBuilder<T> setEventName(@NotNull String name);
+
+    default void register() {
+        JavaPlugin plugin = getPlugin();
+        String name = getEventName();
+        if (name == null) {
+            name = getPlugin().getName() + "-" + getEventClass().getName();
+            setEventName(name);
+        }
+        register(plugin, name);
+    }
+
+    @Deprecated
     @Override
-    @SuppressWarnings("unchecked")
     default void register(@NotNull JavaPlugin plugin) {
-        final CustomTimingsHandler timings = new CustomTimingsHandler("Plugin: " + plugin.getDescription().getFullName() + " Event: " + getClass().getName() + "::" + getEventClass().getName() + "(" + getEventClass().getSimpleName() + ")");
+        String name = getEventName();
+        if (name == null) {
+            name = getPlugin().getName() + "-" + getEventClass().getName();
+            setEventName(name);
+        }
+        register(plugin, name);
+    }
+
+    @Deprecated
+    @SuppressWarnings("unchecked")
+    default void register(@NotNull JavaPlugin plugin, @NotNull String name) {
+        setEventName(name);
         if (hasRegisteredBefore())
             unregister();
         EventExecutor executor = (listener, event) -> {
             try {
                 boolean isAsync = event.isAsynchronous();
+                MCTiming timing = getTimings();
                 if (!isAsync)
-                    timings.startTiming();
+                    timing.startTiming();
                 Consumer<T> action = getHandle();
                 if (action != null && event.getClass().equals(getEventClass())) {
                     T e = (T) event;
@@ -66,7 +100,7 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, 
                         action.accept(e);
                 }
                 if (!isAsync)
-                    timings.stopTiming();
+                    timing.stopTiming();
             } catch (Throwable t) {
                 throw new EventException(t);
             }
@@ -77,9 +111,13 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, 
 
     default void unregister() {
         HandlerList handlerList = ReflectionUtils.getField(getEventClass(), "handlers", HandlerList.class);
-        if (handlerList != null) {
+        if (handlerList != null)
             handlerList.unregister(this);
-        }
+    }
+
+    @NotNull
+    default MCTiming getTimings() {
+        return Universal.getTimingManager().of(getEventName());
     }
 
 }

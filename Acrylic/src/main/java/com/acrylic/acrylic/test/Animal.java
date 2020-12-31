@@ -4,6 +4,9 @@ import com.acrylic.universal.files.configloader.ConfigValue;
 
 public abstract class Animal {
 
+    @ConfigValue(path = "main-dog-name")
+    public static String MAIN_DOG_NAME = "GayBoy";
+
     @ConfigValue(path = "name")
     private String name;
     @ConfigValue(path = "age")

@@ -104,6 +104,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io/</url>
         </repository>
+        <repository>
+            <id>aikar</id>
+            <url>http://repo.aikar.co/nexus/content/groups/aikar/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -160,6 +164,11 @@
             <artifactId>kotlin-test</artifactId>
             <version>${kotlin.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>minecraft-timings</artifactId>
+            <version>1.0.4</version>
         </dependency>
     </dependencies>
 </project>

@@ -11,6 +11,23 @@ public abstract class AbstractScheduleBuilder<T extends Scheduler<T>>
     private JavaPlugin plugin = Universal.getPlugin();
     private ExecutedTask<T> handle;
     private TaskType taskType = TaskType.task();
+    private String name;
+
+    @NotNull
+    protected String generateName() {
+        return plugin.getName() + "-" + taskType.getClass().getName();
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public T setName(@NotNull String name) {
+        this.name = name;
+        return (T) this;
+    }
 
     @Override
     public T plugin(@NotNull JavaPlugin plugin) {

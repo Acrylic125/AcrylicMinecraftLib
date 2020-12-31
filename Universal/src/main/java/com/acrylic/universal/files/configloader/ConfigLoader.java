@@ -14,24 +14,22 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.function.BiConsumer;
 
-public class ConfigLoader {
+public class ConfigLoader<T> {
 
     private final AbstractFile file;
     private final FileEditor fileEditor;
-    private final Object object;
-    private final Class<?> loadToClass;
-    private boolean staticLoad = false;
+    private final Class<T> loadToClass;
     private boolean loadWithParent = false;
 
-    public static <T> ConfigLoader getObjectLoader(@NotNull Class<T> configurableClass, @NotNull T o) {
-        return new ConfigLoader(configurableClass, o);
+    public static <T> ConfigLoader<T> getObjectLoader(@NotNull Class<T> configurableClass) {
+        return new ConfigLoader<>(configurableClass);
     }
 
-    public static ConfigLoader getStaticLoader(@NotNull Class<?> configurableClass) {
-        return new ConfigLoader(configurableClass, null);
+    public static <T> ConfigLoader<T> getStaticLoader(@NotNull Class<T> configurableClass) {
+        return new ConfigLoader<>(configurableClass);
     }
 
-    public ConfigLoader(@NotNull Class<?> configurableClass, @Nullable Object object) {
+    public ConfigLoader(@NotNull Class<T> configurableClass) {
         Configurable configurable = configurableClass.getAnnotation(Configurable.class);
         if (configurable == null)
             throw new IllegalArgumentException("The class, " + configurableClass.getName() + " does not have the @Configurable annotation.");
@@ -55,74 +53,77 @@ public class ConfigLoader {
         }
         this.file = configuration;
         this.fileEditor = configuration.getFileEditor().getFileEditor(configurable.root());
-        this.object = object;
         this.loadToClass = configurableClass;
-        if (object == null)
-            staticLoad = true;
         this.loadWithParent = configurable.loadWithParentClass();
     }
 
-    public ConfigLoader(@NotNull AbstractFile file, @NotNull Object object) {
+    public ConfigLoader(@NotNull AbstractFile file, @NotNull Class<T> loadToClass) {
         this.file = file;
         this.fileEditor = file.getFileEditor();
-        this.object = object;
-        this.loadToClass = object.getClass();
-    }
-
-    public boolean isStaticLoad() {
-        return staticLoad;
-    }
-
-    public ConfigLoader setStaticLoad(boolean staticLoad) {
-        this.staticLoad = staticLoad;
-        return this;
-    }
-
-    public boolean isObjectLoad() {
-        return object != null;
+        this.loadToClass = loadToClass;
     }
 
     public boolean isLoadWithParent() {
         return loadWithParent;
     }
 
-    public ConfigLoader setLoadWithParent(boolean loadWithParent) {
+    public ConfigLoader<T> setLoadWithParent(boolean loadWithParent) {
         this.loadWithParent = loadWithParent;
         return this;
     }
 
-    public void loadThenSave() {
-        load();
+    @NotNull
+    public Class<T> getLoadToClass() {
+        return loadToClass;
+    }
+
+    @SafeVarargs
+    public final void loadObjectThenSave(@NotNull T... objects) {
+        for (T object : objects)
+            load(object, false);
         save();
     }
 
-    public void save() {
-        file.saveFile();
+    @SafeVarargs
+    public final void loadObjectPathPairThenSave(@NotNull ObjectPathPair<T>... objectPathPairs) {
+        for (ObjectPathPair<T> objectPair : objectPathPairs)
+            load(objectPair.getObj(), false, objectPair.getPath());
+        save();
     }
 
-    public void load() {
-        load(loadWithParent);
+    public void loadObjectThenSave(@NotNull T object) {
+        load(object, true);
+        save();
     }
 
-    public void load(boolean withParent) {
-        if (withParent)
-            ReflectionUtils.iterateSuperClasses(loadToClass, this::load);
+    public void staticLoadThenSave() {
+        load(null, true);
+        save();
+    }
+
+    public void load(@Nullable Object obj, boolean staticLoad, @NotNull String... subPath) {
+        if (loadWithParent)
+            ReflectionUtils.iterateSuperClasses(loadToClass, aClass -> load(aClass, obj, staticLoad, subPath));
         else
-            load(this.loadToClass);
+            load(this.loadToClass, obj, staticLoad, subPath);
     }
 
-    public void load(@NotNull Class<?> loadToClass) {
+    public void load(@NotNull Class<?> loadToClass, @Nullable Object obj, boolean staticLoad, @NotNull String... subPath) {
+        final FileEditor src = fileEditor.getFileEditor(subPath);
         iterateConfigValues(loadToClass, (field, configValue) -> {
             try {
-                FileEditor searcher = fileEditor;
+                FileEditor searcher = src;
                 int i = 0;
                 String[] path = configValue.path();
-                for (String root : configValue.path()) {
+                for (String root : path) {
                     if (i >= path.length - 1) {
-                        if (isStaticLoad() && Modifier.isStatic(field.getModifiers()))
-                            setValue(field, configValue, null, searcher, root);
-                        else if (isObjectLoad())
-                            setValue(field, configValue, object, searcher, root);
+                        if (Modifier.isStatic(field.getModifiers())) {
+                            if (staticLoad)
+                                setValue(field, configValue, null, searcher, root);
+                        } else {
+                            if (obj != null)
+                                setValue(field, configValue, obj, searcher, root);
+                        }
                     } else
                         searcher = fileEditor.getFileEditor(root);
                     i++;
@@ -133,6 +134,10 @@ public class ConfigLoader {
             }
         });
 
+    }
+
+    public void save() {
+        file.saveFile();
     }
 
     private void setValue(@NotNull Field field, @NotNull ConfigValue configValue, @Nullable Object object, @NotNull FileEditor searcher, @NotNull String root) {

@@ -22,6 +22,11 @@ public class SyncScheduleBuilder extends AbstractScheduleBuilder<SyncScheduleBui
 
     @Override
     public void build() {
+        String name = getName();
+        if (name == null) {
+            name = generateName();
+            setName(name);
+        }
         id = getTaskType().scheduleSync(this).getTaskId();
     }
 }

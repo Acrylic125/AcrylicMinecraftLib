@@ -23,6 +23,11 @@ public class AsyncScheduleBuilder extends AbstractScheduleBuilder<AsyncScheduleB
 
     @Override
     public void build() {
+        String name = getName();
+        if (name == null) {
+            name = generateName();
+            setName(name);
+        }
         future = getTaskType().scheduleASync(this);
     }
 }

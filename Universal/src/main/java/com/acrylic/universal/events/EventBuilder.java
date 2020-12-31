@@ -1,19 +1,24 @@
 package com.acrylic.universal.events;
 
+import com.acrylic.universal.Universal;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
+public class EventBuilder<T extends Event>
+        implements AbstractEventBuilder<T> {
 
     private final Class<T> clazz;
     private Consumer<T> eventHandler;
     private Predicate<T> filter;
     private EventPriority priority = EventPriority.NORMAL;
     private boolean shouldIgnoreCancel = false;
+    private String name;
+    private JavaPlugin plugin = Universal.getPlugin();
 
     private long lastTimed = 0;
     private boolean shouldClock = false;
@@ -94,6 +99,28 @@ public class EventBuilder<T extends Event> implements AbstractEventBuilder<T> {
     @Override
     public Class<T> getEventClass() {
         return clazz;
+    }
+
+    @Override
+    public AbstractEventBuilder<T> plugin(@NotNull JavaPlugin plugin) {
+        this.plugin = plugin;
+        return this;
+    }
+
+    @Override
+    public JavaPlugin getPlugin() {
+        return plugin;
+    }
+
+    @Override
+    public String getEventName() {
+        return name;
+    }
+
+    @Override
+    public AbstractEventBuilder<T> setEventName(@NotNull String name) {
+        this.name = name;
+        return this;
     }
 
     @Override

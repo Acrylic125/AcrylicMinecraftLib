@@ -36,11 +36,6 @@ public class ArmorChangeListener {
     private boolean HANDLE_ON_JOIN = true;
 
     public ArmorChangeListener() {
-        /**configuration.getFileEditor().getFileEditor("armor-equip-event").safeFileAccess(fileEditor -> {
-            HOT_SWAP_ENABLED = fileEditor.getBoolean("hot-swap");
-            HANDLE_ON_JOIN = fileEditor.getBoolean("trigger-on-join");
-            HANDLE_ON_QUIT = fileEditor.getBoolean("trigger-on-leave");
-        });**/
         listenInventoryClickEvent();
         listenRightClickEvent();
         listenDragEvent();
@@ -96,6 +91,7 @@ public class ArmorChangeListener {
     private void listenItemBreak() {
         EventBuilder.listen(PlayerItemBreakEvent.class)
                 .priority(EventPriority.HIGHEST)
+                .setEventName("ArmorChangeListener : Item Break Listener")
                 .handleThenRegister(event -> {
                     ItemStack oldItem = event.getBrokenItem();
                     ArmorType type = ArmorType.getArmorType(oldItem);
@@ -115,6 +111,7 @@ public class ArmorChangeListener {
         if (HANDLE_ON_JOIN) {
             EventBuilder.listen(PlayerJoinEvent.class)
                     .priority(EventPriority.HIGHEST)
+                    .setEventName("ArmorChangeListener : Player Join Listener")
                     .handleThenRegister(event -> {
                         LivingEntity entity = event.getPlayer();
                         iterateArmor(entity, getIAPUnEquip(ArmorChangeEvent.EquipType.JOIN));
@@ -124,6 +121,7 @@ public class ArmorChangeListener {
         if (HANDLE_ON_QUIT) {
             EventBuilder.listen(PlayerQuitEvent.class)
                     .priority(EventPriority.HIGHEST)
+                    .setEventName("ArmorChangeListener : Player Quit Listener")
                     .handleThenRegister(event -> {
                         LivingEntity entity = event.getPlayer();
                         iterateArmor(entity, getIAPUnEquip(ArmorChangeEvent.EquipType.QUIT));
@@ -134,12 +132,14 @@ public class ArmorChangeListener {
     private void listenDeath() {
         EventBuilder.listen(PlayerDeathEvent.class)
                 .priority(EventPriority.HIGHEST)
+                .setEventName("ArmorChangeListener : Player Death Listener")
                 .handleThenRegister(event -> {
                     LivingEntity entity = event.getEntity();
                     iterateArmor(entity, getIAPUnEquip(ArmorChangeEvent.EquipType.DEATH));
                 });
         EventBuilder.listen(PlayerRespawnEvent.class)
                 .priority(EventPriority.HIGHEST)
+                .setEventName("ArmorChangeListener : Player Respawn Listener")
                 .handleThenRegister(event -> {
                     LivingEntity entity = event.getPlayer();
                     iterateArmor(entity, getIAPEquip(ArmorChangeEvent.EquipType.DEATH));
@@ -149,6 +149,7 @@ public class ArmorChangeListener {
     private void listenDragEvent() {
         EventBuilder.listen(InventoryDragEvent.class)
                 .priority(EventPriority.HIGHEST)
+                .setEventName("ArmorChangeListener : Item Drag Listener")
                 .handleThenRegister(event -> {
                     ItemStack newItem = event.getOldCursor();
                     ArmorType type = ArmorType.getArmorType(newItem);
@@ -174,6 +175,7 @@ public class ArmorChangeListener {
     private void listenRightClickEvent() {
         EventBuilder.listen(PlayerInteractEvent.class)
                 .priority(EventPriority.HIGHEST)
+                .setEventName("ArmorChangeListener : Player Interact Listener")
                 .handleThenRegister(event -> {
                     Action action = event.getAction();
                     if (action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
@@ -184,6 +186,7 @@ public class ArmorChangeListener {
                 });
         EventBuilder.listen(PlayerInteractEntityEvent.class)
                 .priority(EventPriority.HIGHEST)
+                .setEventName("ArmorChangeListener : Player Interact Entity Listener")
                 .handleThenRegister(event -> {
                     ArmorChangeEvent armorChangeEvent = interact(event.getPlayer(), event.getPlayer().getItemInHand());
                     if (armorChangeEvent != null)
@@ -194,6 +197,7 @@ public class ArmorChangeListener {
     private void listenInventoryClickEvent() {
         EventBuilder.listen(InventoryClickEvent.class)
                 .priority(EventPriority.HIGHEST)
+                .setEventName("ArmorChangeListener : Inventory Click Listener")
                 .handleThenRegister(event -> {
                     InventoryAction action = event.getAction();
                     if (action.equals(InventoryAction.NOTHING))
@@ -306,6 +310,7 @@ public class ArmorChangeListener {
         if (!Universal.getVersionStore().isLegacyVersion()) {
             EventBuilder.listen(BlockDispenseArmorEvent.class)
                     .priority(EventPriority.HIGHEST)
+                    .setEventName("ArmorChangeListener : Armor Dispenser Listener")
                     .handleThenRegister(event -> {
                         ItemStack newItem = event.getItem();
                         ArmorType type = ArmorType.getArmorType(newItem);
