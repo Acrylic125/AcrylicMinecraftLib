@@ -2,11 +2,9 @@ package com.acrylic.universal.files;
 
 import com.acrylic.universal.files.fileeditor.DefaultFileEditor;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 
 public abstract class AbstractJacksonFile extends AbstractFile {

@@ -15,6 +15,14 @@ public interface FileEditor extends BukkitFileEditor {
     @NotNull
     FileEditor getFileEditor(String s);
 
+    @NotNull
+    default FileEditor getFileEditor(@NotNull String... path) {
+        FileEditor fileEditor = this;
+        for (String s : path)
+            fileEditor = fileEditor.getFileEditor(s);
+        return fileEditor;
+    }
+
     @Nullable
     FileEditor getParent();
 

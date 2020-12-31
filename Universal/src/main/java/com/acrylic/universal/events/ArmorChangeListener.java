@@ -1,8 +1,9 @@
 package com.acrylic.universal.events;
 
 import com.acrylic.universal.Universal;
+import com.acrylic.universal.files.configloader.ConfigValue;
+import com.acrylic.universal.files.configloader.Configurable;
 import com.acrylic.universal.files.bukkit.Configuration;
-import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.items.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
@@ -19,18 +20,27 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+@Configurable(
+        root = "armor-equip-event",
+        filePath = "acrylic.yml",
+        plugin = "Acrylic",
+        resourcePlugin = "Acrylic"
+)
 public class ArmorChangeListener {
 
+    @ConfigValue(path = "hot-swap")
     private boolean HOT_SWAP_ENABLED = true;
+    @ConfigValue(path = "trigger-on-join")
     private boolean HANDLE_ON_QUIT = true;
+    @ConfigValue(path = "trigger-on-leave")
     private boolean HANDLE_ON_JOIN = true;
 
-    public ArmorChangeListener(@NotNull Configuration configuration) {
-        configuration.getFileEditor().getFileEditor("armor-equip-event").safeFileAccess(fileEditor -> {
+    public ArmorChangeListener() {
+        /**configuration.getFileEditor().getFileEditor("armor-equip-event").safeFileAccess(fileEditor -> {
             HOT_SWAP_ENABLED = fileEditor.getBoolean("hot-swap");
             HANDLE_ON_JOIN = fileEditor.getBoolean("trigger-on-join");
             HANDLE_ON_QUIT = fileEditor.getBoolean("trigger-on-leave");
-        });
+        });**/
         listenInventoryClickEvent();
         listenRightClickEvent();
         listenDragEvent();

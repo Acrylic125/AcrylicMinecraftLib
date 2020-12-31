@@ -3,6 +3,7 @@ package com.acrylic.universal.files.bukkit;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.files.YMLFile;
 import org.apache.commons.io.FileUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,12 +42,26 @@ public class Configuration extends YMLFile implements BukkitConfiguration {
     }
 
     @Override
+    public void loadFromResources(@NotNull JavaPlugin plugin, @NotNull String resourcePath) {
+        if (isJustCreated()) {
+            File file = getFile();
+            copy(plugin.getResource(resourcePath), file);
+        }
+        load();
+    }
+
+    @Override
     public void loadFromResources(@NotNull JavaPlugin plugin, @NotNull String... resourcePath) {
         if (isJustCreated()) {
             File file = getFile();
             StringBuilder pathBuilder = new StringBuilder();
-            for (String s : resourcePath)
+            int i = 0, size = resourcePath.length;
+            for (String s : resourcePath) {
+                i++;
+                if (i < size)
+                    pathBuilder.append("/");
                 pathBuilder.append(s);
+            }
             copy(plugin.getResource(pathBuilder.toString()), file);
         }
         load();

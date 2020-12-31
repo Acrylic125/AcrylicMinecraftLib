@@ -1,9 +1,11 @@
 package com.acrylic.acrylic;
 
+import com.acrylic.acrylic.test.Dog;
 import com.acrylic.universal.Universal;
 import com.acrylic.acrylic.defaultcommands.AcrylicCommand;
 import com.acrylic.universal.events.ArmorChangeListener;
 import com.acrylic.universal.files.bukkit.Configuration;
+import com.acrylic.universal.files.configloader.ConfigLoader;
 import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.items.itemdropproection.ItemDropChecker;
@@ -35,7 +37,11 @@ public final class Acrylic extends JavaPlugin {
             System.out.println("Loaded " + VanillaItemTypeAnalyzer.class.getName() + ".");
         }
         System.out.println("Loading Armor Change Listener.");
-        new ArmorChangeListener(configuration);
+        ArmorChangeListener armorChangeListener = new ArmorChangeListener();
+        ConfigLoader.getObjectLoader(ArmorChangeListener.class, armorChangeListener).loadThenSave();
+        Dog dog = new Dog("Charlie");
+        ConfigLoader.getObjectLoader(Dog.class, dog).loadThenSave();
+        Bukkit.broadcastMessage(dog.say() + " " + dog);
         System.out.println("Checking Item Drop Protection.");
         configuration.getFileEditor().getFileEditor("item-drop-protection").safeFileAccess(fileEditor -> {
             if (fileEditor.getBoolean("use-default-implementation")) {

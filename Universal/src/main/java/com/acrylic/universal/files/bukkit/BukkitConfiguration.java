@@ -14,6 +14,8 @@ public interface BukkitConfiguration {
 
     void loadFromResources(@NotNull JavaPlugin plugin);
 
+    void loadFromResources(@NotNull JavaPlugin plugin, @NotNull String resourcePath);
+
     void loadFromResources(@NotNull JavaPlugin plugin, @NotNull String... resourcePath);
 
     static String getPluginConfigurationPath(@NotNull JavaPlugin plugin, @NotNull String fileName) {

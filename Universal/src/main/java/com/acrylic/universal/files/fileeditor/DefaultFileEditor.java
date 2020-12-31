@@ -5,6 +5,7 @@ import com.acrylic.universal.files.parsers.ItemStackParser;
 import com.acrylic.universal.gui.AbstractGUIBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import files.editor.Configurable;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,7 +61,7 @@ public class DefaultFileEditor implements FileEditor {
         return parent;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public FileEditor getFileEditor(@NotNull String s) {
         Object o = getObject(s);
