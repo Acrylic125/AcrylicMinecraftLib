@@ -7,7 +7,7 @@ import com.acrylic.universal.files.configloader.Configurable;
         filePath = "test/doggo.yml",
         plugin = "Acrylic",
         resourcePlugin = "Acrylic",
-        resourcePath = "animaltest.yml",
+        resourcePath = "animals/animaltest.yml",
         loadWithParentClass = true
 )
 public class Dog extends Animal {
