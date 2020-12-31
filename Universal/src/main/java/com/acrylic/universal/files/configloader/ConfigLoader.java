@@ -21,10 +21,16 @@ public class ConfigLoader<T> {
     private final Class<T> loadToClass;
     private boolean loadWithParent = false;
 
+    public static <T> ConfigLoader<T> getLoader(@NotNull Class<T> configurableClass) {
+        return new ConfigLoader<>(configurableClass);
+    }
+
+    @Deprecated
     public static <T> ConfigLoader<T> getObjectLoader(@NotNull Class<T> configurableClass) {
         return new ConfigLoader<>(configurableClass);
     }
 
+    @Deprecated
     public static <T> ConfigLoader<T> getStaticLoader(@NotNull Class<T> configurableClass) {
         return new ConfigLoader<>(configurableClass);
     }
