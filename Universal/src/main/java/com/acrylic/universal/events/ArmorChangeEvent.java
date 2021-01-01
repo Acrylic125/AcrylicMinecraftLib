@@ -1,9 +1,11 @@
 package com.acrylic.universal.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,11 +30,9 @@ public class ArmorChangeEvent extends Event implements Cancellable {
     private final LivingEntity entity;
     private ChangeType changeType = ChangeType.UNKNOWN;
     private EquipType equipType = EquipType.UNKNOWN;
-    private ItemStack newItem;
-    private ItemStack previousItem;
+    private ItemStack newItem, previousItem, wearingHelmet, wearingChestplate, wearingLeggings, wearingBoots;
     private ArmorType armorType;
-    private boolean hotSwap;
-    private boolean cancelled = false;
+    private boolean hotSwap = false, cancelled = false, handleEquip = false, handleUnEquip = false;
 
     public ArmorChangeEvent(LivingEntity entity) {
         this.entity = entity;
@@ -83,7 +83,7 @@ public class ArmorChangeEvent extends Event implements Cancellable {
         return previousItem;
     }
 
-    public ArmorChangeEvent setArmorType(@NotNull ArmorType armorType) {
+    public ArmorChangeEvent setArmorType(ArmorType armorType) {
         this.armorType = armorType;
         return this;
     }
@@ -117,4 +117,61 @@ public class ArmorChangeEvent extends Event implements Cancellable {
         this.cancelled = cancel;
     }
 
+    public boolean handleEquip() {
+        return handleEquip;
+    }
+
+    public boolean handleUnEquip() {
+        return handleUnEquip;
+    }
+
+    public void call() {
+        boolean isChange = changeType.equals(ChangeType.CHANGE);
+        handleEquip = isChange || changeType.equals(ChangeType.EQUIP);
+        handleUnEquip = isChange || changeType.equals(ChangeType.UN_EQUIP);
+        EntityEquipment equipment = entity.getEquipment();
+        if (equipment != null) {
+            wearingHelmet = equipment.getHelmet();
+            wearingChestplate = equipment.getChestplate();
+            wearingLeggings = equipment.getLeggings();
+            wearingBoots = equipment.getBoots();
+            if (armorType != null) {
+                switch (armorType) {
+                    case HELMET:
+                        wearingHelmet = newItem;
+                        break;
+                    case CHESTPLATE:
+                        wearingChestplate = newItem;
+                        break;
+                    case LEGGINGS:
+                        wearingLeggings = newItem;
+                        break;
+                    case BOOTS:
+                        wearingBoots = newItem;
+                        break;
+                }
+            }
+        }
+        Bukkit.getPluginManager().callEvent(this);
+    }
+
+    @Nullable
+    public ItemStack getWearingHelmet() {
+        return wearingHelmet;
+    }
+
+    @Nullable
+    public ItemStack getWearingChestplate() {
+        return wearingChestplate;
+    }
+
+    @Nullable
+    public ItemStack getWearingLeggings() {
+        return wearingLeggings;
+    }
+
+    @Nullable
+    public ItemStack getWearingBoots() {
+        return wearingBoots;
+    }
 }

@@ -3,7 +3,6 @@ package com.acrylic.universal.events;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.files.configloader.ConfigValue;
 import com.acrylic.universal.files.configloader.Configurable;
-import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.items.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
@@ -65,7 +64,7 @@ public class ArmorChangeListener {
                 .setArmorType(newArmorType)
                 .setHotSwap(HOT_SWAP_ENABLED && !isItemHeldAir)
                 .setChangeType(changeType);
-        Bukkit.getPluginManager().callEvent(armorChangeEvent);
+        armorChangeEvent.call();
         if (!armorChangeEvent.isCancelled()) {
             newArmorType.setItemInEquipment(equipment, item);
             equipment.setItemInHand((previousItem == null) ? null : previousItem.clone());
@@ -82,7 +81,7 @@ public class ArmorChangeListener {
                     ArmorChangeEvent event = new ArmorChangeEvent(entity)
                             .setArmorType(armorType);
                     armorChangeEventManipulation.accept(event, armorType, item);
-                    Bukkit.getPluginManager().callEvent(event);
+                    event.call();
                 }
             }
         }
@@ -96,13 +95,13 @@ public class ArmorChangeListener {
                     ItemStack oldItem = event.getBrokenItem();
                     ArmorType type = ArmorType.getArmorType(oldItem);
                     if (type != null) {
-                        Bukkit.getPluginManager().callEvent(new ArmorChangeEvent(event.getPlayer())
+                        new ArmorChangeEvent(event.getPlayer())
                                 .setArmorType(type)
                                 .setEquipType(ArmorChangeEvent.EquipType.ITEM_BREAK)
                                 .setChangeType(ArmorChangeEvent.ChangeType.UN_EQUIP)
                                 .setPreviousItem(oldItem)
                                 .setNewItem(null)
-                        );
+                                .call();
                     }
                 });
     }
@@ -162,8 +161,8 @@ public class ArmorChangeListener {
                                 .setArmorType(type)
                                 .setEquipType(ArmorChangeEvent.EquipType.INVENTORY_DRAG)
                                 .setPreviousItem(null)
-                                .setNewItem(newItem); //ArmorChangeEvent.call(event.getWhoClicked(),newItem,null,ArmorEquipType.INVENTORY,false);
-                        Bukkit.getPluginManager().callEvent(changeEvent);
+                                .setNewItem(newItem);
+                        changeEvent.call();
                         if (changeEvent.isCancelled()){
                             event.setResult(Event.Result.DENY);
                             event.setCancelled(true);
@@ -266,9 +265,10 @@ public class ArmorChangeListener {
                         ArmorChangeEvent armorChangeEvent = new ArmorChangeEvent(player)
                                 .setChangeType(changeType)
                                 .setEquipType(ArmorChangeEvent.EquipType.INVENTORY_CLICK)
+                                .setArmorType((changeType == ArmorChangeEvent.ChangeType.EQUIP) ? newArmorType : oldArmorType)
                                 .setPreviousItem((changeType == ArmorChangeEvent.ChangeType.EQUIP) ? null : oldItem)
                                 .setNewItem((changeType == ArmorChangeEvent.ChangeType.UN_EQUIP) ? null : newItem);
-                        Bukkit.getPluginManager().callEvent(armorChangeEvent);
+                        armorChangeEvent.call();
                         if (armorChangeEvent.isCancelled())
                             event.setCancelled(true);
                     }
@@ -321,7 +321,7 @@ public class ArmorChangeListener {
                                     .setArmorType(type)
                                     .setEquipType(ArmorChangeEvent.EquipType.DISPENSER)
                                     .setChangeType(ArmorChangeEvent.ChangeType.EQUIP);
-                            Bukkit.getPluginManager().callEvent(changeEvent);
+                            changeEvent.call();
                             event.setCancelled(changeEvent.isCancelled());
                         }
                     });

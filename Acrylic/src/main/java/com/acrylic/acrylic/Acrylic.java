@@ -31,7 +31,7 @@ public final class Acrylic extends JavaPlugin {
         }
         System.out.println("Loading Armor Change Listener.");
         ArmorChangeListener armorChangeListener = new ArmorChangeListener();
-        ConfigLoader.getLoader(FArmorChangeListener.class).loadObjectThenSave(armorChangeListener);
+        ConfigLoader.getLoader(ArmorChangeListener.class).loadObjectThenSave(armorChangeListener);
         System.out.println("Checking Item Drop Protection.");
         configuration.getFileEditor().getFileEditor("item-drop-protection").safeFileAccess(fileEditor -> {
             if (fileEditor.getBoolean("use-default-implementation")) {
