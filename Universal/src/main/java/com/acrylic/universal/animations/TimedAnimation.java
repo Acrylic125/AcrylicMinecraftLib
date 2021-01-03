@@ -1,6 +1,10 @@
 package com.acrylic.universal.animations;
 
-public abstract class TimedAnimation extends NonContinuousAnimation {
+import com.acrylic.universal.interfaces.Timed;
+
+public abstract class TimedAnimation
+        extends NonContinuousAnimation
+        implements Timed {
 
     private long time = 0;
 
@@ -10,14 +14,6 @@ public abstract class TimedAnimation extends NonContinuousAnimation {
 
     public void setTime(long time) {
         this.time = time;
-    }
-
-    public void setTimeOnCurrent(long time) {
-        setTime(System.currentTimeMillis() + time);
-    }
-
-    public boolean hasExpired() {
-        return System.currentTimeMillis() > time;
     }
 
 }

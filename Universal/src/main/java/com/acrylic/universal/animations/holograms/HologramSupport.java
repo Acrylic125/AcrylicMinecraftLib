@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface HologramSupport {
 
+    @Nullable
     AbstractHolograms getHolograms();
 
     void setHologram(@Nullable AbstractHolograms abstractHolograms);

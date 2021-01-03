@@ -1,6 +1,6 @@
 package com.acrylic.universal.animations.holograms;
 
-import com.acrylic.universal.animations.Animation;
+import com.acrylic.universal.animations.impl.Animation;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,8 +10,7 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 
 public abstract class AbstractHolograms
-        extends Animation
-        implements Iterable<AbstractHologram> {
+        implements Animation, Iterable<AbstractHologram> {
 
     private final ArrayList<AbstractHologram> holograms = new ArrayList<>();
 
@@ -21,7 +20,7 @@ public abstract class AbstractHolograms
 
     public void teleport(final Location location, float offsetHeight) {
         for (AbstractHologram hologram : holograms)
-            hologram.teleport(location, offsetHeight);
+            hologram.teleportMainEntity(location, offsetHeight);
     }
 
     public void teleport(final Location location) {

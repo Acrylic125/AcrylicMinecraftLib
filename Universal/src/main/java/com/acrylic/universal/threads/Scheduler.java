@@ -70,12 +70,6 @@ public interface Scheduler<T extends Scheduler<T>> extends Runnable {
 
     T handle(@NotNull ExecutedTask<T> action);
 
-    /**
-     * Please use handle(ExecutedTask) for a better alternative.
-     *
-     * @param runnable The runnable.
-     */
-    @Deprecated
     default T handle(@NotNull Runnable runnable) {
         return handle(task -> runnable.run());
     }

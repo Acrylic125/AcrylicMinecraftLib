@@ -1,23 +1,20 @@
 package com.acrylic.universal.events;
 
 import co.aikar.timings.lib.MCTiming;
-import co.aikar.timings.lib.TimingManager;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.interfaces.PluginRegister;
-import com.acrylic.universal.interfaces.Timer;
+import com.acrylic.universal.interfaces.Clocker;
 import com.acrylic.universal.reflection.ReflectionUtils;
 import org.bukkit.event.*;
 import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.spigotmc.CustomTimingsHandler;
 
-import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public interface AbstractEventBuilder<T extends Event> extends Listener, Timer, PluginRegister, Cloneable {
+public interface AbstractEventBuilder<T extends Event> extends Listener, Clocker, PluginRegister, Cloneable {
 
     default void handleThenRegister(@NotNull Consumer<T> eventHandler) {
         handle(eventHandler).register();

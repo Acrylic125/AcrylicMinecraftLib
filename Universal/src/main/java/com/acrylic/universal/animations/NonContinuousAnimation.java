@@ -1,6 +1,8 @@
 package com.acrylic.universal.animations;
 
-public abstract class NonContinuousAnimation extends Animation {
+import com.acrylic.universal.interfaces.Deletable;
+
+public abstract class NonContinuousAnimation implements Deletable {
 
     public abstract void endCheck();
 

@@ -21,7 +21,7 @@ public class CommandBuilder
     private Predicate<AbstractCommandExecuted> filter;
     private String[] permissions;
 
-    private long lastTimed = 0;
+    private long time = 0;
     private boolean shouldClock = false;
 
     public static CommandBuilder create(String command) {
@@ -147,13 +147,13 @@ public class CommandBuilder
     }
 
     @Override
-    public long getLastTimed() {
-        return lastTimed;
+    public long getTime() {
+        return time;
     }
 
     @Override
-    public void setLastTimed(long time) {
-        this.lastTimed = time;
+    public void setTime(long time) {
+        this.time = time;
     }
 
 }

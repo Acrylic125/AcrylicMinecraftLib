@@ -1,8 +1,8 @@
 package com.acrylic.universal.regions;
 
-import com.acrylic.universal.animations.EntityAnimation;
 import com.acrylic.universal.animations.IndexedAnimation;
 import com.acrylic.universal.animations.holograms.Holograms;
+import com.acrylic.universal.animations.impl.EntityAnimation;
 import com.acrylic.universal.animations.rotational.AbstractHeadRotationAnimation;
 import com.acrylic.universal.animations.rotational.HeadRotationAnimation;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;

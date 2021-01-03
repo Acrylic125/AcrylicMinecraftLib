@@ -17,22 +17,22 @@ public class PlayedTimedItemDropProtected
 
     public PlayedTimedItemDropProtected(@NotNull Item itemEntity, long cooldown, @NotNull Collection<UUID> allowedPlayers) {
         super(itemEntity, allowedPlayers);
-        clockTime(cooldown);
+        addTimeToNow(cooldown);
     }
 
     public PlayedTimedItemDropProtected(@NotNull Item itemEntity, long cooldown) {
         super(itemEntity);
-        clockTime(cooldown);
+        addTimeToNow(cooldown);
     }
 
     public PlayedTimedItemDropProtected(@NotNull Item itemEntity, long cooldown, Player... allowedPlayers) {
         super(itemEntity, allowedPlayers);
-        clockTime(cooldown);
+        addTimeToNow(cooldown);
     }
 
     public PlayedTimedItemDropProtected(@NotNull Item itemEntity, long cooldown, @NotNull Player allowedPlayer) {
         super(itemEntity, allowedPlayer);
-        clockTime(cooldown);
+        addTimeToNow(cooldown);
     }
 
     @Override
@@ -41,12 +41,12 @@ public class PlayedTimedItemDropProtected
     }
 
     @Override
-    public long getLastTimed() {
+    public long getTime() {
         return time;
     }
 
     @Override
-    public void setLastTimed(long time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

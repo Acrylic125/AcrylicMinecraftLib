@@ -2,73 +2,162 @@ package com.acrylic.version_1_8.items;
 
 import com.acrylic.universal.items.ItemTypeAnalyzer;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class VanillaItemTypeAnalyzer implements ItemTypeAnalyzer {
 
     @Override
-    public boolean isHead(@NotNull ItemStack item) {
-        Material material = item.getType();
-        return material.equals(Material.SKULL) || material.equals(Material.SKULL_ITEM);
+    public boolean isHeadMaterial(@NotNull Material material) {
+        switch (material) {
+            case SKULL:
+            case SKULL_ITEM:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
-    public boolean isHelmet(@NotNull ItemStack item) {
-        Material material = item.getType();
-        return material.equals(Material.LEATHER_HELMET) || material.equals(Material.GOLD_HELMET) || material.equals(Material.CHAINMAIL_HELMET) || material.equals(Material.IRON_HELMET) || material.equals(Material.DIAMOND_HELMET);
+    public boolean isHelmetMaterial(@NotNull Material material) {
+        switch (material) {
+            case LEATHER_HELMET:
+            case GOLD_HELMET:
+            case CHAINMAIL_HELMET:
+            case IRON_HELMET:
+            case DIAMOND_HELMET:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
-    public boolean isChestplate(@NotNull ItemStack item) {
-        Material material = item.getType();
-        return material.equals(Material.LEATHER_CHESTPLATE) || material.equals(Material.GOLD_CHESTPLATE) || material.equals(Material.CHAINMAIL_CHESTPLATE) || material.equals(Material.IRON_CHESTPLATE) || material.equals(Material.DIAMOND_CHESTPLATE);
+    public boolean isChestplateMaterial(@NotNull Material material) {
+        switch (material) {
+            case LEATHER_CHESTPLATE:
+            case GOLD_CHESTPLATE:
+            case CHAINMAIL_CHESTPLATE:
+            case IRON_CHESTPLATE:
+            case DIAMOND_CHESTPLATE:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
-    public boolean isLeggings(@NotNull ItemStack item) {
-        Material material = item.getType();
-        return material.equals(Material.LEATHER_LEGGINGS) || material.equals(Material.GOLD_LEGGINGS) || material.equals(Material.CHAINMAIL_LEGGINGS) || material.equals(Material.IRON_LEGGINGS) || material.equals(Material.DIAMOND_LEGGINGS);
+    public boolean isLeggingsMaterial(@NotNull Material material) {
+        switch (material) {
+            case LEATHER_LEGGINGS:
+            case GOLD_LEGGINGS:
+            case CHAINMAIL_LEGGINGS:
+            case IRON_LEGGINGS:
+            case DIAMOND_LEGGINGS:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
-    public boolean isBoots(@NotNull ItemStack item) {
-        Material material = item.getType();
-        return material.equals(Material.LEATHER_BOOTS) || material.equals(Material.GOLD_BOOTS) || material.equals(Material.CHAINMAIL_BOOTS) || material.equals(Material.IRON_BOOTS) || material.equals(Material.DIAMOND_BOOTS);
+    public boolean isBootsMaterial(@NotNull Material material) {
+        switch (material) {
+            case LEATHER_BOOTS:
+            case GOLD_BOOTS:
+            case CHAINMAIL_BOOTS:
+            case IRON_BOOTS:
+            case DIAMOND_BOOTS:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
-    public boolean isBow(@NotNull ItemStack item) {
-        return item.getType().equals(Material.BOW);
+    public boolean isBowMaterial(@NotNull Material material) {
+        return material.equals(Material.BOW);
     }
 
     @Override
-    public boolean isSword(@NotNull ItemStack item) {
-        Material material = item.getType();
-        return material.equals(Material.WOOD_SWORD) || material.equals(Material.GOLD_SWORD) || material.equals(Material.STONE_SWORD) || material.equals(Material.IRON_SWORD) || material.equals(Material.DIAMOND_SWORD);
+    public boolean isSwordMaterial(@NotNull Material material) {
+        switch (material) {
+            case WOOD_SWORD:
+            case STONE_SWORD:
+            case GOLD_SWORD:
+            case IRON_SWORD:
+            case DIAMOND_SWORD:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
-    public boolean isAxe(@NotNull ItemStack item) {
-        Material material = item.getType();
-        return material.equals(Material.WOOD_AXE) || material.equals(Material.GOLD_AXE) || material.equals(Material.STONE_AXE) || material.equals(Material.IRON_AXE) || material.equals(Material.DIAMOND_AXE);
+    public boolean isAxeMaterial(@NotNull Material material) {
+        switch (material) {
+            case WOOD_AXE:
+            case STONE_AXE:
+            case GOLD_AXE:
+            case IRON_AXE:
+            case DIAMOND_AXE:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
-    public boolean isPickaxe(@NotNull ItemStack item) {
-        Material material = item.getType();
-        return material.equals(Material.WOOD_PICKAXE) || material.equals(Material.GOLD_PICKAXE) || material.equals(Material.STONE_PICKAXE) || material.equals(Material.IRON_PICKAXE) || material.equals(Material.DIAMOND_PICKAXE);
+    public boolean isPickaxeMaterial(@NotNull Material material) {
+        switch (material) {
+            case WOOD_PICKAXE:
+            case STONE_PICKAXE:
+            case GOLD_PICKAXE:
+            case IRON_PICKAXE:
+            case DIAMOND_PICKAXE:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
-    public boolean isShovel(@NotNull ItemStack item) {
-        Material material = item.getType();
-        return material.equals(Material.WOOD_SPADE) || material.equals(Material.GOLD_SPADE) || material.equals(Material.STONE_SPADE) || material.equals(Material.IRON_SPADE) || material.equals(Material.DIAMOND_SPADE);
+    public boolean isShovelMaterial(@NotNull Material material) {
+        switch (material) {
+            case WOOD_SPADE:
+            case STONE_SPADE:
+            case GOLD_SPADE:
+            case IRON_SPADE:
+            case DIAMOND_SPADE:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
-    public boolean isHoe(@NotNull ItemStack item) {
-        Material material = item.getType();
-        return material.equals(Material.WOOD_HOE) || material.equals(Material.GOLD_HOE) || material.equals(Material.STONE_HOE) || material.equals(Material.IRON_HOE) || material.equals(Material.DIAMOND_HOE);
+    public boolean isHoeMaterial(@NotNull Material material) {
+        switch (material) {
+            case WOOD_HOE:
+            case STONE_HOE:
+            case GOLD_HOE:
+            case IRON_HOE:
+            case DIAMOND_HOE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public boolean isLiquidMaterial(@NotNull Material material) {
+        switch (material) {
+            case STATIONARY_WATER:
+            case WATER:
+            case STATIONARY_LAVA:
+            case LAVA:
+                return true;
+            default:
+                return false;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.acrylic.universal.animations;
+package com.acrylic.universal.animations.impl;
 
 import com.acrylic.universal.animations.holograms.AbstractHolograms;
 import com.acrylic.universal.animations.holograms.HologramSupport;
@@ -7,36 +7,30 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class EntityAnimation
-        extends Animation
-        implements HologramSupport {
+public abstract class EntityAnimation implements Animation, HologramSupport {
 
     private final EntityAnimator entityAnimator;
     private AbstractHolograms holograms;
     private float offsetHeight = 0;
 
-    public EntityAnimation(EntityAnimator entityAnimator) {
+    public EntityAnimation(@NotNull EntityAnimator entityAnimator) {
         this.entityAnimator = entityAnimator;
-    }
-
-    public void setOffsetHeight(float offsetHeight) {
-        this.offsetHeight = offsetHeight;
     }
 
     public float getOffsetHeight() {
         return offsetHeight;
     }
 
-    public EntityAnimator getEntityAnimator() {
-        return entityAnimator;
+    public void setOffsetHeight(float offsetHeight) {
+        this.offsetHeight = offsetHeight;
     }
 
-    public void teleport(@NotNull Location location, float offsetHeight) {
+    public void teleportMainEntity(@NotNull Location location, float offsetHeight) {
         getEntityAnimator().teleport(getLocation(new Location(location.getWorld(), location.getX(), location.getY() + this.offsetHeight + offsetHeight, location.getZ(), location.getYaw(), location.getPitch())));
     }
 
-    public void teleport(@NotNull Location location) {
-        teleport(location, 0f);
+    public void teleportMainEntity(@NotNull Location location) {
+        teleportMainEntity(location, 0f);
     }
 
     public void teleportHolograms(@NotNull Location location, float offsetHeight) {
@@ -49,7 +43,7 @@ public abstract class EntityAnimation
     }
 
     public void teleportWithHolograms(@NotNull Location location, float offsetHeightMain, float offsetHeightHologram) {
-        teleport(location, offsetHeightMain);
+        teleportMainEntity(location, offsetHeightMain);
         teleportHolograms(location, offsetHeightHologram);
     }
 
@@ -64,9 +58,15 @@ public abstract class EntityAnimation
         this.holograms = abstractHolograms;
     }
 
+    @Nullable
     @Override
     public AbstractHolograms getHolograms() {
         return holograms;
+    }
+
+    @NotNull
+    public EntityAnimator getEntityAnimator() {
+        return entityAnimator;
     }
 
     @Override
@@ -75,5 +75,4 @@ public abstract class EntityAnimation
             holograms.delete();
         entityAnimator.delete();
     }
-
 }

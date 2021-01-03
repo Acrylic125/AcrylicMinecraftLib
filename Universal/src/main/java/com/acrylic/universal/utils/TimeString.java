@@ -103,7 +103,8 @@ public final class TimeString {
 
     @Override
     public String toString() {
-        if (ref == 0L) return timeConverter.getValueFormat() + zero + "&r";
+        if (ref <= 0L)
+            return timeConverter.getValueFormat() + zero + "&r";
         StringBuilder stringBuilder = new StringBuilder();
         current = ref;
         for (Time unit : Time.values())

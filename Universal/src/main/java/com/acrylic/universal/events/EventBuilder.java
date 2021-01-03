@@ -20,7 +20,7 @@ public class EventBuilder<T extends Event>
     private String name;
     private JavaPlugin plugin = Universal.getPlugin();
 
-    private long lastTimed = 0;
+    private long time = 0;
     private boolean shouldClock = false;
 
     private boolean hasRegisteredBefore = false;
@@ -135,13 +135,13 @@ public class EventBuilder<T extends Event>
     }
 
     @Override
-    public long getLastTimed() {
-        return lastTimed;
+    public long getTime() {
+        return time;
     }
 
     @Override
-    public void setLastTimed(long time) {
-        this.lastTimed = time;
+    public void setTime(long time) {
+        this.time = time;
     }
 
     @Override

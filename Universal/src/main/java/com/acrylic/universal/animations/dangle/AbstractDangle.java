@@ -1,11 +1,9 @@
 package com.acrylic.universal.animations.dangle;
 
-import com.acrylic.universal.animations.EntityAnimation;
 import com.acrylic.universal.animations.EntityBoundedAnimation;
 import com.acrylic.universal.animations.TimedAnimation;
+import com.acrylic.universal.animations.impl.EntityAnimation;
 import com.acrylic.universal.shapes.Circle;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +13,6 @@ import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-@Setter @Getter
 public class AbstractDangle
         extends TimedAnimation
         implements EntityBoundedAnimation, Iterable<EntityAnimation> {
@@ -34,7 +31,7 @@ public class AbstractDangle
     public void addAnimation(EntityAnimation entityAnimation) {
         animations.add(entityAnimation);
         hasEnded = false;
-        setTimeOnCurrent(timePerRemovalAnimation + timeToStartRemoving);
+        addTimeToNow(timePerRemovalAnimation + timeToStartRemoving);
     }
 
     public void removeAnimation(EntityAnimation entityAnimation) {
@@ -45,33 +42,49 @@ public class AbstractDangle
         animations.clear();
     }
 
+    public int getTimePerRemovalAnimation() {
+        return timePerRemovalAnimation;
+    }
+
+    public void setTimePerRemovalAnimation(int timePerRemovalAnimation) {
+        this.timePerRemovalAnimation = timePerRemovalAnimation;
+    }
+
+    public int getTimeToStartRemoving() {
+        return timeToStartRemoving;
+    }
+
+    public void setTimeToStartRemoving(int timeToStartRemoving) {
+        this.timeToStartRemoving = timeToStartRemoving;
+    }
+
     @Override
     public void update(@NotNull final Entity entity) {
-        if (hasEnded())
-            return;
-        endCheck();
-        final Location location = entity.getLocation();
-        final int size = animations.size();
-        circle.setFrequency(Math.max(size, BASE_FREQUENCY));
-        circle.setOrientationYaw(90 + location.getYaw() + ((size % 2 == 0) ? circle.getAnglesBetween() / 2 : 0));
-        location.setY(location.getY() + (location.getDirection().getY() * circle.getRadius()));
+        if (!hasEnded()) {
+            endCheck();
+            final Location location = entity.getLocation();
+            final int size = animations.size();
+            circle.setFrequency(Math.max(size, BASE_FREQUENCY));
+            circle.setOrientationYaw(90 + location.getYaw() + ((size % 2 == 0) ? circle.getAnglesBetween() / 2 : 0));
+            location.setY(location.getY() + (location.getDirection().getY() * circle.getRadius()));
 
-        int index = (int) -Math.floor(size / 2f);
-        for (EntityAnimation animation : animations) {
-            animation.teleportWithHolograms(circle.getLocation(location, index), 0f, (index % 2 == 0) ? 0f : ODD_RAISE);
-            index++;
+            int index = (int) -Math.floor(size / 2f);
+            for (EntityAnimation animation : animations) {
+                animation.teleportWithHolograms(circle.getLocation(location, index), 0f, (index % 2 == 0) ? 0f : ODD_RAISE);
+                index++;
+            }
         }
     }
 
     @Override
     public void endCheck() {
-        if (hasExpired()) {
+        if (hasPassedTimed()) {
             final int size = animations.size();
             if (size > 1 && timePerRemovalAnimation > 0) {
                 EntityAnimation animation = animations.get(0);
                 animation.delete();
                 animations.remove(animation);
-                setTimeOnCurrent(timePerRemovalAnimation);
+                addTimeToNow(timePerRemovalAnimation);
             } else {
                 hasEnded = true;
                 delete();

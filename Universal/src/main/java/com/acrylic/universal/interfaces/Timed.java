@@ -1,28 +1,33 @@
 package com.acrylic.universal.interfaces;
 
-import com.acrylic.time.Time;
 import com.acrylic.universal.utils.TimeConverter;
+import org.jetbrains.annotations.NotNull;
 
-public interface Timed {
+public interface Timed extends Timable {
 
-    long getLastTimed();
-
-    void setLastTimed(long time);
-
-    default void clockTime(long addTime) {
-        setLastTimed(System.currentTimeMillis() + addTime);
+    default boolean hasPassedTimed() {
+        return System.currentTimeMillis() >= getTime();
     }
 
-    default void clockTime() {
-        setLastTimed(System.currentTimeMillis());
+    default long getTimeLeft() {
+        return getTime() - System.currentTimeMillis();
     }
 
-    default long getTimeFromLastTimed() {
-        return System.currentTimeMillis() - getLastTimed();
+    @Override
+    default long getTimeDifference() {
+        return Math.abs(getTimeLeft());
     }
 
-    default String getTimeFromLastTimedAsString() {
-        return TimeConverter.CONSOLE.convert(getTimeFromLastTimed()).toString();
+    @NotNull
+    @Override
+    default String getTimeDifferenceAsConsoleString() {
+        return TimeConverter.CONSOLE.convert(getTimeLeft()).toString();
+    }
+
+    @NotNull
+    @Override
+    default String getTimeDifferenceAsString() {
+        return TimeConverter.CONSOLE.convert(getTimeLeft()).toString();
     }
 
 }

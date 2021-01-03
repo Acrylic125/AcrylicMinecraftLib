@@ -1,7 +1,7 @@
 package com.acrylic.universal.animations.rotational;
 
-import com.acrylic.universal.animations.EntityAnimation;
 import com.acrylic.universal.animations.exceptions.UnsupportedEntityType;
+import com.acrylic.universal.animations.impl.EntityAnimation;
 import com.acrylic.universal.entityanimations.EntityAnimator;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.shapes.Circle;

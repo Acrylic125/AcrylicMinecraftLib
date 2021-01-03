@@ -1,12 +1,12 @@
 package com.acrylic.universal.command;
 
 import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universal.interfaces.Timer;
+import com.acrylic.universal.interfaces.Clocker;
 
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface BaseCommandBuilder extends Timer {
+public interface BaseCommandBuilder extends Clocker {
 
     CommandHandler<AbstractCommandExecuted> getCommandHandler();
 

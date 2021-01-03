@@ -6,6 +6,7 @@ import com.acrylic.universal.text.ChatUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -62,8 +63,28 @@ public class ItemUtils {
         return WordUtils.capitalize(MATERIAL_SPACING.matcher(material.toString().toLowerCase(Locale.ENGLISH)).replaceAll(" "));
     }
 
+    public static boolean isLiquid(@NotNull Material material) {
+        return ITEM_TYPE_ANALYZER.isLiquidMaterial(material);
+    }
+
+    public static boolean isLiquid(@NotNull Block block) {
+        return isLiquid(block.getType());
+    }
+
+    public static boolean isLiquid(@NotNull ItemStack item) {
+        return ITEM_TYPE_ANALYZER.isLiquid(item);
+    }
+
+    public static boolean isAir(@Nullable Material material) {
+        return ITEM_TYPE_ANALYZER.isAir(material);
+    }
+
+    public static boolean isAir(@Nullable Block block) {
+        return ITEM_TYPE_ANALYZER.isAir(block);
+    }
+
     public static boolean isAir(@Nullable ItemStack item) {
-        return item == null || item.getType().equals(Material.AIR);
+        return ITEM_TYPE_ANALYZER.isAir(item);
     }
 
     public static boolean isNotAir(@Nullable ItemStack item) {

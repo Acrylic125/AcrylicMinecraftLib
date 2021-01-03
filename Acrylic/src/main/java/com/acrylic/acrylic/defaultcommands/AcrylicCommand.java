@@ -26,6 +26,7 @@ import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.threads.TaskType;
 import com.acrylic.universal.utils.BlockIterator;
 import com.acrylic.universal.utils.LocationConverter;
+import com.acrylic.universal.utils.SurfaceLocationSearcher;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -136,6 +137,8 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
+                    SurfaceLocationSearcher locationSearcher = new SurfaceLocationSearcher(4, 32);
+                    Bukkit.broadcastMessage(LocationConverter.DEFAULT.convertWithWorld(locationSearcher.getLocation(sender.getLocation())));
                     ChatUtils.send(sender, "&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!");
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
@@ -283,7 +286,7 @@ public class AcrylicCommand {
                             Scheduler.sync()
                                     .runRepeatingTask(1, 1)
                                     .handle(task -> {
-                                        handRotationAnimation.teleport(location);
+                                        handRotationAnimation.teleportWithHolograms(location);
                                     }).build();
                         }),
                         CommandBuilder.create("dangle")
