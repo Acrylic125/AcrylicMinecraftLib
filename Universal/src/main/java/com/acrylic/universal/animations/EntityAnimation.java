@@ -1,4 +1,4 @@
-package com.acrylic.universal.animations.impl;
+package com.acrylic.universal.animations;
 
 import com.acrylic.universal.animations.holograms.AbstractHolograms;
 import com.acrylic.universal.animations.holograms.HologramSupport;
@@ -75,4 +75,15 @@ public abstract class EntityAnimation implements Animation, HologramSupport {
             holograms.delete();
         entityAnimator.delete();
     }
+
+    @Override
+    public boolean isRunning() {
+        return entityAnimator.isValid();
+    }
+
+    @Override
+    public void terminate() {
+        delete();
+    }
+
 }

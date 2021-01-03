@@ -3,11 +3,13 @@ package com.acrylic.acrylic;
 import co.aikar.timings.lib.TimingManager;
 import com.acrylic.acrylic.defaultcommands.AcrylicCommand;
 import com.acrylic.universal.Universal;
+import com.acrylic.universal.animations.dangle.Dangle;
 import com.acrylic.universal.events.ArmorChangeListener;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.files.configloader.ConfigLoader;
 import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.items.itemdropproection.ItemDropChecker;
+import com.acrylic.universal.regions.RegionDisplayPointerAnimation;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.items.VanillaItemTypeAnalyzer;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,6 +34,8 @@ public final class Acrylic extends JavaPlugin {
         System.out.println("Loading Armor Change Listener.");
         ArmorChangeListener armorChangeListener = new ArmorChangeListener();
         ConfigLoader.getLoader(ArmorChangeListener.class).loadObjectThenSave(armorChangeListener);
+        ConfigLoader.getLoader(Dangle.class).staticLoadThenSave();
+        ConfigLoader.getLoader(RegionDisplayPointerAnimation.class).staticLoadThenSave();
         System.out.println("Checking Item Drop Protection.");
         configuration.getFileEditor().getFileEditor("item-drop-protection").safeFileAccess(fileEditor -> {
             if (fileEditor.getBoolean("use-default-implementation")) {

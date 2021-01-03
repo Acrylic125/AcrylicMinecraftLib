@@ -1,6 +1,6 @@
 package com.acrylic.universal.animations.holograms;
 
-import com.acrylic.universal.animations.impl.Animation;
+import com.acrylic.universal.animations.Animation;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +13,7 @@ public abstract class AbstractHolograms
         implements Animation, Iterable<AbstractHologram> {
 
     private final ArrayList<AbstractHologram> holograms = new ArrayList<>();
+    private boolean running = true;
 
     public void clear() {
         holograms.clear();
@@ -73,4 +74,14 @@ public abstract class AbstractHolograms
         return holograms.iterator();
     }
 
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    @Override
+    public void terminate() {
+        this.running = false;
+        delete();
+    }
 }

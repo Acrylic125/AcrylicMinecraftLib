@@ -3,8 +3,9 @@ package com.acrylic.universal.animations;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
-public interface EntityBoundedAnimation {
+public interface EntityBasedAnimation {
 
-    void update(@NotNull final Entity entity);
+    @NotNull
+    Entity getEntity();
 
 }

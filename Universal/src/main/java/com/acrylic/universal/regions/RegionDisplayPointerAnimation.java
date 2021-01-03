@@ -1,26 +1,40 @@
 package com.acrylic.universal.regions;
 
-import com.acrylic.universal.animations.IndexedAnimation;
 import com.acrylic.universal.animations.holograms.Holograms;
-import com.acrylic.universal.animations.impl.EntityAnimation;
+import com.acrylic.universal.animations.Animation;
+import com.acrylic.universal.animations.EntityAnimation;
+import com.acrylic.universal.animations.RunnableAnimation;
 import com.acrylic.universal.animations.rotational.AbstractHeadRotationAnimation;
 import com.acrylic.universal.animations.rotational.HeadRotationAnimation;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
-import lombok.Getter;
-import lombok.Setter;
+import com.acrylic.universal.files.configloader.ConfigValue;
+import com.acrylic.universal.files.configloader.Configurable;
+import com.acrylic.universal.interfaces.Index;
+import com.acrylic.universal.threads.Scheduler;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter @Getter
-public class RegionDisplayPointerAnimation extends IndexedAnimation {
+@Configurable(
+        filePath = "acrylic.yml",
+        plugin = "Acrylic",
+        root = {"regions", "display-pointer"}
+)
+public class RegionDisplayPointerAnimation
+        implements Animation, RunnableAnimation, Index {
+
+    @ConfigValue(path = "durations-ticks")
+    private static int DURATION_TICKS = 1000;
 
     private final List<AbstractHeadRotationAnimation> animations = new ArrayList<>();
-    private int maxIndex = 1000;
+    private int maxIndex = DURATION_TICKS;
+    private int index = 0;
+    private Scheduler<?> scheduler = Scheduler.sync().runRepeatingTask(1, 1);
 
     public RegionDisplayPointerAnimation(Region region) {
         int point = 0;
@@ -30,8 +44,9 @@ public class RegionDisplayPointerAnimation extends IndexedAnimation {
             armorStandAnimator.getBukkitEntity().getEquipment().setHelmet(new ItemStack((point % 2 == 0) ? Material.EMERALD_BLOCK : Material.REDSTONE_BLOCK));
             HeadRotationAnimation animation = new HeadRotationAnimation(armorStandAnimator);
             Location loc = armorStandAnimator.getBukkitEntity().getLocation();
-            animation.setHologram(new Holograms());
-            animation.getHolograms().addHologram(loc, 1,"&7(" + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + ")", "&b&lPoint #" + point);
+            Holograms holograms = new Holograms();
+            animation.setHologram(holograms);
+            holograms.addHologram(loc, 1,"&7(" + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + ")", "&b&lPoint #" + point);
             animations.add(animation);
         }
     }
@@ -42,13 +57,11 @@ public class RegionDisplayPointerAnimation extends IndexedAnimation {
         animations.forEach(abstractHeadRotationAnimation -> abstractHeadRotationAnimation.teleportWithHolograms(abstractHeadRotationAnimation.getEntityAnimator().getBukkitEntity().getLocation()));
     }
 
-    @Override
-    public void endCheck() {
+    private void endCheck() {
         if (hasEnded())
-            delete();
+            terminate();
     }
 
-    @Override
     public boolean hasEnded() {
         return getIndex() > maxIndex;
     }
@@ -56,5 +69,53 @@ public class RegionDisplayPointerAnimation extends IndexedAnimation {
     @Override
     public void delete() {
         animations.forEach(EntityAnimation::delete);
+    }
+
+    @Override
+    public boolean isRunning() {
+        return !animations.isEmpty();
+    }
+
+    @NotNull
+    @Override
+    public Scheduler<?> getScheduler() {
+        return scheduler;
+    }
+
+    @Override
+    public void setScheduler(@NotNull Scheduler<?> scheduler) {
+        this.scheduler = scheduler;
+    }
+
+    @Override
+    public void run() {
+        if (isRunning())
+            update();
+    }
+
+    @Override
+    public int getIndex() {
+        return index;
+    }
+
+    @Override
+    public int getIndexIncrement() {
+        return 1;
+    }
+
+    @Override
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    @Override
+    public void setIndexIncrement(int indexIncrement) {
+        throw new IllegalStateException("You may not set the index increment.");
+    }
+
+    @Override
+    public void terminate() {
+        delete();
+        terminateScheduler();
     }
 }

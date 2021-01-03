@@ -1,6 +1,6 @@
 package com.acrylic.universal.animations.rotational;
 
-import com.acrylic.universal.animations.impl.EntityAnimation;
+import com.acrylic.universal.animations.EntityAnimation;
 import com.acrylic.universal.entityanimations.EntityAnimator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;

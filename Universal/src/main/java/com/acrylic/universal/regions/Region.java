@@ -66,13 +66,7 @@ public interface Region {
 
     default void showMarkers(JavaPlugin plugin) {
         RegionDisplayPointerAnimation regionDisplayPointerAnimation = new RegionDisplayPointerAnimation(this);
-        Scheduler.sync()
-                .runRepeatingTask(1, 1)
-                .handle(task -> {
-                    if (regionDisplayPointerAnimation.hasEnded())
-                        task.cancel();
-                    regionDisplayPointerAnimation.update();
-                }).build();
+        regionDisplayPointerAnimation.startScheduler();
     }
 
     /**

@@ -16,6 +16,7 @@ import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.items.ItemUtils;
+import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.lines.QuadraticYLine;
@@ -175,7 +176,8 @@ public class AcrylicCommand {
                                 .setTimerActive(true)
                                 .handle(commandExecutor -> {
                             Player player = (Player) commandExecutor.getSender();
-                            Bukkit.broadcastMessage(Universal.getRegionMap().getRegions(player.getLocation()).size() + "");
+                            SimpleRegion simpleRegion = new SimpleRegion(player.getLocation(), player.getLocation().add(10, 10 , 10));
+                            simpleRegion.showMarkers();
                         }),
                         CommandBuilder.create("-list")
                                 .handle(commandExecutor ->  {
@@ -293,7 +295,7 @@ public class AcrylicCommand {
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
-                            Dangle dangle = new Dangle();
+                            Dangle dangle = new Dangle(sender);
                             for (int i = 0; i < 10; i++) {
                                 AbstractArmorStandAnimator armorStandAnimator = new ArmorStandAnimator(sender.getLocation())
                                         .asAnimator();
@@ -304,12 +306,7 @@ public class AcrylicCommand {
                                 holograms.addHologram(sender.getLocation(), 2f, "&eClick Me!", "&b&lDiamond pickaxe");
                                 handRot.setHologram(holograms);
                             }
-                            Scheduler.sync().runRepeatingTask(1, 1)
-                                    .handle(task -> {
-                                        if (dangle.hasEnded())
-                                            task.cancel();
-                                        dangle.update(sender);
-                                    }).build();
+                            dangle.startScheduler();
                         }),
                         CommandBuilder.create("files")
                                 .handle(commandExecutor -> {

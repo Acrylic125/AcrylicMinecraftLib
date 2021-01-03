@@ -1,6 +1,6 @@
 package com.acrylic.universal.animations.holograms;
 
-import com.acrylic.universal.animations.impl.EntityAnimation;
+import com.acrylic.universal.animations.EntityAnimation;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
