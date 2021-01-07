@@ -4,7 +4,7 @@ import com.acrylic.universal.Universal;
 import com.acrylic.universal.events.AbstractEventBuilder;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.threads.Scheduler;
-import com.acrylic.universal.threads.SyncScheduleBuilder;
+import com.acrylic.universal.threads.SyncScheduler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 public class ItemDropChecker {
 
     private ItemDropProtectionMap itemDropProtectionMap = new SimpleItemDropProtectionMap();
-    private Scheduler<SyncScheduleBuilder> syncScheduleBuilderScheduler;
+    private Scheduler<?> syncScheduleBuilderScheduler;
     private AbstractEventBuilder<?> entityPickupItemEventBuilder;
     private AbstractEventBuilder<ItemMergeEvent> mergeEventBuilder;
 

@@ -3,7 +3,7 @@ package com.acrylic.universal.threads;
 import org.jetbrains.annotations.NotNull;
 
 @FunctionalInterface
-public interface ExecutedTask<T extends Scheduler<T>> {
+public interface ExecutedTask<R extends TaskType> {
 
     /**
      * This functional interface gets called when the #run method gets
@@ -11,6 +11,6 @@ public interface ExecutedTask<T extends Scheduler<T>> {
      *
      * @param scheduler The scheduler that ran this.
      */
-    void run(@NotNull T scheduler);
+    void run(@NotNull Scheduler<R> scheduler);
 
 }

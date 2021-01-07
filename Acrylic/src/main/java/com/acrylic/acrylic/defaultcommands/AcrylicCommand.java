@@ -1,5 +1,6 @@
 package com.acrylic.acrylic.defaultcommands;
 
+import com.acrylic.time.Time;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.animations.dangle.Dangle;
 import com.acrylic.universal.animations.holograms.Holograms;
@@ -147,18 +148,10 @@ public class AcrylicCommand {
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .setTimerActive(true)
                                 .handle(commandExecutor -> {
-                            Scheduler.sync()
-                                    .runRepeatingIndexedTask(1, 1, 100)
-                                    .setName("Test Scheduler")
-                                    .handleThenBuild(task -> {
-                                        TaskType.IndexedRepeatingTask taskType = (TaskType.IndexedRepeatingTask) task.getTaskType();
-                                        if (taskType.hasReachedIndex()) {
-                                            task.cancel();
-                                        } else {
-                                            taskType.increaseIndex();
-                                            Bukkit.broadcastMessage("Test " + taskType.getIndex());
-                                        }
+                                    Scheduler.sync().runDelayedTask(5, Time.SECONDS).handleThenBuild(task -> {
+                                        Bukkit.broadcastMessage("hello!");
                                     });
+
                         }),
                         CommandBuilder.create("item")
                                 .filter(AbstractCommandExecuted::isPlayer)

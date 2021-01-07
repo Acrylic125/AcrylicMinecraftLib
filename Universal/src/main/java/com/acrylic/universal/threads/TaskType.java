@@ -25,11 +25,11 @@ import java.util.concurrent.Future;
  *
  * @see RepeatingTask for more info.
  *
- * Synchronous Scheduler {@link SyncScheduleBuilder} ONLY WORKS
+ * Synchronous Scheduler {@link SyncScheduler} ONLY WORKS
  * WITH TICKS AS THE HIGHEST DEGREEOF ACCURACY OF TIME due to
  * how Minecraft functions.
  *
- * ASynchronous Scheduler {@link AsyncScheduleBuilder} however,
+ * ASynchronous Scheduler {@link AsyncScheduler} however,
  * can have a highest degree of accuracy of Nanoseconds due to
  * the use of a different {@link ScheduleExecutor}.
  */
@@ -37,11 +37,11 @@ public class TaskType {
 
     private static final TaskType EMPTY = new TaskType();
 
-    public BukkitTask scheduleSync(@NotNull SyncScheduleBuilder scheduleBuilder) {
+    public BukkitTask scheduleSync(@NotNull SyncScheduler<?> scheduleBuilder) {
         return Bukkit.getScheduler().runTask(scheduleBuilder.getPlugin(), scheduleBuilder);
     }
 
-    public Future<?> scheduleASync(@NotNull AsyncScheduleBuilder scheduleBuilder) {
+    public Future<?> scheduleASync(@NotNull AsyncScheduler<?> scheduleBuilder) {
         return ScheduleExecutor.ASYNC_EXECUTOR.runTask(scheduleBuilder);
     }
 
@@ -49,15 +49,15 @@ public class TaskType {
         return EMPTY;
     }
 
-    public static TaskType delayedTask(long delay) {
+    public static DelayedTask delayedTask(long delay) {
         return new DelayedTask(delay);
     }
 
-    public static TaskType repeatTask(long delay, long period) {
+    public static RepeatingTask repeatTask(long delay, long period) {
         return new RepeatingTask(delay, period);
     }
 
-    public static TaskType indexRepeatingTask(long delay, long period, int maxIndex) {
+    public static IndexedRepeatingTask indexRepeatingTask(long delay, long period, int maxIndex) {
         return new IndexedRepeatingTask(delay, period, maxIndex);
     }
 
@@ -88,12 +88,12 @@ public class TaskType {
         }
 
         @Override
-        public BukkitTask scheduleSync(@NotNull SyncScheduleBuilder scheduleBuilder) {
-            return Bukkit.getScheduler().runTaskLater(scheduleBuilder.getPlugin(), scheduleBuilder, Scheduler.convertTimeToTicks(delay, Time.NANOSECONDS));
+        public BukkitTask scheduleSync(@NotNull SyncScheduler<?> scheduleBuilder) {
+            return Bukkit.getScheduler().runTaskLater(scheduleBuilder.getPlugin(), scheduleBuilder, ScheduleTaskContext.convertTimeToTicks(delay, Time.NANOSECONDS));
         }
 
         @Override
-        public Future<?> scheduleASync(@NotNull AsyncScheduleBuilder scheduleBuilder) {
+        public Future<?> scheduleASync(@NotNull AsyncScheduler<?> scheduleBuilder) {
             return ScheduleExecutor.ASYNC_EXECUTOR.runTaskLater(scheduleBuilder, delay, Time.NANOSECONDS);
         }
     }
@@ -129,12 +129,12 @@ public class TaskType {
         }
 
         @Override
-        public BukkitTask scheduleSync(@NotNull SyncScheduleBuilder scheduleBuilder) {
-            return Bukkit.getScheduler().runTaskTimer(scheduleBuilder.getPlugin(), scheduleBuilder, Scheduler.convertTimeToTicks(getDelay(), Time.NANOSECONDS), Scheduler.convertTimeToTicks(getPeriod(), Time.NANOSECONDS));
+        public BukkitTask scheduleSync(@NotNull SyncScheduler<?> scheduleBuilder) {
+            return Bukkit.getScheduler().runTaskTimer(scheduleBuilder.getPlugin(), scheduleBuilder, ScheduleTaskContext.convertTimeToTicks(getDelay(), Time.NANOSECONDS), ScheduleTaskContext.convertTimeToTicks(getPeriod(), Time.NANOSECONDS));
         }
 
         @Override
-        public Future<?> scheduleASync(@NotNull AsyncScheduleBuilder scheduleBuilder) {
+        public Future<?> scheduleASync(@NotNull AsyncScheduler<?> scheduleBuilder) {
             return ScheduleExecutor.ASYNC_EXECUTOR.runTaskTimer(scheduleBuilder, getDelay(), Time.NANOSECONDS, getPeriod(), Time.NANOSECONDS);
         }
     }
@@ -183,7 +183,7 @@ public class TaskType {
         }
 
         public boolean hasReachedIndex() {
-            return index > maxIndex;
+            return index >= maxIndex;
         }
 
     }

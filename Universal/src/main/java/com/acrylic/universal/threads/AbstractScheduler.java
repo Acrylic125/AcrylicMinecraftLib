@@ -5,13 +5,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unchecked")
-public abstract class AbstractScheduleBuilder<T extends Scheduler<T>>
-        implements Scheduler<T> {
+public abstract class AbstractScheduler<R extends TaskType>
+        implements Scheduler<R> {
 
+    private final R taskType;
     private JavaPlugin plugin = Universal.getPlugin();
-    private ExecutedTask<T> handle;
-    private TaskType taskType = TaskType.task();
+    private ExecutedTask<R> handle;
     private String name;
+
+    public AbstractScheduler(@NotNull R taskType) {
+        this.taskType = taskType;
+    }
 
     @NotNull
     protected String generateName() {
@@ -24,15 +28,15 @@ public abstract class AbstractScheduleBuilder<T extends Scheduler<T>>
     }
 
     @Override
-    public T setName(@NotNull String name) {
+    public Scheduler<R> setName(@NotNull String name) {
         this.name = name;
-        return (T) this;
+        return this;
     }
 
     @Override
-    public T plugin(@NotNull JavaPlugin plugin) {
+    public Scheduler<R> plugin(@NotNull JavaPlugin plugin) {
         this.plugin = plugin;
-        return (T) this;
+        return this;
     }
 
     @Override
@@ -46,25 +50,19 @@ public abstract class AbstractScheduleBuilder<T extends Scheduler<T>>
     }
 
     @Override
-    public T handle(@NotNull ExecutedTask<T> action) {
+    public Scheduler<R> handle(@NotNull ExecutedTask<R> action) {
         this.handle = action;
-        return (T) this;
+        return this;
     }
 
     @Override
-    public ExecutedTask<T> getHandle() {
+    public ExecutedTask<R> getHandle() {
         return handle;
-    }
-
-    @Override
-    public T taskType(@NotNull TaskType taskType) {
-        this.taskType = taskType;
-        return (T) this;
     }
 
     @NotNull
     @Override
-    public TaskType getTaskType() {
+    public R getTaskType() {
         return taskType;
     }
 }

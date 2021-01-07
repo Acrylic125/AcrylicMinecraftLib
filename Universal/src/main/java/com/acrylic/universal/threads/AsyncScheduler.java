@@ -1,11 +1,18 @@
 package com.acrylic.universal.threads;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 
-public class AsyncScheduleBuilder extends AbstractScheduleBuilder<AsyncScheduleBuilder> {
+public class AsyncScheduler<R extends TaskType>
+        extends AbstractScheduler<R> {
 
     private Future<?> future;
+
+    public AsyncScheduler(@NotNull R taskType) {
+        super(taskType);
+    }
 
     @Override
     public boolean isAsync() {

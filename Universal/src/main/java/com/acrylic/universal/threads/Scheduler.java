@@ -1,66 +1,34 @@
 package com.acrylic.universal.threads;
 
 import co.aikar.timings.lib.MCTiming;
-import com.acrylic.time.Time;
 import com.acrylic.universal.Universal;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public interface Scheduler<T extends Scheduler<T>> extends Runnable {
+public interface Scheduler<R extends TaskType> extends Runnable {
 
-    static SyncScheduleBuilder sync() {
-        return new SyncScheduleBuilder();
+    static ScheduleTaskContext sync() {
+        return new ScheduleTaskContext(false);
     }
 
-    static AsyncScheduleBuilder async() {
-        return new AsyncScheduleBuilder();
+    static ScheduleTaskContext async() {
+        return new ScheduleTaskContext(true);
     }
 
-    default T runTask() {
-        return taskType(TaskType.task());
-    }
+    @NotNull
+    R getTaskType();
 
-    default T runDelayedTask(long ticks) {
-        return taskType(TaskType.delayedTask(convertTicksToTime(ticks, Time.NANOSECONDS)));
-    }
-
-    default T runDelayedTask(long time, Time timeUnit) {
-        return taskType(TaskType.delayedTask(time * timeUnit.getNanoScale()));
-    }
-
-    default T runRepeatingTask(long delayTicks, long periodTicks) {
-        return taskType(TaskType.repeatTask(convertTicksToTime(delayTicks, Time.NANOSECONDS), convertTicksToTime(periodTicks, Time.NANOSECONDS)));
-    }
-
-    default T runRepeatingTask(long delay, Time delayTimeUnit, long period, Time periodTimeUnit) {
-        return taskType(TaskType.repeatTask(delay * delayTimeUnit.getNanoScale(), period * periodTimeUnit.getNanoScale()));
-    }
-
-    default T runRepeatingIndexedTask(long delayTicks, long periodTicks, int maxIndex) {
-        return taskType(TaskType.indexRepeatingTask(convertTicksToTime(delayTicks, Time.NANOSECONDS), convertTicksToTime(periodTicks, Time.NANOSECONDS), maxIndex));
-    }
-
-    default T runRepeatingIndexedTask(long delay, Time delayTimeUnit, long period, Time periodTimeUnit, int maxIndex) {
-        return taskType(TaskType.indexRepeatingTask(delay * delayTimeUnit.getNanoScale(), period * periodTimeUnit.getNanoScale(), maxIndex));
-    }
-
-    T taskType(@NotNull TaskType taskType);
-
-    @Nullable
-    TaskType getTaskType();
-
-    T setName(@NotNull String name);
+    Scheduler<R> setName(@NotNull String name);
 
     String getName();
 
-    T plugin(@NotNull JavaPlugin plugin);
+    Scheduler<R> plugin(@NotNull JavaPlugin plugin);
 
     JavaPlugin getPlugin();
 
     boolean isAsync();
 
-    default void handleThenBuild(@NotNull ExecutedTask<T> action) {
+    default void handleThenBuild(@NotNull ExecutedTask<R> action) {
         handle(action).build();
     }
 
@@ -68,13 +36,13 @@ public interface Scheduler<T extends Scheduler<T>> extends Runnable {
         handle(action).build();
     }
 
-    T handle(@NotNull ExecutedTask<T> action);
+    Scheduler<R> handle(@NotNull ExecutedTask<R> action);
 
-    default T handle(@NotNull Runnable runnable) {
+    default Scheduler<R> handle(@NotNull Runnable runnable) {
         return handle(task -> runnable.run());
     }
 
-    ExecutedTask<T> getHandle();
+    ExecutedTask<R> getHandle();
 
     void cancel();
 
@@ -84,7 +52,7 @@ public interface Scheduler<T extends Scheduler<T>> extends Runnable {
         MCTiming timing = getTimings();
         try {
             timing.startTiming();
-            getHandle().run((T) this);
+            getHandle().run(this);
         } catch (Throwable t) {
             System.out.println("[ SCHEDULER ERROR ]");
             t.printStackTrace();
@@ -99,14 +67,6 @@ public interface Scheduler<T extends Scheduler<T>> extends Runnable {
     @NotNull
     default MCTiming getTimings() {
         return Universal.getTimingManager().of(getName());
-    }
-
-    static long convertTimeToTicks(long time, @NotNull Time timeUnit) {
-        return time * timeUnit.getNanoScale() / 50_000_000;
-    }
-
-    static long convertTicksToTime(long ticks, @NotNull Time timeUnit) {
-        return (ticks * 50_000_000) / timeUnit.getNanoScale();
     }
 
 }
