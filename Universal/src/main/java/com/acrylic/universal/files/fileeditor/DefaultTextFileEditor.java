@@ -53,4 +53,8 @@ public class DefaultTextFileEditor implements StandardTextFileEditor {
         return Math.max(0, Math.min(contents.size() - 1, i));
     }
 
+    @Override
+    public void clearFileEditor() {
+        contents.clear();
+    }
 }

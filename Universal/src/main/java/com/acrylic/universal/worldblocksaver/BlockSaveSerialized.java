@@ -1,5 +1,6 @@
-package com.acrylic.universal.blockresetter;
+package com.acrylic.universal.worldblocksaver;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -8,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
-public class BlockResetSerialized implements SerializedBlockResetInstance {
+public class BlockSaveSerialized implements SerializedBlockSaveInstance {
 
     private final String world;
     private final int x;
@@ -18,7 +19,7 @@ public class BlockResetSerialized implements SerializedBlockResetInstance {
     private final byte blockDamage;
 
     // x, y, z, world, mateiral, dmg
-    public BlockResetSerialized(@NotNull String... serialized) {
+    public BlockSaveSerialized(@NotNull String... serialized) {
         try {
             this.x = Integer.parseInt(serialized[0]);
             this.y = Integer.parseInt(serialized[1]);
@@ -32,7 +33,7 @@ public class BlockResetSerialized implements SerializedBlockResetInstance {
         }
     }
 
-    public BlockResetSerialized(@NotNull Block block) {
+    public BlockSaveSerialized(@NotNull Block block) {
         this.x = block.getX();
         this.y = block.getY();
         this.z = block.getZ();
@@ -81,5 +82,12 @@ public class BlockResetSerialized implements SerializedBlockResetInstance {
             return world.getBlockAt(x, y, z);
         }
         return null;
+    }
+
+    @Override
+    public void restore() {
+        Block block = getBlock();
+        if (block != null)
+            block.setType(getMaterial());
     }
 }

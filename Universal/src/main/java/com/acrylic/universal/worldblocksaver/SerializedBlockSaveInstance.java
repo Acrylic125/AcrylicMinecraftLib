@@ -1,4 +1,4 @@
-package com.acrylic.universal.blockresetter;
+package com.acrylic.universal.worldblocksaver;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -7,7 +7,7 @@ import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface SerializedBlockResetInstance {
+public interface SerializedBlockSaveInstance {
 
     @NotNull
     String getWorldName();
@@ -30,5 +30,7 @@ public interface SerializedBlockResetInstance {
 
     @Nullable
     Block getBlock();
+
+    void restore();
 
 }

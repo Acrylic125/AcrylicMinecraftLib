@@ -254,4 +254,9 @@ public class DefaultFileEditor implements FileEditor {
         Object o = getObject(s);
         return o instanceof Boolean && (boolean) o;
     }
+
+    @Override
+    public void clearFileEditor() {
+        contents.clear();
+    }
 }

@@ -12,9 +12,13 @@ public interface Runner<T extends TaskType>
 
     boolean isRunning();
 
+    void setRunning(boolean running);
+
     default void start() {
-        if (!isRunning())
+        if (!isRunning()) {
             getScheduler().build();
+            setRunning(true);
+        }
     }
 
     @Override
