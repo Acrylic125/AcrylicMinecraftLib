@@ -12,10 +12,10 @@ import com.acrylic.universal.command.CommandUtils;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
-import com.acrylic.universal.files.DATFile;
+import com.acrylic.universal.files.JSONFile;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.files.fileeditor.CSVTextFileEditor;
-import com.acrylic.universal.files.parsers.CSVFile;
+import com.acrylic.universal.files.CSVFile;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
@@ -38,10 +38,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class AcrylicCommand {
 
@@ -141,6 +137,11 @@ public class AcrylicCommand {
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
                     int i = CommandUtils.getInteger(commandExecutor, 0, 0);
+                    CSVFile jsonFile = new CSVFile("test.csv", Universal.getPlugin());
+                    jsonFile.load();
+                    jsonFile.getFileEditor().writeNewLine("Cum", 100, "yeet", "no", "hell", "pussy");
+                    jsonFile.saveFile();
+
                     /**Configuration configuration = new Configuration("test.yml", Universal.getPlugin());
                     configuration.load();
                     if (i == 0) {
@@ -154,12 +155,7 @@ public class AcrylicCommand {
                         List<String> list = (List<String>) configuration.getFileEditor().getList("Test");
                         Bukkit.broadcastMessage(list.size() + " ");
                     }**/
-                    CSVFile csvFile = new CSVFile("test.csv");
-                    csvFile.load();
-                    CSVTextFileEditor csvTextFileEditor = csvFile.getFileEditor();
-                    csvTextFileEditor.writeNewLine("hello", 100, "gay");
-                    csvFile.saveFile();
-                    Bukkit.broadcastMessage(csvTextFileEditor.readLine(0) + "");
+                    Bukkit.broadcastMessage(jsonFile.getFileEditor().readLine(0) + "");
                     ChatUtils.send(sender, "&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!");
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

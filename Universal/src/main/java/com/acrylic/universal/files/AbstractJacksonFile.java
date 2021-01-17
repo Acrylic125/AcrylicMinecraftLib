@@ -5,7 +5,9 @@ import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 
@@ -17,6 +19,16 @@ public abstract class AbstractJacksonFile extends AbstractFile {
     public AbstractJacksonFile(@NotNull String path, @NotNull ObjectMapper mapper) {
         super(path);
         this.mapper = mapper;
+        init();
+    }
+
+    public AbstractJacksonFile(@NotNull String path, @NotNull ObjectMapper mapper, @Nullable JavaPlugin plugin) {
+        super(path, plugin);
+        this.mapper = mapper;
+        init();
+    }
+
+    private void init() {
         mapper.findAndRegisterModules();
         mapper.enable(JsonParser.Feature.ALLOW_COMMENTS, JsonParser.Feature.ALLOW_YAML_COMMENTS);
     }
@@ -46,4 +58,10 @@ public abstract class AbstractJacksonFile extends AbstractFile {
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public void load() {
+        addFileEditor();
+    }
+
 }
