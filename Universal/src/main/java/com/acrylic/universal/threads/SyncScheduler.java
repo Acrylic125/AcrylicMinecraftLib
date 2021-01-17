@@ -1,6 +1,7 @@
 package com.acrylic.universal.threads;
 
 import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 public class SyncScheduler<R extends TaskType> extends AbstractScheduler<R> {

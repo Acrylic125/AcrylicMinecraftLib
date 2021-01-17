@@ -22,7 +22,7 @@ public final class ChatUtils {
         return text;
     }
 
-    public static void send(@NotNull Collection<Player> players, @NotNull String... text) {
+    public static void send(@NotNull Collection<? extends Player> players, @NotNull String... text) {
         for (Player player : players)
             send(player, text);
     }

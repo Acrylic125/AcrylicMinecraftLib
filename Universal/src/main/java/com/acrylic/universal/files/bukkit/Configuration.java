@@ -3,7 +3,6 @@ package com.acrylic.universal.files.bukkit;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.files.YMLFile;
 import org.apache.commons.io.FileUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -1,6 +1,7 @@
 package com.acrylic.universal.files.configloader;
 
 import com.acrylic.universal.files.AbstractFile;
+import com.acrylic.universal.files.AbstractJacksonFile;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.reflection.ReflectionUtils;
@@ -63,7 +64,7 @@ public class ConfigLoader<T> {
         this.loadWithParent = configurable.loadWithParentClass();
     }
 
-    public ConfigLoader(@NotNull AbstractFile file, @NotNull Class<T> loadToClass) {
+    public ConfigLoader(@NotNull AbstractJacksonFile file, @NotNull Class<T> loadToClass) {
         this.file = file;
         this.fileEditor = file.getFileEditor();
         this.loadToClass = loadToClass;

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
-public class SurfaceLocationSearcher {
+public class SurfaceLocationSearcher implements LocationSearcher {
 
     private double minSearchX, minSearchZ;
     private double maxSearchX, maxSearchZ;
@@ -138,6 +138,7 @@ public class SurfaceLocationSearcher {
     }
 
     @Nullable
+    @Override
     public Location getLocation(@NotNull Location source) {
         World world = source.getWorld();
         return (world == null) ? null : getLocation(world, source, searchTries);

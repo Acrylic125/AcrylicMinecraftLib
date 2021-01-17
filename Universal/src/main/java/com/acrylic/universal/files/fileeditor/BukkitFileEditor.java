@@ -7,7 +7,8 @@ import files.editor.Configurable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public interface BukkitFileEditor extends Configurable {
+public interface BukkitFileEditor
+        extends Configurable, AbstractFileEditor {
 
     void setItem(@NotNull ItemStack item);
 

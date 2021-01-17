@@ -12,6 +12,7 @@ import com.acrylic.universal.items.itemdropproection.ItemDropChecker;
 import com.acrylic.universal.regions.RegionDisplayPointerAnimation;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.version_1_8.items.VanillaItemTypeAnalyzer;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Acrylic extends JavaPlugin {

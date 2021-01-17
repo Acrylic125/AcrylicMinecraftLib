@@ -12,23 +12,20 @@ import com.acrylic.universal.command.CommandUtils;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
+import com.acrylic.universal.files.DATFile;
 import com.acrylic.universal.files.bukkit.Configuration;
+import com.acrylic.universal.files.fileeditor.CSVTextFileEditor;
+import com.acrylic.universal.files.parsers.CSVFile;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
-import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.lines.QuadraticYLine;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
-import com.acrylic.universal.shapes.spiral.Spiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
-import com.acrylic.universal.threads.TaskType;
-import com.acrylic.universal.utils.BlockIterator;
-import com.acrylic.universal.utils.LocationConverter;
-import com.acrylic.universal.utils.SurfaceLocationSearcher;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -41,6 +38,10 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AcrylicCommand {
 
@@ -139,8 +140,26 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    SurfaceLocationSearcher locationSearcher = new SurfaceLocationSearcher(4, 32);
-                    Bukkit.broadcastMessage(LocationConverter.DEFAULT.convertWithWorld(locationSearcher.getLocation(sender.getLocation())));
+                    int i = CommandUtils.getInteger(commandExecutor, 0, 0);
+                    /**Configuration configuration = new Configuration("test.yml", Universal.getPlugin());
+                    configuration.load();
+                    if (i == 0) {
+                        ArrayList<String> list = new ArrayList<>();
+                        for (int j = 0; j < 1000000; j++) {
+                            list.add(j + ", " + (2 * j) + ", " + "ehHEHEJDJUJRJJRCJJWKCKWKKWRCR");
+                        }
+                        configuration.getFileEditor().set("Test", list);
+                        configuration.saveFile();
+                    } else {
+                        List<String> list = (List<String>) configuration.getFileEditor().getList("Test");
+                        Bukkit.broadcastMessage(list.size() + " ");
+                    }**/
+                    CSVFile csvFile = new CSVFile("test.csv");
+                    csvFile.load();
+                    CSVTextFileEditor csvTextFileEditor = csvFile.getFileEditor();
+                    csvTextFileEditor.writeNewLine("hello", 100, "gay");
+                    csvFile.saveFile();
+                    Bukkit.broadcastMessage(csvTextFileEditor.readLine(0) + "");
                     ChatUtils.send(sender, "&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!");
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

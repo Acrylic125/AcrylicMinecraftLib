@@ -1,5 +1,6 @@
 package com.acrylic.universal.files;
 
+import com.acrylic.universal.files.fileeditor.AbstractFileEditor;
 import com.acrylic.universal.files.fileeditor.FileEditor;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +12,6 @@ import java.util.logging.Logger;
 public abstract class AbstractFile {
 
     private final File file;
-    private FileEditor fileEditor;
     private boolean justCreated = false;
 
     public AbstractFile(@NotNull String path) {
@@ -36,19 +36,13 @@ public abstract class AbstractFile {
         return justCreated;
     }
 
-    public void setFileEditor(FileEditor fileEditor) {
-        this.fileEditor = fileEditor;
-    }
-
-    @NotNull
-    public FileEditor getFileEditor() {
-        return fileEditor;
-    }
-
     @NotNull
     public File getFile() {
         return file;
     }
+
+    @NotNull
+    public abstract AbstractFileEditor getFileEditor();
 
     public abstract void saveFile();
 
