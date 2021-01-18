@@ -12,10 +12,8 @@ import com.acrylic.universal.command.CommandUtils;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
-import com.acrylic.universal.files.JSONFile;
-import com.acrylic.universal.files.bukkit.Configuration;
-import com.acrylic.universal.files.fileeditor.CSVTextFileEditor;
 import com.acrylic.universal.files.CSVFile;
+import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
@@ -26,6 +24,9 @@ import com.acrylic.universal.shapes.lines.QuadraticYLine;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universal.worldblocksaver.BlockSaveObserver;
+import com.acrylic.universal.worldblocksaver.BlockSaver;
+import com.acrylic.universal.worldblocksaver.SerializedBlockSaveInstance;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -136,11 +137,7 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    int i = CommandUtils.getInteger(commandExecutor, 0, 0);
-                    CSVFile jsonFile = new CSVFile("test.csv", Universal.getPlugin());
-                    jsonFile.load();
-                    jsonFile.getFileEditor().writeNewLine("Cum", 100, "yeet", "no", "hell", "pussy");
-                    jsonFile.saveFile();
+                    BlockSaver<SerializedBlockSaveInstance, BlockSaveObserver> blockSaver = Universal.getAcrylicPlugin().getBlockSaver();
 
                     /**Configuration configuration = new Configuration("test.yml", Universal.getPlugin());
                     configuration.load();
@@ -155,7 +152,6 @@ public class AcrylicCommand {
                         List<String> list = (List<String>) configuration.getFileEditor().getList("Test");
                         Bukkit.broadcastMessage(list.size() + " ");
                     }**/
-                    Bukkit.broadcastMessage(jsonFile.getFileEditor().readLine(0) + "");
                     ChatUtils.send(sender, "&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!");
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

@@ -26,11 +26,12 @@ public interface SerializedBlockSaveInstance {
     @NotNull
     Material getMaterial();
 
-    byte getBlockData();
-
     @Nullable
     Block getBlock();
 
     void restore();
+
+    @NotNull
+    String[] serialize();
 
 }

@@ -11,6 +11,11 @@ import java.util.Collection;
 public interface BlockSaver<T extends SerializedBlockSaveInstance, O extends BlockSaveObserver>
         extends Runner<TaskType.RepeatingTask> {
 
+    void setSerializer(@NotNull BlockSaverSerializer<T> serializer);
+
+    @NotNull
+    BlockSaverSerializer<T> getSerializer();
+
     @NotNull
     AbstractFile getFileStore();
 
@@ -19,12 +24,11 @@ public interface BlockSaver<T extends SerializedBlockSaveInstance, O extends Blo
 
     void saveToFile();
 
-    @NotNull
-    T getSaveInstance(@NotNull Block block);
-
     void restore(@NotNull T serializedBlockInstance);
 
     void restore(@NotNull String serialized);
+
+    void restoreAllCached();
 
     void observe(@NotNull O observer);
 

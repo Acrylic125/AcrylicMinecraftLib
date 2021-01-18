@@ -4,10 +4,8 @@ import com.acrylic.time.Time;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.files.CSVFile;
 import com.acrylic.universal.files.fileeditor.CSVTextFileEditor;
-import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.threads.TaskType;
-import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -21,9 +19,11 @@ public class SimpleBlockSaver
     private final Scheduler<TaskType.RepeatingTask> scheduler;
     private final List<BlockSaveObserver> stored = new LinkedList<>();
     private boolean running = false;
+    private BlockSaverSerializer<SerializedBlockSaveInstance> serializer;
 
     public SimpleBlockSaver() {
         this.csvFile = new CSVFile("blocksaves.csv", Universal.getPlugin());
+        this.csvFile.load();
         this.scheduler = getNewScheduler();
     }
 
@@ -55,6 +55,17 @@ public class SimpleBlockSaver
         this.running = running;
     }
 
+    @Override
+    public void setSerializer(@NotNull BlockSaverSerializer<SerializedBlockSaveInstance> serializer) {
+        this.serializer = serializer;
+    }
+
+    @NotNull
+    @Override
+    public BlockSaverSerializer<SerializedBlockSaveInstance> getSerializer() {
+        return serializer;
+    }
+
     @NotNull
     @Override
     public CSVFile getFileStore() {
@@ -69,20 +80,21 @@ public class SimpleBlockSaver
 
     @Override
     public void saveToFile() {
-        CSVTextFileEditor fileEditor = getFileStore().getFileEditor();
-        fileEditor.clearFileEditor();
-        for (BlockSaveObserver blockSaveObserver : stored) {
-            for (BlockSavable blockSavable : blockSaveObserver.getSavableCollection()) {
-                
+        try {
+            CSVTextFileEditor fileEditor = getFileStore().getFileEditor();
+            fileEditor.clearFileEditor();
+            for (BlockSaveObserver blockSaveObserver : stored) {
+                for (BlockSavable blockSavable : blockSaveObserver.getSavableCollection()) {
+                    SerializedBlockSaveInstance serializedBlockSaveInstance = getSerializer().serialize(blockSavable.getBlockToSave());
+                    fileEditor.writeNewLine(serializedBlockSaveInstance.serialize());
+                }
             }
+            csvFile.saveFile();
+        } catch (Exception ex) {
+            System.out.println("[ Block Saver Error @SaveToFile ]");
+            ex.printStackTrace();
+            System.out.println("[ End of Block Saver Error ]");
         }
-        csvFile.saveFile();
-    }
-
-    @NotNull
-    @Override
-    public SerializedBlockSaveInstance getSaveInstance(@NotNull Block block) {
-        return null;
     }
 
     @Override
@@ -92,7 +104,20 @@ public class SimpleBlockSaver
 
     @Override
     public void restore(@NotNull String serialized) {
+        try {
+            String[] arr = csvFile.getFileEditor().toStringArray(serialized);
+            getSerializer().deserialize(arr);
+        } catch (Exception ex) {
+            System.out.println("[ Block Saver Error @Restore ]");
+            ex.printStackTrace();
+            System.out.println("[ End of Block Saver Error ]");
+        }
+    }
 
+    @Override
+    public void restoreAllCached() {
+        for (String rawContent : csvFile.getFileEditor().getRawContents())
+            restore(rawContent);
     }
 
     @Override

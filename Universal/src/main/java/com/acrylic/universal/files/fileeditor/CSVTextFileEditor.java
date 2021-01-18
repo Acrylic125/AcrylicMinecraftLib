@@ -31,12 +31,29 @@ public class CSVTextFileEditor extends DefaultTextFileEditor {
         this(Pattern.compile(sep), contents);
     }
 
+    public void writeNewLine(@NotNull String[] str) {
+        getRawContents().add(convertToString(str));
+    }
+
     public void writeNewLine(@NotNull Object... str) {
         getRawContents().add(convertToString(str));
     }
 
     public void writeLine(int i, @NotNull Object... str) {
         getRawContents().set(getSafeIndex(i), convertToString(str));
+    }
+
+    public String convertToString(@NotNull String[] str) {
+        StringBuilder stringBuilder = new StringBuilder();
+        int i = 0, m = str.length;
+        String p = pattern.pattern();
+        for (Object s : str) {
+            i++;
+            stringBuilder.append(s);
+            if (i < m)
+                stringBuilder.append(p);
+        }
+        return stringBuilder.toString();
     }
 
     public String convertToString(@NotNull Object... str) {
@@ -50,6 +67,15 @@ public class CSVTextFileEditor extends DefaultTextFileEditor {
                 stringBuilder.append(p);
         }
         return stringBuilder.toString();
+    }
+
+    public String[] toStringArray(@NotNull String str) {
+        return pattern.split(str);
+    }
+
+    @NotNull
+    public Pattern getSeparator() {
+        return pattern;
     }
 
     @NotNull

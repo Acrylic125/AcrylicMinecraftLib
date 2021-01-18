@@ -8,13 +8,13 @@ import com.acrylic.universal.animations.dangle.Dangle;
 import com.acrylic.universal.events.ArmorChangeListener;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.files.configloader.ConfigLoader;
-import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.items.itemdropproection.ItemDropChecker;
 import com.acrylic.universal.regions.RegionDisplayPointerAnimation;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.versionstore.VersionStore;
+import com.acrylic.universal.worldblocksaver.SimpleBlockSaveSerializer;
+import com.acrylic.universal.worldblocksaver.SimpleBlockSaver;
 import com.acrylic.version_1_8.items.VanillaItemTypeAnalyzer;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +27,7 @@ public final class Acrylic extends JavaPlugin {
     private static void loadInMessage(int indent, @NotNull Runnable runnable, @NotNull String name) {
         sendConsoleMessage(indent, "Loading in: " + name);
         runnable.run();
-        sendConsoleMessage(indent, "| Completed: " + name);
+        sendConsoleMessage(indent, 1, "Completed: " + name);
     }
 
     private static void sendConsoleMessage(@NotNull String msg) {
@@ -35,10 +35,17 @@ public final class Acrylic extends JavaPlugin {
     }
 
     private static void sendConsoleMessage(int indent, @NotNull String msg) {
+        sendConsoleMessage(indent, 0, msg);
+    }
+
+    private static void sendConsoleMessage(int indent, int subIndent, @NotNull String msg) {
         StringBuilder indentSpace = new StringBuilder();
         if (indent > 0)
             for (int i = 0; i < indent; i++)
                 indentSpace.append("|   ");
+        if (subIndent > 0)
+            for (int i = 0; i < subIndent; i++)
+                indentSpace.append("| ");
         System.out.println(indentSpace.toString() + msg);
     }
 
@@ -55,6 +62,7 @@ public final class Acrylic extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        Universal.getAcrylicPlugin().terminate();
         System.out.println(ChatUtils.get(
                 "\n" +
                         "&3AcrylicMinecraftLib has &c&lStopped&r&3!\n" +
@@ -63,6 +71,7 @@ public final class Acrylic extends JavaPlugin {
     }
 
     private void load() {
+        ConfigLoader.getLoader(AcrylicPlugin.class).staticLoadThenSave();
         AcrylicCommand.registerMainCommand();
         loadInMessage(() -> Universal.setAcrylicPlugin(new AcrylicPlugin()), "Basics");
         loadInMessage(() -> Universal.setTimingManager(TimingManager.of(this)), "Aikar's Timings");
@@ -80,25 +89,45 @@ public final class Acrylic extends JavaPlugin {
         loadInMessage(1, () -> ConfigLoader.getLoader(Dangle.class).staticLoadThenSave(), "Dangle");
         loadInMessage(1, () -> ConfigLoader.getLoader(RegionDisplayPointerAnimation.class).staticLoadThenSave(), "Region Pointer Animation");
         loadInMessage(1, () -> {
-            sendConsoleMessage(1, "Checking Item Drop Protection.");
-            configuration.getFileEditor().getFileEditor("item-drop-protection").safeFileAccess(fileEditor -> {
-                if (fileEditor.getBoolean("use-default-implementation")) {
-                    Universal.getAcrylicPlugin().setItemDropChecker(new ItemDropChecker());
-                    sendConsoleMessage(1, "Using default item drop checker implementation.");
-                }
-            });
+            sendConsoleMessage(1,1, "Checking Item Drop Protection.");
+            if (AcrylicPlugin.ITEM_DROP_PROTECTION) {
+                Universal.getAcrylicPlugin().setItemDropChecker(new ItemDropChecker());
+                sendConsoleMessage(1, 1, "Using default item drop checker implementation.");
+            } else
+                sendConsoleMessage(1, 1, "Not using default item drop checker.");
         }, "Item Drop Protection");
+        loadBlockSaver();
     }
 
     private void versionCheck() {
-        sendConsoleMessage(1, "Checking for legacy version (1.8)");
-        VersionStore versionStore = Universal.getAcrylicPlugin().getVersionStore();;
+        sendConsoleMessage(1,"Checking for legacy version (1.8)");
+        VersionStore versionStore = Universal.getAcrylicPlugin().getVersionStore();
+        //
+        legacyCheck(versionStore);
+        sendConsoleMessage(1, "Checking other version initializers. (1." + versionStore.getVersion() + ")");
+        //
+    }
+
+    private void legacyCheck(VersionStore versionStore) {
         if (versionStore.isLegacyVersion()) {
-            sendConsoleMessage(1, "Using 1.8!");
+            sendConsoleMessage(1, "Using Legacy!");
             Universal.getAcrylicPlugin().setItemTypeAnalyzer(new VanillaItemTypeAnalyzer());
-            sendConsoleMessage(1,  "Using " + VanillaItemTypeAnalyzer.class.getName() + ".");
+            sendConsoleMessage(1,1, "Using " + VanillaItemTypeAnalyzer.class.getName() + ".");
         }
-        sendConsoleMessage(1, "Checking other version initializers.");
+    }
+
+    private void loadBlockSaver() {
+            loadInMessage(1, () -> {
+                sendConsoleMessage(1,1, "Checking Block Saver.");
+                if (AcrylicPlugin.BLOCK_SAVER) {
+                    SimpleBlockSaver blockSaver = new SimpleBlockSaver();
+                    Universal.getAcrylicPlugin().setBlockSaver(blockSaver);
+                    blockSaver.setSerializer(((Universal.getAcrylicPlugin().getVersionStore().getVersion() >= 14)) ? new SimpleBlockSaveSerializer() : new com.acrylic.version_1_8.worldblocksaver.SimpleBlockSaveSerializer());
+                    blockSaver.start();
+                    sendConsoleMessage(1, 1, "Using default block saver implementation.");
+                } else
+                    sendConsoleMessage(1, 1, "Not using default block saver.");
+            }, "Block Saver");
     }
 
 }

@@ -1,6 +1,6 @@
-package com.acrylic.universal.worldblocksaver;
+package com.acrylic.version_1_8.worldblocksaver;
 
-import org.bukkit.Bukkit;
+import com.acrylic.universal.worldblocksaver.SerializedBlockSaveInstance;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -16,8 +16,9 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
     private final int y;
     private final int z;
     private final int materialOrdinal;
+    private final byte dmg;
 
-    // x, y, z, world, mateiral
+    // x, y, z, world, mateiral, dmg
     public BlockSaveSerialized(@NotNull String[] serialized) {
         try {
             this.x = Integer.parseInt(serialized[0]);
@@ -25,6 +26,7 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
             this.z = Integer.parseInt(serialized[2]);
             this.world = serialized[3];
             this.materialOrdinal = Integer.parseInt(serialized[4]);
+            this.dmg = (serialized.length >= 6) ? Byte.parseByte(serialized[5]) : 0;
         } catch (Throwable ex) {
             ex.printStackTrace();
             throw new IllegalArgumentException("The specified serialized string array, " + Arrays.toString(serialized) + " is not deserializable via " + this.getClass());
@@ -37,6 +39,7 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
         this.z = block.getZ();
         this.world = block.getWorld().getName();
         this.materialOrdinal = block.getType().ordinal();
+        this.dmg = block.getData();
     }
 
     @NotNull
@@ -66,6 +69,10 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
         return Material.values()[materialOrdinal];
     }
 
+    public byte getDmg() {
+        return dmg;
+    }
+
     @Nullable
     @Override
     public Block getBlock() {
@@ -79,15 +86,20 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
     @Override
     public void restore() {
         Block block = getBlock();
-        if (block != null)
+        if (block != null) {
             block.setType(getMaterial());
+            block.setData(dmg);
+        }
     }
 
     @NotNull
     @Override
     public String[] serialize() {
-        return new String[] {
+        return (dmg == 0) ? new String[] {
                 x + "", y + "", z + "", world, materialOrdinal + ""
+        } : new String[] {
+                x + "", y + "", z + "", world, materialOrdinal + "", dmg + ""
         };
     }
+
 }
