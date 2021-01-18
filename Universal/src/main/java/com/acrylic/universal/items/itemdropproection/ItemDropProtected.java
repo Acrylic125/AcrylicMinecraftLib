@@ -16,14 +16,14 @@ public interface ItemDropProtected {
     @NotNull
     static PlayedTimedItemDropProtected getDropProtectedItem(@NotNull Item item, long cooldown) throws IllegalStateException {
         PlayedTimedItemDropProtected playerItemDropProtected = new PlayedTimedItemDropProtected(item, cooldown);
-        Universal.getItemDropChecker().getItemDropProtectionMap().register(playerItemDropProtected);
+        Universal.getAcrylicPlugin().getItemDropChecker().getItemDropProtectionMap().register(playerItemDropProtected);
         return playerItemDropProtected;
     }
 
     @NotNull
     static PlayerItemDropProtected getDropProtectedItem(@NotNull Item item) throws IllegalStateException {
         PlayerItemDropProtected playerItemDropProtected = new PlayerItemDropProtected(item);
-        Universal.getItemDropChecker().getItemDropProtectionMap().register(playerItemDropProtected);
+        Universal.getAcrylicPlugin().getItemDropChecker().getItemDropProtectionMap().register(playerItemDropProtected);
         return playerItemDropProtected;
     }
 

@@ -1,5 +1,6 @@
 package com.acrylic.universal.items;
 
+import com.acrylic.universal.Universal;
 import com.acrylic.universal.items.itemdropproection.ItemDropProtected;
 import com.acrylic.universal.items.itemdropproection.PlayerItemDropProtected;
 import com.acrylic.universal.text.ChatUtils;
@@ -22,16 +23,11 @@ import java.util.regex.Pattern;
 
 public class ItemUtils {
 
-    public static ItemTypeAnalyzer ITEM_TYPE_ANALYZER = new VanillaItemTypeAnalyzer();
-
     private static final Pattern MATERIAL_SPACING = Pattern.compile("_");
 
+    @NotNull
     public static ItemTypeAnalyzer getItemTypeAnalyzer() {
-        return ITEM_TYPE_ANALYZER;
-    }
-
-    public static void setItemTypeAnalyzer(@NotNull ItemTypeAnalyzer itemTypeAnalyzer) {
-        ITEM_TYPE_ANALYZER = itemTypeAnalyzer;
+        return Universal.getAcrylicPlugin().getItemTypeAnalyzer();
     }
 
     @NotNull
@@ -64,7 +60,7 @@ public class ItemUtils {
     }
 
     public static boolean isLiquid(@NotNull Material material) {
-        return ITEM_TYPE_ANALYZER.isLiquidMaterial(material);
+        return ItemUtils.getItemTypeAnalyzer().isLiquidMaterial(material);
     }
 
     public static boolean isLiquid(@NotNull Block block) {
@@ -72,19 +68,19 @@ public class ItemUtils {
     }
 
     public static boolean isLiquid(@NotNull ItemStack item) {
-        return ITEM_TYPE_ANALYZER.isLiquid(item);
+        return ItemUtils.getItemTypeAnalyzer().isLiquid(item);
     }
 
     public static boolean isAir(@Nullable Material material) {
-        return ITEM_TYPE_ANALYZER.isAir(material);
+        return ItemUtils.getItemTypeAnalyzer().isAir(material);
     }
 
     public static boolean isAir(@Nullable Block block) {
-        return ITEM_TYPE_ANALYZER.isAir(block);
+        return ItemUtils.getItemTypeAnalyzer().isAir(block);
     }
 
     public static boolean isAir(@Nullable ItemStack item) {
-        return ITEM_TYPE_ANALYZER.isAir(item);
+        return ItemUtils.getItemTypeAnalyzer().isAir(item);
     }
 
     public static boolean isNotAir(@Nullable ItemStack item) {
@@ -173,6 +169,7 @@ public class ItemUtils {
     public static boolean hasEnoughSpace(@NotNull Inventory inventory, @Nullable ItemStack item) {
         if (ItemUtils.isAir(item))
             return true;
+        assert item != null;
         int quantityToCompare = 0;
         for (ItemStack inventoryItem : inventory) {
             if (ItemUtils.isAir(inventoryItem))

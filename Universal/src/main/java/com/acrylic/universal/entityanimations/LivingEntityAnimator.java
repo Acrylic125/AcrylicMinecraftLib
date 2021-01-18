@@ -16,7 +16,7 @@ public interface LivingEntityAnimator extends EntityAnimator {
     }
 
     default LivingEntityAnimator ai(boolean b) {
-        if (Universal.getVersionStore().isLegacyVersion()) {
+        if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
             NBTEntity nbtEntity = new NBTEntity(getBukkitEntity());
             nbtEntity.setByte("NoAI", (byte) ((b) ? 0 : 1));
         } else

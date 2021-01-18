@@ -69,7 +69,7 @@ public class AcrylicCommand {
     private static void sudo(@NotNull Player sender, String player, String str, int amt) {
         Player p = Bukkit.getPlayer(player);
         if (p == null || !p.isOnline()) {
-            Universal.getMessageBuilder().sendErrorMessage("The user is not online.", sender);
+            Universal.getAcrylicPlugin().getMessageBuilder().sendErrorMessage("The user is not online.", sender);
             return;
         }
         String name = p.getName();

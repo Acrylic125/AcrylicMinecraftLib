@@ -84,13 +84,13 @@ public enum ArmorType {
     public static ArmorType getArmorType(@Nullable ItemStack item) {
         if (ItemUtils.isAir(item))
             return null;
-        if (ItemUtils.ITEM_TYPE_ANALYZER.isHelmet(item) || ItemUtils.ITEM_TYPE_ANALYZER.isHead(item))
+        if (ItemUtils.getItemTypeAnalyzer().isHelmet(item) || ItemUtils.getItemTypeAnalyzer().isHead(item))
             return HELMET;
-        else if (ItemUtils.ITEM_TYPE_ANALYZER.isChestplate(item))
+        else if (ItemUtils.getItemTypeAnalyzer().isChestplate(item))
             return CHESTPLATE;
-        else if (ItemUtils.ITEM_TYPE_ANALYZER.isLeggings(item))
+        else if (ItemUtils.getItemTypeAnalyzer().isLeggings(item))
             return LEGGINGS;
-        else if (ItemUtils.ITEM_TYPE_ANALYZER.isBoots(item))
+        else if (ItemUtils.getItemTypeAnalyzer().isBoots(item))
             return BOOTS;
         else
             return null;

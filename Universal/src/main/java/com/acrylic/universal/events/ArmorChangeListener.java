@@ -307,7 +307,7 @@ public class ArmorChangeListener {
     }
 
     private void listenDispenser() {
-        if (!Universal.getVersionStore().isLegacyVersion()) {
+        if (!Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
             EventBuilder.listen(BlockDispenseArmorEvent.class)
                     .priority(EventPriority.HIGHEST)
                     .setEventName("ArmorChangeListener : Armor Dispenser Listener")

@@ -41,7 +41,7 @@ public class ItemDropChecker {
     }
 
     private void listenPickUp() {
-        entityPickupItemEventBuilder = (Universal.getVersionStore().isLegacyVersion()) ?
+        entityPickupItemEventBuilder = (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) ?
                 EventBuilder.listen(PlayerPickupItemEvent.class)
                         .priority(EventPriority.HIGHEST)
                         .setEventName("ItemDropChecker : PickUp Listener")
