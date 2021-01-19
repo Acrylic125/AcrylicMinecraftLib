@@ -4,7 +4,6 @@ import com.acrylic.universal.Universal;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("unchecked")
 public abstract class AbstractScheduler<R extends TaskType>
         implements Scheduler<R> {
 

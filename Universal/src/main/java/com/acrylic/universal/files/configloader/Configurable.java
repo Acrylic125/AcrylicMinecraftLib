@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * @see ConfigValue
- * @see com.acrylic.universal.files.ConfigLoader
+ * @see ConfigLoader
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = ElementType.TYPE)

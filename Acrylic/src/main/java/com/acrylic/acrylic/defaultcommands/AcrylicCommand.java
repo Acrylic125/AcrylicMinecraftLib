@@ -1,5 +1,6 @@
 package com.acrylic.acrylic.defaultcommands;
 
+import com.acrylic.acrylic.Test;
 import com.acrylic.time.Time;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.animations.dangle.Dangle;
@@ -41,6 +42,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class AcrylicCommand {
+
+    public final static Test test = new Test();
 
     public static void registerMainCommand() {
         CommandBuilder.create("acrylic")
@@ -137,21 +140,11 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    BlockSaver<SerializedBlockSaveInstance, BlockSaveObserver> blockSaver = Universal.getAcrylicPlugin().getBlockSaver();
-
-                    /**Configuration configuration = new Configuration("test.yml", Universal.getPlugin());
-                    configuration.load();
-                    if (i == 0) {
-                        ArrayList<String> list = new ArrayList<>();
-                        for (int j = 0; j < 1000000; j++) {
-                            list.add(j + ", " + (2 * j) + ", " + "ehHEHEJDJUJRJJRCJJWKCKWKKWRCR");
-                        }
-                        configuration.getFileEditor().set("Test", list);
-                        configuration.saveFile();
+                    if (commandExecutor.getArgs().length > 0) {
+                        Universal.getAcrylicPlugin().getBlockSaver().restoreAllCached();
                     } else {
-                        List<String> list = (List<String>) configuration.getFileEditor().getList("Test");
-                        Bukkit.broadcastMessage(list.size() + " ");
-                    }**/
+                        test.add(sender.getLocation().getBlock());
+                    }
                     ChatUtils.send(sender, "&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!");
                 }).arguments(new AbstractCommandBuilder[] {
                         //List

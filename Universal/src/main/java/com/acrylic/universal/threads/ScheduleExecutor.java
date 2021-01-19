@@ -60,7 +60,6 @@ public class ScheduleExecutor {
 
     @NotNull
     public Future<?> runTaskTimer(@NotNull Runnable runnable, long delay, long period, @NotNull TimeUnit timeUnit) {
-        Bukkit.broadcastMessage(period + " CCCCCC");
         return addTask(timerExecutionService.scheduleAtFixedRate(new AsyncLockWrapper(runnable), delay, period, timeUnit));
     }
 

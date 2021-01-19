@@ -153,7 +153,6 @@ public final class ItemStackParser extends AbstractVariableParser<ItemStack> {
             }
         }
 
-        @SuppressWarnings("unchecked")
         private ItemStack tags(ItemStack item) {
             Map<String, Object> obj = getMap(KEY_TAGS);
             if (obj != null) {

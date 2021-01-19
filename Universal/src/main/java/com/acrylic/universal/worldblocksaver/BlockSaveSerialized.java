@@ -1,5 +1,7 @@
 package com.acrylic.universal.worldblocksaver;
 
+import com.acrylic.universal.Universal;
+import com.acrylic.universal.blocks.MCBlockData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,6 +18,7 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
     private final int y;
     private final int z;
     private final int materialOrdinal;
+    private final byte data;
 
     // x, y, z, world, mateiral
     public BlockSaveSerialized(@NotNull String[] serialized) {
@@ -25,6 +28,7 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
             this.z = Integer.parseInt(serialized[2]);
             this.world = serialized[3];
             this.materialOrdinal = Integer.parseInt(serialized[4]);
+            this.data = (serialized.length >= 6) ? Byte.parseByte(serialized[5]) : 0;
         } catch (Throwable ex) {
             ex.printStackTrace();
             throw new IllegalArgumentException("The specified serialized string array, " + Arrays.toString(serialized) + " is not deserializable via " + this.getClass());
@@ -32,11 +36,17 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
     }
 
     public BlockSaveSerialized(@NotNull Block block) {
+        this(block, Universal.getAcrylicPlugin().getBlockFactory().getBlockData(block));
+    }
+
+    public BlockSaveSerialized(@NotNull Block block, @NotNull MCBlockData originalData) {
         this.x = block.getX();
         this.y = block.getY();
         this.z = block.getZ();
         this.world = block.getWorld().getName();
-        this.materialOrdinal = block.getType().ordinal();
+        this.materialOrdinal = originalData.getMaterial().ordinal();
+        Bukkit.broadcastMessage(materialOrdinal + "");
+        this.data = originalData.getData();
     }
 
     @NotNull
@@ -86,8 +96,10 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
     @NotNull
     @Override
     public String[] serialize() {
-        return new String[] {
+        return (data != 0) ? new String[] {
                 x + "", y + "", z + "", world, materialOrdinal + ""
+        } : new String[] {
+                x + "", y + "", z + "", world, materialOrdinal + "", data + ""
         };
     }
 }

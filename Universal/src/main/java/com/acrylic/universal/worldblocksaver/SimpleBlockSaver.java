@@ -85,7 +85,7 @@ public class SimpleBlockSaver
             fileEditor.clearFileEditor();
             for (BlockSaveObserver blockSaveObserver : stored) {
                 for (BlockSavable blockSavable : blockSaveObserver.getSavableCollection()) {
-                    SerializedBlockSaveInstance serializedBlockSaveInstance = getSerializer().serialize(blockSavable.getBlockToSave());
+                    SerializedBlockSaveInstance serializedBlockSaveInstance = getSerializer().serialize(blockSavable);
                     fileEditor.writeNewLine(serializedBlockSaveInstance.serialize());
                 }
             }
@@ -106,7 +106,8 @@ public class SimpleBlockSaver
     public void restore(@NotNull String serialized) {
         try {
             String[] arr = csvFile.getFileEditor().toStringArray(serialized);
-            getSerializer().deserialize(arr);
+            if (arr.length > 0)
+                getSerializer().deserialize(arr).restore();
         } catch (Exception ex) {
             System.out.println("[ Block Saver Error @Restore ]");
             ex.printStackTrace();
@@ -116,8 +117,13 @@ public class SimpleBlockSaver
 
     @Override
     public void restoreAllCached() {
-        for (String rawContent : csvFile.getFileEditor().getRawContents())
-            restore(rawContent);
+        List<String> contents = csvFile.getFileEditor().getRawContents();
+        if (contents.size() > 0) {
+            for (String rawContent : contents)
+                restore(rawContent);
+            csvFile.getFileEditor().clearFileEditor();
+            csvFile.saveFile();
+        }
     }
 
     @Override

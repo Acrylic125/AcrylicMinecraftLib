@@ -14,6 +14,7 @@ import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.versionstore.VersionStore;
 import com.acrylic.universal.worldblocksaver.SimpleBlockSaveSerializer;
 import com.acrylic.universal.worldblocksaver.SimpleBlockSaver;
+import com.acrylic.version_1_8.blocks.SimpleBlockFactory;
 import com.acrylic.version_1_8.items.VanillaItemTypeAnalyzer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -109,10 +110,16 @@ public final class Acrylic extends JavaPlugin {
     }
 
     private void legacyCheck(VersionStore versionStore) {
+        AcrylicPlugin acrylicPlugin = Universal.getAcrylicPlugin();
         if (versionStore.isLegacyVersion()) {
             sendConsoleMessage(1, "Using Legacy!");
-            Universal.getAcrylicPlugin().setItemTypeAnalyzer(new VanillaItemTypeAnalyzer());
+            acrylicPlugin.setItemTypeAnalyzer(new VanillaItemTypeAnalyzer());
             sendConsoleMessage(1,1, "Using " + VanillaItemTypeAnalyzer.class.getName() + ".");
+        }
+        if (versionStore.getVersion() <= 13) {
+            sendConsoleMessage(1, "Using block data!");
+            acrylicPlugin.setBlockFactory(new SimpleBlockFactory());
+            sendConsoleMessage(1,1, "Using " + SimpleBlockFactory.class.getName() + ".");
         }
     }
 
@@ -122,8 +129,12 @@ public final class Acrylic extends JavaPlugin {
                 if (AcrylicPlugin.BLOCK_SAVER) {
                     SimpleBlockSaver blockSaver = new SimpleBlockSaver();
                     Universal.getAcrylicPlugin().setBlockSaver(blockSaver);
-                    blockSaver.setSerializer(((Universal.getAcrylicPlugin().getVersionStore().getVersion() >= 14)) ? new SimpleBlockSaveSerializer() : new com.acrylic.version_1_8.worldblocksaver.SimpleBlockSaveSerializer());
+                    blockSaver.setSerializer(new SimpleBlockSaveSerializer());
+                    sendConsoleMessage(1, 1, "Block Saver Restoration has started!");
+                    blockSaver.restoreAllCached();
+                    sendConsoleMessage(2, 1, "Block Saver Restoration Complete!");
                     blockSaver.start();
+                    blockSaver.observe(AcrylicCommand.test);
                     sendConsoleMessage(1, 1, "Using default block saver implementation.");
                 } else
                     sendConsoleMessage(1, 1, "Not using default block saver.");

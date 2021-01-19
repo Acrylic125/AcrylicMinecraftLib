@@ -46,7 +46,6 @@ public interface Scheduler<R extends TaskType> extends Runnable {
 
     void cancel();
 
-    @SuppressWarnings("unchecked")
     @Override
     default void run() {
         MCTiming timing = getTimings();

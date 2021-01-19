@@ -1,6 +1,5 @@
 package com.acrylic.universal.reflection;
 
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

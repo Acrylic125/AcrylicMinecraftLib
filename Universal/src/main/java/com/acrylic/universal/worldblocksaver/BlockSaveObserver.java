@@ -7,6 +7,6 @@ import java.util.Collection;
 public interface BlockSaveObserver {
 
     @NotNull
-    Collection<BlockSavable> getSavableCollection();
+    Collection<? extends BlockSavable> getSavableCollection();
 
 }

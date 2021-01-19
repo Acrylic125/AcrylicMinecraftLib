@@ -1,5 +1,7 @@
 package com.acrylic.universal;
 
+import com.acrylic.universal.blocks.BlockFactory;
+import com.acrylic.universal.blocks.SimpleBlockFactory;
 import com.acrylic.universal.files.configloader.ConfigValue;
 import com.acrylic.universal.files.configloader.Configurable;
 import com.acrylic.universal.interfaces.Terminable;
@@ -33,6 +35,7 @@ public class AcrylicPlugin implements Terminable {
     private ItemDropChecker itemDropChecker;
     private ItemTypeAnalyzer itemTypeAnalyzer = new VanillaItemTypeAnalyzer();
     private BlockSaver<SerializedBlockSaveInstance, BlockSaveObserver> blockSaver;
+    private BlockFactory blockFactory = new SimpleBlockFactory();
 
     @NotNull
     public AbstractMessageBuilder getMessageBuilder() {
@@ -92,9 +95,20 @@ public class AcrylicPlugin implements Terminable {
         this.blockSaver = blockSaver;
     }
 
+    @NotNull
+    public BlockFactory getBlockFactory() {
+        return blockFactory;
+    }
+
+    public void setBlockFactory(@NotNull BlockFactory blockFactory) {
+        this.blockFactory = blockFactory;
+    }
+
     @Override
     public void terminate() {
-        if (blockSaver != null)
+        if (blockSaver != null) {
+            blockSaver.saveToFile();
             blockSaver.terminate();
+        }
     }
 }
