@@ -2,7 +2,6 @@ package com.acrylic.universal.worldblocksaver;
 
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.blocks.MCBlockData;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -45,7 +44,6 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
         this.z = block.getZ();
         this.world = block.getWorld().getName();
         this.materialOrdinal = originalData.getMaterial().ordinal();
-        Bukkit.broadcastMessage(materialOrdinal + "");
         this.data = originalData.getData();
     }
 
@@ -80,10 +78,7 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
     @Override
     public Block getBlock() {
         World world = getWorld();
-        if (world != null) {
-            return world.getBlockAt(x, y, z);
-        }
-        return null;
+        return (world != null) ? world.getBlockAt(x, y, z) : null;
     }
 
     @Override
@@ -96,7 +91,7 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
     @NotNull
     @Override
     public String[] serialize() {
-        return (data != 0) ? new String[] {
+        return (data == 0) ? new String[] {
                 x + "", y + "", z + "", world, materialOrdinal + ""
         } : new String[] {
                 x + "", y + "", z + "", world, materialOrdinal + "", data + ""

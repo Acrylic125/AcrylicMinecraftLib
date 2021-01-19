@@ -9,6 +9,7 @@ import com.acrylic.universal.threads.TaskType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -119,6 +120,7 @@ public class SimpleBlockSaver
     public void restoreAllCached() {
         List<String> contents = csvFile.getFileEditor().getRawContents();
         if (contents.size() > 0) {
+            Collections.reverse(contents);
             for (String rawContent : contents)
                 restore(rawContent);
             csvFile.getFileEditor().clearFileEditor();
