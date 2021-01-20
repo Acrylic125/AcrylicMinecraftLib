@@ -6,24 +6,30 @@ import org.jetbrains.annotations.NotNull;
 
 public class BlockData implements MCBlockData {
 
-    private final int material;
+    private final Material material;
 
     public BlockData(@NotNull Material material) {
-        this.material = material.ordinal();
+        this.material = material;
     }
 
     public BlockData(@NotNull Block block) {
-        this.material = block.getType().ordinal();
+        this.material = block.getType();
     }
 
+    @NotNull
     @Override
-    public int getMaterialOrdinal() {
+    public Material getMaterial() {
         return material;
     }
 
     @Override
     public byte getData() {
         return 0;
+    }
+
+    @Override
+    public void setAsBlock(@NotNull Block block) {
+        block.setType(material);
     }
 
 }

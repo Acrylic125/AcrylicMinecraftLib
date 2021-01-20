@@ -97,7 +97,6 @@ public final class Acrylic extends JavaPlugin {
             } else
                 sendConsoleMessage(1, 1, "Not using default item drop checker.");
         }, "Item Drop Protection");
-        loadBlockSaver();
     }
 
     private void versionCheck() {
@@ -107,6 +106,7 @@ public final class Acrylic extends JavaPlugin {
         legacyCheck(versionStore);
         sendConsoleMessage(1, "Checking other version initializers. (1." + versionStore.getVersion() + ")");
         //
+        loadBlockSaver();
     }
 
     private void legacyCheck(VersionStore versionStore) {

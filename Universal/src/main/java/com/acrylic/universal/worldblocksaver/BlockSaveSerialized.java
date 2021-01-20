@@ -1,6 +1,7 @@
 package com.acrylic.universal.worldblocksaver;
 
 import com.acrylic.universal.Universal;
+import com.acrylic.universal.blocks.BlockFactory;
 import com.acrylic.universal.blocks.MCBlockData;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -13,11 +14,8 @@ import java.util.Arrays;
 public class BlockSaveSerialized implements SerializedBlockSaveInstance {
 
     private final String world;
-    private final int x;
-    private final int y;
-    private final int z;
-    private final int materialOrdinal;
-    private final byte data;
+    private final int x, y, z;
+    private final MCBlockData blockData;
 
     // x, y, z, world, mateiral
     public BlockSaveSerialized(@NotNull String[] serialized) {
@@ -26,8 +24,8 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
             this.y = Integer.parseInt(serialized[1]);
             this.z = Integer.parseInt(serialized[2]);
             this.world = serialized[3];
-            this.materialOrdinal = Integer.parseInt(serialized[4]);
-            this.data = (serialized.length >= 6) ? Byte.parseByte(serialized[5]) : 0;
+            BlockFactory blockFactory = Universal.getAcrylicPlugin().getBlockFactory();
+            this.blockData = blockFactory.getBlockData(Material.values()[Integer.parseInt(serialized[4])], (serialized.length >= 6) ? Byte.parseByte(serialized[5]) : 0);
         } catch (Throwable ex) {
             ex.printStackTrace();
             throw new IllegalArgumentException("The specified serialized string array, " + Arrays.toString(serialized) + " is not deserializable via " + this.getClass());
@@ -43,8 +41,7 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
         this.y = block.getY();
         this.z = block.getZ();
         this.world = block.getWorld().getName();
-        this.materialOrdinal = originalData.getMaterial().ordinal();
-        this.data = originalData.getData();
+        this.blockData = originalData;
     }
 
     @NotNull
@@ -71,7 +68,7 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
     @NotNull
     @Override
     public Material getMaterial() {
-        return Material.values()[materialOrdinal];
+        return blockData.getMaterial();
     }
 
     @Nullable
@@ -85,12 +82,14 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
     public void restore() {
         Block block = getBlock();
         if (block != null)
-            block.setType(getMaterial());
+            blockData.setAsBlock(block);
     }
 
     @NotNull
     @Override
     public String[] serialize() {
+        int materialOrdinal = blockData.getMaterialOrdinal();
+        byte data = blockData.getData();
         return (data == 0) ? new String[] {
                 x + "", y + "", z + "", world, materialOrdinal + ""
         } : new String[] {
