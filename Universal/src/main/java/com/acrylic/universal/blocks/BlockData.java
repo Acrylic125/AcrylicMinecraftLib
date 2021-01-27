@@ -1,5 +1,6 @@
 package com.acrylic.universal.blocks;
 
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;

@@ -9,11 +9,9 @@ import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
-import com.acrylic.universal.command.CommandUtils;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
-import com.acrylic.universal.files.CSVFile;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
@@ -25,9 +23,7 @@ import com.acrylic.universal.shapes.lines.QuadraticYLine;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
-import com.acrylic.universal.worldblocksaver.BlockSaveObserver;
-import com.acrylic.universal.worldblocksaver.BlockSaver;
-import com.acrylic.universal.worldblocksaver.SerializedBlockSaveInstance;
+import com.acrylic.universal.utils.keys.BlockKey;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -41,8 +37,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 public class AcrylicCommand {
 
+    private static final HashMap<BlockKey, String> map = new HashMap<>();
     public final static Test test = new Test();
 
     public static void registerMainCommand() {
@@ -140,11 +139,9 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    if (commandExecutor.getArgs().length > 0) {
-                        Universal.getAcrylicPlugin().getBlockSaver().restoreAllCached();
-                    } else {
-                        test.add(sender.getLocation().getBlock());
-                    }
+                    BlockKey key = new BlockKey(sender.getLocation().getBlock());
+                    Bukkit.broadcastMessage(map.get(key) + " " + map.size());
+                    map.put(key, "Test");
                     ChatUtils.send(sender, "&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!");
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
