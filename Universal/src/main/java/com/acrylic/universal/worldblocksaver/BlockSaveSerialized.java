@@ -3,6 +3,7 @@ package com.acrylic.universal.worldblocksaver;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.blocks.BlockFactory;
 import com.acrylic.universal.blocks.MCBlockData;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -41,6 +42,14 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
         this.y = block.getY();
         this.z = block.getZ();
         this.world = block.getWorld().getName();
+        this.blockData = originalData;
+    }
+
+    public BlockSaveSerialized(@NotNull Location location, @NotNull MCBlockData originalData) {
+        this.x = (int) location.getX();
+        this.y = (int) location.getY();
+        this.z = (int) location.getZ();
+        this.world = location.getWorld().getName();
         this.blockData = originalData;
     }
 

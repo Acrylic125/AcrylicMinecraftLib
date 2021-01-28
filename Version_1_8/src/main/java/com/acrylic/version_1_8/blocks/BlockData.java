@@ -1,12 +1,9 @@
 package com.acrylic.version_1_8.blocks;
 
 import com.acrylic.universal.blocks.MCBlockData;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 public class BlockData implements MCBlockData {
 

@@ -4,6 +4,7 @@ import com.acrylic.universal.Universal;
 import com.acrylic.universal.blocks.MCBlockData;
 import com.acrylic.universal.worldblocksaver.BlockSavable;
 import com.acrylic.universal.worldblocksaver.BlockSaveObserver;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -38,8 +39,8 @@ public class Test implements BlockSaveObserver {
 
         @NotNull
         @Override
-        public Block getBlockToSave() {
-            return block;
+        public Location getBlockLocationToSave() {
+            return block.getLocation();
         }
 
         @NotNull
