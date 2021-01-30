@@ -5,6 +5,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
@@ -13,15 +14,15 @@ public class PlayerItemDropProtected
         implements ItemDropProtected {
 
     private final Collection<UUID> allowedEntities;
-    private final Item itemEntity;
+    private final WeakReference<Item> itemEntity;
 
     public PlayerItemDropProtected(@NotNull Item itemEntity, @NotNull Collection<UUID> allowedPlayers) {
-        this.itemEntity = itemEntity;
+        this.itemEntity = new WeakReference<>(itemEntity);
         this.allowedEntities = allowedPlayers;
     }
 
     public PlayerItemDropProtected(@NotNull Item itemEntity) {
-        this.itemEntity = itemEntity;
+        this.itemEntity = new WeakReference<>(itemEntity);
         this.allowedEntities = new HashSet<>();
     }
 
@@ -64,7 +65,7 @@ public class PlayerItemDropProtected
 
     @Override
     public Item getItemEntity() {
-        return itemEntity;
+        return itemEntity.get();
     }
 
     @Override
@@ -74,6 +75,7 @@ public class PlayerItemDropProtected
 
     @Override
     public boolean canRemoveFromMap() {
-        return !itemEntity.isValid();
+        Item item = getItemEntity();
+        return item == null || !item.isValid();
     }
 }

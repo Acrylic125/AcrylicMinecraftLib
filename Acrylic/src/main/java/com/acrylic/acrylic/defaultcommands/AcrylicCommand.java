@@ -9,6 +9,7 @@ import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
+import com.acrylic.universal.command.CommandUtils;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
@@ -23,6 +24,7 @@ import com.acrylic.universal.shapes.lines.QuadraticYLine;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universal.utils.StringUtils;
 import com.acrylic.universal.utils.keys.BlockKey;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
 import com.acrylic.version_1_8.items.ItemBuilder;
@@ -139,9 +141,9 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    BlockKey key = new BlockKey(sender.getLocation().getBlock());
-                    Bukkit.broadcastMessage(map.get(key) + " " + map.size());
-                    map.put(key, "Test");
+                    Bukkit.broadcastMessage(
+                            StringUtils.COMMA_SEPARATED_NUMBER_FORMATTER.format(StringUtils.NUMBER_STRING_FORMATTER.formatDouble(commandExecutor.getArg(0)))
+                    );
                     ChatUtils.send(sender, "&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!");
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
