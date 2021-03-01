@@ -1,6 +1,5 @@
 package com.acrylic.universal.math;
 
-import lombok.Getter;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
