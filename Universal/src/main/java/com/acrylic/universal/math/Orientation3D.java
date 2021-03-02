@@ -11,6 +11,10 @@ public class Orientation3D extends Orientation2D {
 
     private final TrigonometrySet yOrientation;
 
+    public static Orientation3D generateDefault() {
+        return new Orientation3D(0, 0, 0);
+    }
+
     public Orientation3D(TrigonometrySet xOrientation, TrigonometrySet yOrientation, TrigonometrySet zOrientation) {
         super(xOrientation, zOrientation);
         this.yOrientation = yOrientation;

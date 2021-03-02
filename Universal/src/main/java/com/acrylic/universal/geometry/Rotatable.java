@@ -2,6 +2,7 @@ package com.acrylic.universal.geometry;
 
 import com.acrylic.universal.math.Orientation3D;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +13,7 @@ public interface Rotatable {
 
     void setOrientation(@NotNull Orientation3D orientation);
 
-    default void modifyOrientationRelativeTo(@NotNull LivingEntity referenceOrientation) {
+    default void modifyOrientationRelativeTo(@NotNull Entity referenceOrientation) {
         modifyOrientationRelativeTo(referenceOrientation.getLocation());
     }
 

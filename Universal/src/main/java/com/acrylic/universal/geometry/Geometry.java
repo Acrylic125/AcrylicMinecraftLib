@@ -1,5 +1,6 @@
 package com.acrylic.universal.geometry;
 
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -7,7 +8,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface Geometry {
 
-    @NotNull
-    GeometryOptions getGeometryOptions();
+    Location getSourceLocation();
+
+    default void validateSourceLocation() {
+        if (getSourceLocation() == null)
+            throw new NullPointerException("The source location must be defined!");
+    }
 
 }

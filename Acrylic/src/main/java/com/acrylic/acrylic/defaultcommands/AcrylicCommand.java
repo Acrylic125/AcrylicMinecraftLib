@@ -14,11 +14,11 @@ import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimato
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.files.bukkit.Configuration;
+import com.acrylic.universal.geometry.Circle;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.regions.SimpleRegion;
-import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.lines.QuadraticYLine;
 import com.acrylic.universal.shapes.spiral.MultiSpiral;
@@ -200,11 +200,10 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
 
-                            Circle circle = new Circle(3, 25);
-                            circle.setOrientation(sender).setShouldReuse(true);
-                            circle.invokeAction(25, sender.getLocation().add(sender.getLocation().getDirection().multiply(3)), (i, location) -> {
-                                sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
-                            });
+                            Circle circle = new Circle(3, 36);
+                            circle.modifyOrientationRelativeTo(sender.getLocation());
+                            circle.setLocation(sender.getLocation());
+                            circle.iterateToIndex(location -> sender.sendBlockChange(location, Material.DIAMOND_BLOCK, (byte) 0), 36);
                         }),
                         CommandBuilder.create("line")
                                 .setTimerActive(true)
