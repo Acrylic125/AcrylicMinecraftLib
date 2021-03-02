@@ -15,6 +15,7 @@ import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.geometry.Circle;
+import com.acrylic.universal.geometry.Spiral;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
@@ -222,16 +223,13 @@ public class AcrylicCommand {
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
-
-                            MultiSpiral spiral = new MultiSpiral(0f, 7);
-                            spiral.setOrientation(sender);
-                            spiral.setRadiusIncrement(2f);
-                            spiral.setAngleOffset(Float.parseFloat(commandExecutor.getArg(0)));
-                            spiral.setShouldUseTimeLine(true);
-                            spiral.set(sender.getLocation(), sender.getLocation().add(sender.getLocation().getDirection().multiply(10)));
-                            spiral.invokeAction(sender.getLocation(), (i, location) -> {
-                                sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
-                            });
+                            Spiral spiral = new Spiral();
+                            spiral.setLocation(sender.getLocation());
+                            spiral.modifyOrientationRelativeTo(sender);
+                            spiral.setRadiusIncrement(1);
+                            spiral.setAmountOfSpirals(3);
+                            spiral.setAngleIncrement(Float.parseFloat(commandExecutor.getArg(0)));
+                            spiral.iterateToIndex(location -> sender.sendBlockChange(location, Material.DIAMOND_BLOCK, (byte) 0), 100);
                         }),
                         CommandBuilder.create("event")
                                 .handle(commandExecutor -> {
