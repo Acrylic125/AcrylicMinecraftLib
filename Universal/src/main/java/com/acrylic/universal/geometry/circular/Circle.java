@@ -1,4 +1,4 @@
-package com.acrylic.universal.geometry;
+package com.acrylic.universal.geometry.circular;
 
 public class Circle
         extends Circular {
@@ -34,5 +34,9 @@ public class Circle
         return (index * getRadianBetween()) + getRadianOffset();
     }
 
+    @Override
+    public int getFullCycleIndex() {
+        return (int) getPoints();
+    }
 
 }

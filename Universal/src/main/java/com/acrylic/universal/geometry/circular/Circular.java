@@ -1,5 +1,7 @@
-package com.acrylic.universal.geometry;
+package com.acrylic.universal.geometry.circular;
 
+import com.acrylic.universal.geometry.IndexedRotatableGeometry;
+import com.acrylic.universal.math.MathUtils;
 import com.acrylic.universal.math.Orientation3D;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
@@ -83,6 +85,7 @@ public abstract class Circular
     }
 
     protected void setPoints(int points) {
+        MathUtils.validateNonZero(points);
         this.points = points;
         this.radianBetween = (float) Math.toRadians(getAngleBetween());
     }
@@ -106,5 +109,7 @@ public abstract class Circular
     protected abstract float calculateRadius(int index);
 
     protected abstract float calculateRadians(int index);
+
+    public abstract int getFullCycleIndex();
 
 }

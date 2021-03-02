@@ -9,20 +9,19 @@ import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
-import com.acrylic.universal.command.CommandUtils;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.files.bukkit.Configuration;
-import com.acrylic.universal.geometry.Circle;
-import com.acrylic.universal.geometry.Spiral;
+import com.acrylic.universal.geometry.circular.Circle;
+import com.acrylic.universal.geometry.circular.Spiral;
+import com.acrylic.universal.geometry.line.LinearLine;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.shapes.lines.Line;
 import com.acrylic.universal.shapes.lines.QuadraticYLine;
-import com.acrylic.universal.shapes.spiral.MultiSpiral;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.utils.StringUtils;
@@ -212,11 +211,11 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
 
-                            Line line = new QuadraticYLine(sender.getLocation(), sender.getLocation().add(sender.getLocation().getDirection().multiply(15)), 1f, -0.1f, 0);
-                            //line.setTo(sender.getLocation().add(sender.getLocation().getDirection().multiply(15)));
-                            line.invokeAction(sender.getLocation(), (i, location) -> {
-                                sender.sendBlockChange(location, (i == 1) ? Material.EMERALD_BLOCK : Material.DIAMOND_BLOCK, (byte) 0);
-                            });
+                            LinearLine linearLine = new LinearLine();
+                            linearLine.setSourceAndToLocation(sender.getLocation(), sender.getLocation().add(sender.getLocation().getDirection().multiply(10)));
+                            linearLine.iterateToIndex(location -> {
+                                sender.sendBlockChange(location, Material.DIAMOND_BLOCK, (byte) 0);
+                            }, 100);
                         }),
                         CommandBuilder.create("spiral")
                                 .setTimerActive(true)

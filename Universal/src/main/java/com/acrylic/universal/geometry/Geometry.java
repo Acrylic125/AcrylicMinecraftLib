@@ -1,7 +1,6 @@
 package com.acrylic.universal.geometry;
 
 import org.bukkit.Location;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a geometric object.

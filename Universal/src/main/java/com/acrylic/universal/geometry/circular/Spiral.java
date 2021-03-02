@@ -1,4 +1,4 @@
-package com.acrylic.universal.geometry;
+package com.acrylic.universal.geometry.circular;
 
 public class Spiral extends Circular {
 
@@ -12,8 +12,8 @@ public class Spiral extends Circular {
         super(radius, spirals);
     }
 
-    public float getAmountOfSpirals() {
-        return super.getPoints();
+    public int getAmountOfSpirals() {
+        return (int) super.getPoints();
     }
 
     public void setAmountOfSpirals(int spirals) {
@@ -53,4 +53,14 @@ public class Spiral extends Circular {
     public void setRadiusIncrement(float radiusIncrement) {
         this.radiusIncrement = radiusIncrement;
     }
+
+    public int getFullCycleIndex(int cycles) {
+        return getAmountOfSpirals() * cycles;
+    }
+
+    @Override
+    public int getFullCycleIndex() {
+        return getFullCycleIndex(1);
+    }
+
 }
