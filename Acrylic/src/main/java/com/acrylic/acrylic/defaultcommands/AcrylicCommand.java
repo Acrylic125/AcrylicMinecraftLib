@@ -1,6 +1,5 @@
 package com.acrylic.acrylic.defaultcommands;
 
-import com.acrylic.acrylic.Test;
 import com.acrylic.time.Time;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.animations.dangle.Dangle;
@@ -10,18 +9,18 @@ import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
+import com.acrylic.universal.entityanimations.entities.AbstractGiantAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
+import com.acrylic.universal.entityanimations.entities.GiantAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.geometry.circular.Circle;
 import com.acrylic.universal.geometry.circular.Spiral;
-import com.acrylic.universal.geometry.line.LinearLine;
+import com.acrylic.universal.geometry.line.QuadraticYLine;
 import com.acrylic.universal.gui.GlobalGUIBuilder;
 import com.acrylic.universal.gui.InventoryBuilder;
 import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.regions.SimpleRegion;
-import com.acrylic.universal.shapes.lines.Line;
-import com.acrylic.universal.shapes.lines.QuadraticYLine;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.utils.StringUtils;
@@ -44,7 +43,6 @@ import java.util.HashMap;
 public class AcrylicCommand {
 
     private static final HashMap<BlockKey, String> map = new HashMap<>();
-    public final static Test test = new Test();
 
     public static void registerMainCommand() {
         CommandBuilder.create("acrylic")
@@ -211,11 +209,14 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
 
-                            LinearLine linearLine = new LinearLine();
+                            QuadraticYLine linearLine = new QuadraticYLine();
+                            linearLine.setPoints(20);
+                            linearLine.setYMultiplier(0.05f);
+                            linearLine.setYOffset(1f);
                             linearLine.setSourceAndToLocation(sender.getLocation(), sender.getLocation().add(sender.getLocation().getDirection().multiply(10)));
                             linearLine.iterateToIndex(location -> {
                                 sender.sendBlockChange(location, Material.DIAMOND_BLOCK, (byte) 0);
-                            }, 100);
+                            }, 20);
                         }),
                         CommandBuilder.create("spiral")
                                 .setTimerActive(true)
@@ -270,12 +271,12 @@ public class AcrylicCommand {
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
-                            AbstractArmorStandAnimator armorStandAnimator =
-                                    new ArmorStandAnimator(sender.getLocation()).asAnimator()
+                            AbstractGiantAnimator armorStandAnimator =
+                                    new GiantAnimator(sender.getLocation()).asAnimator()
                                             .asAnimator()
                                     ;
                             Location location = sender.getLocation();
-                            armorStandAnimator.setEquipment(new EntityEquipmentBuilder().setItemInHand(ItemBuilder.of(Material.DIAMOND_SWORD).build()));
+                            armorStandAnimator.setEquipment(new EntityEquipmentBuilder().setItemInHand(sender.getItemInHand()));
                             HandRotationAnimation handRotationAnimation = new HandRotationAnimation(armorStandAnimator);
                             Scheduler.sync()
                                     .runRepeatingTask(1, 1)

@@ -6,8 +6,8 @@ import com.acrylic.universal.animations.EntityBasedAnimation;
 import com.acrylic.universal.animations.RunnableAnimation;
 import com.acrylic.universal.files.configloader.ConfigValue;
 import com.acrylic.universal.files.configloader.Configurable;
+import com.acrylic.universal.geometry.circular.Circle;
 import com.acrylic.universal.interfaces.Timed;
-import com.acrylic.universal.shapes.Circle;
 import com.acrylic.universal.threads.Scheduler;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -98,13 +98,13 @@ public class Dangle
             checkForRemoval();
             final Location location = entity.getLocation();
             final int size = entityAnimations.size();
-            circle.setFrequency(Math.max(size, frequency));
-            circle.setOrientationYaw(90 + location.getYaw() + ((size % 2 == 0) ? circle.getAnglesBetween() / 2 : 0));
+            circle.setPointsInOneCycle((int) Math.max(size, frequency));
+            circle.modifyYawOrientation(90 + location.getYaw() + ((size % 2 == 0) ? circle.getAngleBetween() / 2 : 0));
             location.setY(location.getY() + (location.getDirection().getY() * circle.getRadius()));
-
+            circle.setLocation(location);
             int index = (int) -Math.floor(size / 2f);
             for (EntityAnimation animation : entityAnimations) {
-                animation.teleportWithHolograms(circle.getLocation(location, index), 0f, (index % 2 == 0) ? 0f : ODD_RAISE);
+                animation.teleportWithHolograms(circle.getLocationAtIndex(index), 0f, (index % 2 == 0) ? 0f : ODD_RAISE);
                 index++;
             }
         }

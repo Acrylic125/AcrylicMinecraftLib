@@ -134,7 +134,6 @@ public final class Acrylic extends JavaPlugin {
                     blockSaver.restoreAllCached();
                     sendConsoleMessage(2, 1, "Block Saver Restoration Complete!");
                     blockSaver.start();
-                    blockSaver.observe(AcrylicCommand.test);
                     sendConsoleMessage(1, 1, "Using default block saver implementation.");
                 } else
                     sendConsoleMessage(1, 1, "Not using default block saver.");
