@@ -31,7 +31,7 @@ public abstract class AbstractHandRotationAnimation extends EntityAnimation {
         circle.setLocation(location);
         Location newLoc = circle.getLocationAtIndex(index);
         newLoc.setDirection(location.toVector().subtract(newLoc.toVector()));
-        newLoc.setYaw(newLoc.getYaw() - 33.75f);
+        newLoc.setYaw(newLoc.getYaw() - (45 - (360 / circle.getPointsInOneCycle())));
         index++;
         return newLoc;
     }
