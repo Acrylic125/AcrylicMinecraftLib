@@ -21,4 +21,13 @@ public interface GUIItem {
         return doesItemMatchWithThis(UIComparableItemInfo.getComparableItemInfo().createComparison(item));
     }
 
+    @Nullable
+    default ItemStack wrapGUIItem(@Nullable ItemStack item) {
+        return (item == null) ? null :
+                UIComparableItemInfo.getComparableItemInfo()
+                .wrapItem(item)
+                .idByGUIItem(this)
+                .wrap();
+    }
+
 }

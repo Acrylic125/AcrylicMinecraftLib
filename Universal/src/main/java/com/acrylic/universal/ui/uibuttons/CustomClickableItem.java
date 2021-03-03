@@ -1,23 +1,28 @@
 package com.acrylic.universal.ui.uibuttons;
 
 import com.acrylic.universal.ui.OpenDetails;
+import com.acrylic.universal.ui.UIComparableItemInfo;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public class CustomClickableItem implements GUIClickableItem {
 
+    private final String id = UUID.randomUUID().toString();
     private ItemStack item;
     private ItemClickAction<CustomClickableItem> clickedAction;
     private boolean active = true;
 
     public CustomClickableItem(@Nullable ItemStack item, @Nullable ItemClickAction<CustomClickableItem> buttonItemClickAction) {
-        this.item = item;
+        setItem(item);
         this.clickedAction = buttonItemClickAction;
     }
 
     public CustomClickableItem setItem(@Nullable ItemStack item) {
-        this.item = item;
+        this.item = wrapGUIItem(item);
         return this;
     }
 
@@ -47,10 +52,21 @@ public class CustomClickableItem implements GUIClickableItem {
         return this;
     }
 
+    @NotNull
+    @Override
+    public String getID() {
+        return id;
+    }
+
     @Nullable
     @Override
     public ItemStack getItem(OpenDetails openDetails) {
         return item;
+    }
+
+    @Override
+    public boolean doesItemMatchWithThis(@NotNull UIComparableItemInfo.Item uiComparableItemInfo) {
+        return id.equals(uiComparableItemInfo.getID());
     }
 
     @Override

@@ -7,22 +7,25 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public final class BasicGUIItem implements GUIItem {
 
     private ItemStack item;
+    private final String id = UUID.randomUUID().toString();
 
     public BasicGUIItem(@Nullable ItemStack item) {
-        this.item = item;
+        setItem(item);
     }
 
     public void setItem(@Nullable ItemStack item) {
-        this.item = item;
+        this.item = wrapGUIItem(item);
     }
 
     @NotNull
     @Override
     public String getID() {
-        return null;
+        return id;
     }
 
     @Nullable
@@ -33,7 +36,7 @@ public final class BasicGUIItem implements GUIItem {
 
     @Override
     public boolean doesItemMatchWithThis(@NotNull UIComparableItemInfo.Item uiComparableItemInfo) {
-        return false;
+        return id.equals(uiComparableItemInfo.getID());
     }
 
     @Override

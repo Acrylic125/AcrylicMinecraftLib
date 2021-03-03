@@ -74,7 +74,7 @@ public final class UIComparableItemInfo {
         }
 
         @Nullable
-        public String getId() {
+        public String getID() {
             return id;
         }
 
