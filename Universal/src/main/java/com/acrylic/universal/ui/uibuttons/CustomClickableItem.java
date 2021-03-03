@@ -5,28 +5,28 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class CustomButton implements GUIButton {
+public class CustomClickableItem implements GUIClickableItem {
 
     private ItemStack item;
-    private ButtonClickedAction<CustomButton> clickedAction;
+    private ItemClickAction<CustomClickableItem> clickedAction;
     private boolean active = true;
 
-    public CustomButton(@Nullable ItemStack item, @Nullable ButtonClickedAction<CustomButton> buttonButtonClickedAction) {
+    public CustomClickableItem(@Nullable ItemStack item, @Nullable ItemClickAction<CustomClickableItem> buttonItemClickAction) {
         this.item = item;
-        this.clickedAction = buttonButtonClickedAction;
+        this.clickedAction = buttonItemClickAction;
     }
 
-    public CustomButton setItem(@Nullable ItemStack item) {
+    public CustomClickableItem setItem(@Nullable ItemStack item) {
         this.item = item;
         return this;
     }
 
     @Nullable
-    public ButtonClickedAction<CustomButton> getClickedAction() {
+    public ItemClickAction<CustomClickableItem> getClickedAction() {
         return clickedAction;
     }
 
-    public CustomButton setClickedAction(@Nullable ButtonClickedAction<CustomButton> clickedAction) {
+    public CustomClickableItem setClickedAction(@Nullable ItemClickAction<CustomClickableItem> clickedAction) {
         this.clickedAction = clickedAction;
         return this;
     }
@@ -42,7 +42,7 @@ public class CustomButton implements GUIButton {
         return active;
     }
 
-    public CustomButton setActive(boolean active) {
+    public CustomClickableItem setActive(boolean active) {
         this.active = active;
         return this;
     }

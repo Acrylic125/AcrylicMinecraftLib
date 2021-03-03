@@ -5,7 +5,13 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+
 public interface GUIComponent {
+
+    default void applyComponentToInventory(@NotNull Inventory inventory) {
+        applyComponentToInventory(inventory, null);
+    }
 
     void applyComponentToInventory(@NotNull Inventory inventory, @Nullable Player player);
 

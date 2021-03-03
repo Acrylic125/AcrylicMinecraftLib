@@ -2,6 +2,7 @@ package com.acrylic.universal.ui.uiformats;
 
 import com.acrylic.universal.ui.components.GUIComponent;
 import com.acrylic.universal.ui.components.GUIItem;
+import com.acrylic.universal.ui.components.GUIItemComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -10,10 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 
 public interface UIFormat<T extends GUIItem>
-        extends GUIComponent {
-
-    @NotNull
-    Collection<T> getGUIItems();
+        extends GUIItemComponent<T> {
 
     void setGUIItems(@NotNull Collection<T> items);
 

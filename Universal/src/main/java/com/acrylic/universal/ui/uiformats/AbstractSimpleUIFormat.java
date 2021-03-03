@@ -3,6 +3,7 @@ package com.acrylic.universal.ui.uiformats;
 import com.acrylic.universal.gui.AbstractInventoryBuilder;
 import com.acrylic.universal.ui.InventoryUI;
 import com.acrylic.universal.ui.components.GUIItem;
+import com.acrylic.universal.ui.components.GUIItemComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -114,7 +115,6 @@ public abstract class AbstractSimpleUIFormat<T extends GUIItem>
         return items;
     }
 
-    @Override
     public void setGUIItems(@NotNull Collection<T> items) {
         this.items = items;
     }

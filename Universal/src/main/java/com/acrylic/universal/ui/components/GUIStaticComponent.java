@@ -1,7 +1,7 @@
 package com.acrylic.universal.ui.components;
 
 import com.acrylic.universal.ui.OpenDetails;
-import com.acrylic.universal.ui.uibuttons.GUIButton;
+import com.acrylic.universal.ui.uibuttons.GUIClickableItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GUIStaticComponent<T extends GUIItem>
-        implements GUIComponent {
+        implements GUIItemComponent<T> {
 
     private Map<Integer, T> componentMap;
 
@@ -53,11 +53,17 @@ public class GUIStaticComponent<T extends GUIItem>
         componentMap.forEach((slot, item) -> inventory.setItem(slot, item.getItem(openDetails)));
     }
 
-    public static Builder<GUIButton> builder() {
+    @NotNull
+    @Override
+    public Collection<T> getGUIItems() {
+        return componentMap.values();
+    }
+
+    public static Builder<GUIClickableItem> builder() {
         return new Builder<>();
     }
 
-    public static <T extends GUIButton> Builder<T> builder(@NotNull Class<T> buttonType) {
+    public static <T extends GUIClickableItem> Builder<T> builder(@NotNull Class<T> buttonType) {
         return new Builder<>();
     }
 
