@@ -9,6 +9,9 @@ import org.jetbrains.annotations.Nullable;
 
 public interface GUIItem {
 
+    @NotNull
+    String getID();
+
     @Nullable
     ItemStack getItem(OpenDetails openDetails);
 

@@ -82,9 +82,7 @@ public interface GUI<T extends GUIItem>
                         event.setCancelled(true);
                     ItemStack clicked = event.getCurrentItem();
                     UIComparableItemInfo.Item itemInfo = UIComparableItemInfo.getComparableItemInfo().createComparison(clicked);
-                    gui.iterateAllClickableItems(guiClickableItem -> {
-                        return guiClickableItem.doesItemMatchWithThis(itemInfo);
-                    });
+                    gui.iterateAllClickableItems(guiClickableItem -> guiClickableItem.doesItemMatchWithThis(itemInfo));
                 })
         );
     }
