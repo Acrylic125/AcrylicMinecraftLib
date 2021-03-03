@@ -65,8 +65,8 @@ public class CustomClickableItem implements GUIClickableItem {
     }
 
     @Override
-    public boolean doesItemMatchWithThis(@NotNull UIComparableItemInfo.Item uiComparableItemInfo) {
-        return id.equals(uiComparableItemInfo.getID());
+    public boolean doesItemMatchWithThis(@NotNull UIComparableItemInfo.Comparison uiComparableComparisonInfo) {
+        return id.equals(uiComparableComparisonInfo.getID());
     }
 
     @Override

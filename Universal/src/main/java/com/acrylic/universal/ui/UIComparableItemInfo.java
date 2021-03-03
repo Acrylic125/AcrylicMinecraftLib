@@ -32,11 +32,12 @@ public final class UIComparableItemInfo {
         return guiItemIdentifier;
     }
 
-    public Item createComparison(@Nullable ItemStack itemStack) {
-        return new Item(this, itemStack);
+    public Comparison createComparison(@Nullable ItemStack itemStack) {
+        return new Comparison(this, itemStack);
     }
 
-    public static class Item {
+    /** The main comparison object. **/
+    public static class Comparison {
 
         private final NBTItem nbtItem;
         private final ItemStack item;
@@ -44,7 +45,7 @@ public final class UIComparableItemInfo {
         private final String id;
         private final UIComparableItemInfo uiComparableItemInfo;
 
-        private Item(@NotNull UIComparableItemInfo uiComparableItemInfo, @Nullable ItemStack item) {
+        private Comparison(@NotNull UIComparableItemInfo uiComparableItemInfo, @Nullable ItemStack item) {
             this.uiComparableItemInfo = uiComparableItemInfo;
             this.item = item;
             if (this.item != null) {
@@ -88,6 +89,9 @@ public final class UIComparableItemInfo {
         return new Wrapper(this, item);
     }
 
+    /**
+     * Wraps the item with the required NBT info.
+     */
     public static class Wrapper {
         private final NBTItem nbtItem;
         private final NBTCompound compound;
