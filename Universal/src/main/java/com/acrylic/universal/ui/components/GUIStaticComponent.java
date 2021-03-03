@@ -1,5 +1,6 @@
 package com.acrylic.universal.ui.components;
 
+import com.acrylic.universal.ui.OpenDetails;
 import com.acrylic.universal.ui.uibuttons.GUIButton;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -48,7 +49,8 @@ public class GUIStaticComponent<T extends GUIItem>
 
     @Override
     public void applyComponentToInventory(@NotNull Inventory inventory, @Nullable Player player) {
-        componentMap.forEach((slot, item) -> inventory.setItem(slot, item.getItem()));
+        OpenDetails openDetails = new OpenDetails(player, inventory);
+        componentMap.forEach((slot, item) -> inventory.setItem(slot, item.getItem(openDetails)));
     }
 
     public static Builder<GUIButton> builder() {

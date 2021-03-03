@@ -1,5 +1,6 @@
 package com.acrylic.universal.ui.uibuttons;
 
+import com.acrylic.universal.ui.OpenDetails;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -48,7 +49,7 @@ public class CustomButton implements GUIButton {
 
     @Nullable
     @Override
-    public ItemStack getItem() {
+    public ItemStack getItem(OpenDetails openDetails) {
         return item;
     }
 
