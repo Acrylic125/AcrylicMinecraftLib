@@ -15,8 +15,9 @@ public class CustomButton implements GUIButton {
         this.clickedAction = buttonButtonClickedAction;
     }
 
-    public void setItem(@Nullable ItemStack item) {
+    public CustomButton setItem(@Nullable ItemStack item) {
         this.item = item;
+        return this;
     }
 
     @Nullable
@@ -24,8 +25,9 @@ public class CustomButton implements GUIButton {
         return clickedAction;
     }
 
-    public void setClickedAction(@Nullable ButtonClickedAction<CustomButton> clickedAction) {
+    public CustomButton setClickedAction(@Nullable ButtonClickedAction<CustomButton> clickedAction) {
         this.clickedAction = clickedAction;
+        return this;
     }
 
     @Override
@@ -39,8 +41,9 @@ public class CustomButton implements GUIButton {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public CustomButton setActive(boolean active) {
         this.active = active;
+        return this;
     }
 
     @Nullable

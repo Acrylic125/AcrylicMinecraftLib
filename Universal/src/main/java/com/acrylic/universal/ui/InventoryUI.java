@@ -1,7 +1,6 @@
 package com.acrylic.universal.ui;
 
 import com.acrylic.universal.items.AbstractItemBuilder;
-import com.acrylic.universal.ui.uiitems.GUIItem;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

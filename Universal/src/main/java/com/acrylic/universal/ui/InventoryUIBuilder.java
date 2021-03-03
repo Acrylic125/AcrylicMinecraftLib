@@ -2,7 +2,6 @@ package com.acrylic.universal.ui;
 
 import com.acrylic.universal.items.AbstractItemBuilder;
 import com.acrylic.universal.text.ChatUtils;
-import com.acrylic.universal.ui.uiitems.BasicGUIItem;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -10,8 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 

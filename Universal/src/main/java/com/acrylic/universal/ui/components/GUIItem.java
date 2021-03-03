@@ -1,4 +1,4 @@
-package com.acrylic.universal.ui.uiitems;
+package com.acrylic.universal.ui.components;
 
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
