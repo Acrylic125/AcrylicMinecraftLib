@@ -23,6 +23,7 @@ import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universal.ui.InventoryUIBuilder;
 import com.acrylic.universal.utils.StringUtils;
 import com.acrylic.universal.utils.keys.BlockKey;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
@@ -245,27 +246,14 @@ public class AcrylicCommand {
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                                     Player sender = (Player) commandExecutor.getSender();
-                                    GUITemplate guiTemplate = new GUITemplate();
-                                    guiTemplate.addGUIItem(1, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
-                                    guiTemplate.addGUIItem(2, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
-                                    guiTemplate.addGUIItem(5, ItemBuilder.of(Material.DIAMOND_BLOCK).build());
-                                    guiTemplate.addGUIItem(2, ItemBuilder.of(Material.GOLD_BLOCK).build());
-                                    GlobalGUIBuilder.create(
-                                    InventoryBuilder
-                                            .create()
-                                            .rows(3)
-                                            .title("Hello")
-                                            .build()
-                            ).clickListener(EventBuilder
-                                    .listen(InventoryClickEvent.class)
-                                    .filter(event -> event.getView().getPlayer().isOp())
-                                    .handle(event -> {
-                                        event.setCancelled(true);
-                                    })
-                            ).template(guiTemplate)
-                                    .removeListenersOnClose(true)
-                                    .update()
-                                    .open(sender);
+                            InventoryUIBuilder inventoryUIBuilder = new InventoryUIBuilder();
+                            sender.openInventory(inventoryUIBuilder
+                                    .addItem(0, ItemBuilder.of(Material.DIAMOND_SWORD))
+                                    .addItem(1, ItemBuilder.of(Material.EMERALD_BLOCK))
+                                    .removeItem(0)
+                                    .build())
+                            ;
+
                         }),
                         CommandBuilder.create("handrotation")
                                 .filter(AbstractCommandExecuted::isPlayer)
