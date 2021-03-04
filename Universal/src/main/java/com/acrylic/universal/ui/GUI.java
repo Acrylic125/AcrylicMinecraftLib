@@ -17,10 +17,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /**
@@ -36,18 +36,16 @@ import java.util.function.Consumer;
  * provides methods to handle click and close events, UIFormats
  * and much more.
  *
- * @param <T> The GUIItem type.
- *
  * @see GlobalGUI
  */
-public interface GUI<T extends GUIItem>
+public interface GUI
         extends Terminable {
 
     @Nullable
-    UIFormat<T> getUIFormat();
+    UIFormat getUIFormat();
 
     @Nullable
-    GUIStaticComponent<T> getStaticComponent();
+    GUIStaticComponent getStaticComponent();
 
     @Nullable
     AbstractEventBuilder<InventoryClickEvent> getClickListener();
@@ -74,10 +72,17 @@ public interface GUI<T extends GUIItem>
      * @param action What should be done while iterating.
      */
     default void iterateAllClickableItems(@NotNull StoppableIterator<GUIClickableItem> action) {
-        StoppableIterator<T> wrappedAction =
-                (item) -> item instanceof GUIClickableItem && action.iterateAndShouldStop((GUIClickableItem) item);
+        AtomicBoolean found = new AtomicBoolean(false);
+        StoppableIterator<GUIItem> wrappedAction =
+                (item) -> {
+                    boolean is = item instanceof GUIClickableItem && action.iterateAndShouldStop((GUIClickableItem) item);
+                    if (is)
+                        found.set(true);
+                    return found.get();
+        };
         iterateItemComponentIfPresent(getStaticComponent(), wrappedAction);
-        iterateItemComponentIfPresent(getUIFormat(), wrappedAction);
+        if (!found.get())
+            iterateItemComponentIfPresent(getUIFormat(), wrappedAction);
     }
 
     /**
@@ -91,9 +96,9 @@ public interface GUI<T extends GUIItem>
      *                  not null.
      * @param action The action.
      */
-    default void iterateItemComponentIfPresent(@Nullable GUIItemComponent<T> component, @NotNull StoppableIterator<T> action) {
+    default void iterateItemComponentIfPresent(@Nullable GUIItemComponent component, @NotNull StoppableIterator<GUIItem> action) {
         if (component != null) {
-            for (T item : component.getGUIItems()) {
+            for (GUIItem item : component.getGUIItems()) {
                 if (action.iterateAndShouldStop(item))
                     return;
             }
@@ -108,11 +113,10 @@ public interface GUI<T extends GUIItem>
      *            it acts as an identifier.
      * @param listenerType The listener type.
      * @param name The name of this listener.
-     * @param <T> The GUIItem type of the GUI.
      * @param <E> The Event type.
      * @return The UNREGISTERED listener.
      */
-    static <T extends GUIItem, E extends Event> AbstractEventBuilder<E> generateListener(@NotNull GUI<T> gui, @NotNull Class<E> listenerType, @NotNull String name) {
+    static <E extends Event> AbstractEventBuilder<E> generateListener(@NotNull GUI gui, @NotNull Class<E> listenerType, @NotNull String name) {
         return EventBuilder.listen(listenerType)
                 .priority(EventPriority.HIGHEST)
                 .plugin(Universal.getPlugin())
@@ -129,17 +133,23 @@ public interface GUI<T extends GUIItem>
      * the GUI.
      *
      * @param gui The GUI.
-     * @param <T> The type of the item of the GUI
      * @return The UNREGISTERED listener.
      */
-    static <T extends GUIItem> AbstractEventBuilder<InventoryClickEvent> generateGeneralGUIClickListener(@NotNull GUI<T> gui) {
+    static AbstractEventBuilder<InventoryClickEvent> generateGeneralGUIClickListener(@NotNull GUI gui) {
         return bindListenerToGUI(gui, generateListener(gui, InventoryClickEvent.class, "General GUI Click Listener")
                 .handle(event -> {
                     if (gui.shouldCancelInventoryClickEvent())
                         event.setCancelled(true);
-                    ItemStack clicked = event.getCurrentItem();
-                    UIComparableItemInfo.Comparison comparisonInfo = UIComparableItemInfo.getComparableItemInfo().createComparison(clicked);
-                    gui.iterateAllClickableItems(guiClickableItem -> guiClickableItem.doesItemMatchWithThis(comparisonInfo));
+                    UIComparableItemInfo.Comparison comparisonInfo = UIComparableItemInfo.getComparableItemInfo().createComparison(event.getCurrentItem());
+                    if (comparisonInfo != null) {
+                        gui.iterateAllClickableItems(guiClickableItem -> {
+                            if (guiClickableItem.doesItemMatchWithThis(comparisonInfo)) {
+                                guiClickableItem.onClicked(event);
+                                return true;
+                            }
+                            return false;
+                        });
+                    }
                 })
         );
     }
@@ -150,14 +160,13 @@ public interface GUI<T extends GUIItem>
      *
      * @param gui The gui.
      * @param listener The listener (InventoryEvent based).
-     * @param <T> The GUIItem type of the GUI.
      * @param <E> The event type.
      * @return The UNREGISTERED listener.
      *
      * @see InventoryEvent
      * This builds off of the given inventory from the event.
      */
-    static <T extends GUIItem, E extends InventoryEvent> AbstractEventBuilder<E> bindListenerToGUI(@NotNull GUI<T> gui, AbstractEventBuilder<E> listener) {
+    static <E extends InventoryEvent> AbstractEventBuilder<E> bindListenerToGUI(@NotNull GUI gui, AbstractEventBuilder<E> listener) {
         Consumer<E> handle = listener.getHandle();
         return listener.handle(event -> {
             if (gui.containsInventory(event.getInventory()))

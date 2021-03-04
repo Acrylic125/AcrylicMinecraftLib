@@ -1,5 +1,6 @@
 package com.acrylic.universal.ui;
 
+import com.acrylic.universal.items.ItemUtils;
 import com.acrylic.universal.ui.components.GUIItem;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
@@ -32,8 +33,9 @@ public final class UIComparableItemInfo {
         return guiItemIdentifier;
     }
 
+    @Nullable
     public Comparison createComparison(@Nullable ItemStack itemStack) {
-        return new Comparison(this, itemStack);
+        return (ItemUtils.isAir(itemStack)) ? null : new Comparison(this, itemStack);
     }
 
     /** The main comparison object. **/

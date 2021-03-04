@@ -23,7 +23,13 @@ import com.acrylic.universal.gui.templates.GUITemplate;
 import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universal.ui.GlobalGUI;
 import com.acrylic.universal.ui.InventoryUIBuilder;
+import com.acrylic.universal.ui.components.GUIItem;
+import com.acrylic.universal.ui.components.GUIStaticComponent;
+import com.acrylic.universal.ui.uibuttons.CustomClickableItem;
+import com.acrylic.universal.ui.uiformats.MiddleUIFormat;
+import com.acrylic.universal.ui.uiformats.UIFormat;
 import com.acrylic.universal.utils.StringUtils;
 import com.acrylic.universal.utils.keys.BlockKey;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
@@ -247,13 +253,58 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                                     Player sender = (Player) commandExecutor.getSender();
                             InventoryUIBuilder inventoryUIBuilder = new InventoryUIBuilder();
-                            sender.openInventory(inventoryUIBuilder
+                            inventoryUIBuilder
+                                    .rows(6)
                                     .addItem(0, ItemBuilder.of(Material.DIAMOND_SWORD))
                                     .addItem(1, ItemBuilder.of(Material.EMERALD_BLOCK))
-                                    .removeItem(0)
-                                    .build())
-                            ;
-
+                                    .removeItem(0);
+                            GUIItem guiItem = new CustomClickableItem(ItemBuilder.of(Material.IRON_SWORD).shiny(true).build(),
+                                    (event, button) -> Bukkit.broadcastMessage("Clicked something!")
+                            );
+                            GlobalGUI.builder()
+                                    .inventory(inventoryUIBuilder)
+                                    .cancelInventoryClick(true)
+                                    .clickListener(clickEvent -> {
+                                        Bukkit.broadcastMessage("CLICKED!");
+                                    })
+                                    .closeListener(closeEvent -> {
+                                        Bukkit.broadcastMessage("Closed!");
+                                    })
+                                    .uiFormat(MiddleUIFormat.builder()
+                                            .initialRow(2)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .addGUIItem(guiItem)
+                                            .build())
+                                    .staticComponent(GUIStaticComponent.builder()
+                                            .addComponent(3, guiItem)
+                                            .build())
+                                    .build()
+                                    .openGUIFor(sender);
                         }),
                         CommandBuilder.create("handrotation")
                                 .filter(AbstractCommandExecuted::isPlayer)

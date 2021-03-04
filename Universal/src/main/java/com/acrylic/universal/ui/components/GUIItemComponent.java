@@ -4,9 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public interface GUIItemComponent<T extends GUIItem> extends GUIComponent {
+public interface GUIItemComponent extends GUIComponent {
 
     @NotNull
-    Collection<T> getGUIItems();
+    Collection<GUIItem> getGUIItems();
 
 }

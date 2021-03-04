@@ -10,16 +10,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public interface UIFormat<T extends GUIItem>
-        extends GUIItemComponent<T> {
+public interface UIFormat
+        extends GUIItemComponent {
 
-    void setGUIItems(@NotNull Collection<T> items);
+    void setGUIItems(@NotNull Collection<GUIItem> items);
 
-    default void addGUIItem(@NotNull T item) {
+    default void addGUIItem(@NotNull GUIItem item) {
         getGUIItems().add(item);
     }
 
-    default void removeGUIItem(@NotNull T item) {
+    default void removeGUIItem(@NotNull GUIItem item) {
         getGUIItems().remove(item);
     }
 
@@ -27,6 +27,6 @@ public interface UIFormat<T extends GUIItem>
         getGUIItems().clear();
     }
 
-    void format(@NotNull Inventory inventory, @NotNull Collection<T> collection, @Nullable Player viewer);
+    void format(@NotNull Inventory inventory, @NotNull Collection<GUIItem> collection, @Nullable Player viewer);
 
 }

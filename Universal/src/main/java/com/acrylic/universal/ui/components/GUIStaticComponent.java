@@ -11,40 +11,35 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GUIStaticComponent<T extends GUIItem>
-        implements GUIItemComponent<T> {
+public class GUIStaticComponent
+        implements GUIItemComponent {
 
-    private Map<Integer, T> componentMap;
+    private Map<Integer, GUIItem> componentMap;
 
     public GUIStaticComponent() {
         this(new HashMap<>());
     }
 
-    public GUIStaticComponent(@NotNull Map<Integer, T> componentMap) {
+    public GUIStaticComponent(@NotNull Map<Integer, GUIItem> componentMap) {
         this.componentMap = componentMap;
     }
 
     @NotNull
-    public Map<Integer, T> getComponentMap() {
+    public Map<Integer, GUIItem> getComponentMap() {
         return componentMap;
     }
 
-    public void setComponentMap(@NotNull Map<Integer, T> componentMap) {
+    public void setComponentMap(@NotNull Map<Integer, GUIItem> componentMap) {
         this.componentMap = componentMap;
     }
 
     @Nullable
-    public T getComponent(int slot) {
+    public GUIItem getComponent(int slot) {
         return this.componentMap.get(slot);
     }
 
-    public void addComponent(int slot, @NotNull T component) {
+    public void addComponent(int slot, @NotNull GUIItem component) {
         this.componentMap.put(slot, component);
-    }
-
-    @NotNull
-    public Collection<T> getComponents() {
-        return componentMap.values();
     }
 
     @Override
@@ -55,36 +50,32 @@ public class GUIStaticComponent<T extends GUIItem>
 
     @NotNull
     @Override
-    public Collection<T> getGUIItems() {
+    public Collection<GUIItem> getGUIItems() {
         return componentMap.values();
     }
 
-    public static Builder<GUIClickableItem> builder() {
-        return new Builder<>();
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public static <T extends GUIClickableItem> Builder<T> builder(@NotNull Class<T> buttonType) {
-        return new Builder<>();
-    }
+    public static class Builder {
 
-    public static class Builder<T extends GUIItem> {
-
-        private final Map<Integer, T> componentMap = new HashMap<>();
+        private final Map<Integer, GUIItem> componentMap = new HashMap<>();
 
         private Builder() {}
 
-        public Builder<T> addComponent(int slot, @NotNull T component) {
+        public Builder addComponent(int slot, @NotNull GUIItem component) {
             componentMap.put(slot, component);
             return this;
         }
 
-        public Builder<T> removeComponent(int slot) {
+        public Builder removeComponent(int slot) {
             componentMap.remove(slot);
             return this;
         }
 
-        public GUIStaticComponent<T> build() {
-            GUIStaticComponent<T> components = new GUIStaticComponent<>();
+        public GUIStaticComponent build() {
+            GUIStaticComponent components = new GUIStaticComponent();
             components.setComponentMap(this.componentMap);
             return components;
         }

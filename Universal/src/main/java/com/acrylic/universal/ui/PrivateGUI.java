@@ -19,7 +19,7 @@ import java.util.function.Consumer;
  * all parties will be able to see any modification made in this
  * GUI.
  */
-public class GlobalGUI implements GUI {
+public class PrivateGUI implements GUI {
 
     private Inventory globalInventory;
     private AbstractEventBuilder<InventoryClickEvent> clickEvent;
@@ -33,18 +33,18 @@ public class GlobalGUI implements GUI {
         return new Builder();
     }
 
-    public static Builder builder(@NotNull GlobalGUI gui) {
+    public static Builder builder(@NotNull PrivateGUI gui) {
         return new Builder(gui);
     }
 
     public static class Builder {
-        private final GlobalGUI gui;
+        private final PrivateGUI gui;
 
         private Builder() {
-            this(new GlobalGUI());
+            this(new PrivateGUI());
         }
 
-        private Builder(@NotNull GlobalGUI gui) {
+        private Builder(@NotNull PrivateGUI gui) {
             this.gui = gui;
         }
 
@@ -92,12 +92,12 @@ public class GlobalGUI implements GUI {
             return this;
         }
 
-        public GlobalGUI build() {
+        public PrivateGUI build() {
             return gui;
         }
     }
 
-    public GlobalGUI() {
+    public PrivateGUI() {
         this.generalClickEvent = GUI.generateGeneralGUIClickListener(this);
         this.generalClickEvent.register();
     }
