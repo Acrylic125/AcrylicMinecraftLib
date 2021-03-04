@@ -1,6 +1,8 @@
 package com.acrylic.universal.ui;
 
 import com.acrylic.universal.events.AbstractEventBuilder;
+import com.acrylic.universal.ui.components.GUIComponent;
+import com.acrylic.universal.ui.components.GUIComponents;
 import com.acrylic.universal.ui.components.GUIStaticComponent;
 import com.acrylic.universal.ui.uiformats.UIFormat;
 import org.bukkit.entity.Player;
@@ -27,8 +29,7 @@ public class GlobalGUI implements GUI {
     private Consumer<InventoryClickEvent> clickHandler;
     private Consumer<InventoryCloseEvent> closeHandler;
     private Inventory globalInventory;
-    private GUIStaticComponent staticComponent;
-    private UIFormat uiFormat;
+    private GUIComponents<GUIComponent> components;
     private boolean cancelInventoryClick = false;
 
     public static Builder builder() {
@@ -69,13 +70,18 @@ public class GlobalGUI implements GUI {
             return this;
         }
 
-        public Builder staticComponent(@Nullable GUIStaticComponent staticComponent) {
-            gui.setStaticComponent(staticComponent);
+        public Builder staticComponent(@NotNull GUIStaticComponent staticComponent) {
+            gui.addComponent(staticComponent);
             return this;
         }
 
-        public Builder uiFormat(@Nullable UIFormat uiFormat) {
-            gui.setUIFormat(uiFormat);
+        public Builder addComponent(@NotNull GUIComponent component) {
+            gui.addComponent(component);
+            return this;
+        }
+
+        public Builder uiFormat(@NotNull UIFormat uiFormat) {
+            gui.addComponent(uiFormat);
             return this;
         }
 
@@ -90,10 +96,15 @@ public class GlobalGUI implements GUI {
     }
 
     public GlobalGUI() {
+        this(null);
+    }
+
+    public GlobalGUI(@Nullable GUIComponents<GUIComponent> components) {
         this.generalClickEvent = GUI.generateGeneralGUIClickListener(this);
         this.generalClickEvent.register();
         this.generalCloseEvent = GUI.generateGeneralGUICloseListener(this);
         this.generalCloseEvent.register();
+        this.components = components;
     }
 
     public void setInventory(@NotNull Inventory inventory) {
@@ -112,15 +123,20 @@ public class GlobalGUI implements GUI {
         this.generalClickEvent.unregister();
     }
 
-    public void setStaticComponent(@Nullable GUIStaticComponent staticComponent) {
-        this.staticComponent = staticComponent;
-        updateStaticComponent();
-    }
-
     @Nullable
     @Override
-    public GUIStaticComponent getStaticComponent() {
-        return staticComponent;
+    public GUIComponents<GUIComponent> getAllComponents() {
+        return components;
+    }
+
+    public void setComponents(@Nullable GUIComponents<GUIComponent> components) {
+        this.components = components;
+    }
+
+    public void addComponent(@NotNull GUIComponent guiComponent) {
+        if (this.components == null)
+            this.components = new GUIComponents<>();
+        this.components.addComponent(guiComponent);
     }
 
     @Nullable
@@ -145,36 +161,19 @@ public class GlobalGUI implements GUI {
         this.closeHandler = handle;
     }
 
-    public void setUIFormat(@Nullable UIFormat uiFormat) {
-        this.uiFormat = uiFormat;
-        updateUIFormat();
-    }
-
-    @Nullable
-    @Override
-    public UIFormat getUIFormat() {
-        return uiFormat;
-    }
-
     @Override
     public void openGUIFor(@NotNull Player player) {
         validateUse();
         player.openInventory(globalInventory);
     }
 
-    public void updateStaticComponent() {
-        if (staticComponent != null)
-            staticComponent.applyComponentToInventory(globalInventory);
-    }
-
-    public void updateUIFormat() {
-        if (uiFormat != null)
-            uiFormat.applyComponentToInventory(globalInventory);
-    }
-
     public void updateComponents() {
-        updateStaticComponent();
-        updateUIFormat();
+        validateUse();
+        if (this.components != null) {
+            for (GUIComponent component : this.components.getComponents()) {
+                component.applyComponentToInventory(globalInventory, null);
+            }
+        }
     }
 
     @Override

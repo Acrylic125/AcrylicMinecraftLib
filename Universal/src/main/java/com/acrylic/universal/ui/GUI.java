@@ -4,9 +4,7 @@ import com.acrylic.universal.Universal;
 import com.acrylic.universal.events.AbstractEventBuilder;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.interfaces.Terminable;
-import com.acrylic.universal.ui.components.GUIItem;
-import com.acrylic.universal.ui.components.GUIItemComponent;
-import com.acrylic.universal.ui.components.GUIStaticComponent;
+import com.acrylic.universal.ui.components.*;
 import com.acrylic.universal.ui.uibuttons.GUIClickableItem;
 import com.acrylic.universal.ui.uiformats.UIFormat;
 import com.acrylic.universal.utils.StoppableIterator;
@@ -42,11 +40,8 @@ public interface GUI
         extends Terminable {
 
     @Nullable
-    UIFormat getUIFormat();
-
-    @Nullable
-    GUIStaticComponent getStaticComponent();
-
+    GUIComponents<GUIComponent> getAllComponents();
+    
     @Nullable
     Consumer<InventoryClickEvent> getOnClickHandler();
 
@@ -88,17 +83,24 @@ public interface GUI
      * @param action What should be done while iterating.
      */
     default void iterateAllClickableItems(@NotNull StoppableIterator<GUIClickableItem> action) {
-        AtomicBoolean found = new AtomicBoolean(false);
-        StoppableIterator<GUIItem> wrappedAction =
-                (item) -> {
-                    boolean is = item instanceof GUIClickableItem && action.iterateAndShouldStop((GUIClickableItem) item);
-                    if (is)
-                        found.set(true);
-                    return found.get();
-        };
-        iterateItemComponentIfPresent(getStaticComponent(), wrappedAction);
-        if (!found.get())
-            iterateItemComponentIfPresent(getUIFormat(), wrappedAction);
+        GUIComponents<GUIComponent> components = getAllComponents();
+        if (components != null) {
+            AtomicBoolean found = new AtomicBoolean(false);
+            StoppableIterator<GUIItem> wrappedAction =
+                    (item) -> {
+                        boolean is = item instanceof GUIClickableItem && action.iterateAndShouldStop((GUIClickableItem) item);
+                        if (is)
+                            found.set(true);
+                        return found.get();
+                    };
+            for (GUIComponent component : components.getComponents()) {
+                if (component instanceof GUIItemComponent) {
+                    iterateItemComponent((GUIItemComponent) component, wrappedAction);
+                    if (found.get())
+                        return;
+                }
+            }
+        }
     }
 
     /**
@@ -112,12 +114,10 @@ public interface GUI
      *                  not null.
      * @param action The action.
      */
-    default void iterateItemComponentIfPresent(@Nullable GUIItemComponent component, @NotNull StoppableIterator<GUIItem> action) {
-        if (component != null) {
-            for (GUIItem item : component.getGUIItems()) {
-                if (action.iterateAndShouldStop(item))
-                    return;
-            }
+    default void iterateItemComponent(@NotNull GUIItemComponent component, @NotNull StoppableIterator<GUIItem> action) {
+        for (GUIItem item : component.getGUIItems()) {
+            if (action.iterateAndShouldStop(item))
+                return;
         }
     }
 

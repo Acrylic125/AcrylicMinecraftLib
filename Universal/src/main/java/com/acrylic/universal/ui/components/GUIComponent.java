@@ -13,4 +13,9 @@ public interface GUIComponent {
 
     void applyComponentToInventory(@NotNull Inventory inventory, @Nullable Player player);
 
+    @NotNull
+    default Object getComponentID() {
+        return getClass();
+    }
+
 }

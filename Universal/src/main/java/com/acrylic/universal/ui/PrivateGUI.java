@@ -1,6 +1,8 @@
 package com.acrylic.universal.ui;
 
 import com.acrylic.universal.events.AbstractEventBuilder;
+import com.acrylic.universal.ui.components.GUIComponent;
+import com.acrylic.universal.ui.components.GUIComponents;
 import com.acrylic.universal.ui.components.GUIStaticComponent;
 import com.acrylic.universal.ui.uiformats.UIFormat;
 import org.bukkit.entity.Player;
@@ -22,8 +24,7 @@ public class PrivateGUI implements GUI {
     private Consumer<InventoryClickEvent> clickHandler;
     private Consumer<InventoryCloseEvent> closeHandler;
     private InventoryUIBuilder globalInventory;
-    private GUIStaticComponent staticComponent;
-    private UIFormat uiFormat;
+    private GUIComponents<GUIComponent> components;
     private boolean cancelInventoryClick = false;
     private final Collection<Inventory> clientInventories = new ArrayList<>();
 
@@ -61,13 +62,18 @@ public class PrivateGUI implements GUI {
             return this;
         }
 
-        public Builder staticComponent(@Nullable GUIStaticComponent staticComponent) {
-            gui.setStaticComponent(staticComponent);
+        public Builder staticComponent(@NotNull GUIStaticComponent staticComponent) {
+            gui.addComponent(staticComponent);
             return this;
         }
 
-        public Builder uiFormat(@Nullable UIFormat uiFormat) {
-            gui.setUIFormat(uiFormat);
+        public Builder uiFormat(@NotNull UIFormat uiFormat) {
+            gui.addComponent(uiFormat);
+            return this;
+        }
+
+        public Builder addComponent(@NotNull GUIComponent component) {
+            gui.addComponent(component);
             return this;
         }
 
@@ -82,10 +88,15 @@ public class PrivateGUI implements GUI {
     }
 
     public PrivateGUI() {
+        this(null);
+    }
+
+    public PrivateGUI(@Nullable GUIComponents<GUIComponent> components) {
         this.generalClickEvent = GUI.generateGeneralGUIClickListener(this);
         this.generalClickEvent.register();
         this.generalCloseEvent = generateGeneralGUICloseListener();
         this.generalCloseEvent.register();
+        this.components = components;
     }
 
     public void setInventory(@NotNull InventoryUIBuilder inventory) {
@@ -103,14 +114,20 @@ public class PrivateGUI implements GUI {
         this.generalCloseEvent.unregister();
     }
 
-    public void setStaticComponent(@Nullable GUIStaticComponent staticComponent) {
-        this.staticComponent = staticComponent;
-    }
-
     @Nullable
     @Override
-    public GUIStaticComponent getStaticComponent() {
-        return staticComponent;
+    public GUIComponents<GUIComponent> getAllComponents() {
+        return components;
+    }
+
+    public void setComponents(@Nullable GUIComponents<GUIComponent> components) {
+        this.components = components;
+    }
+
+    public void addComponent(@NotNull GUIComponent guiComponent) {
+        if (this.components == null)
+            this.components = new GUIComponents<>();
+        this.components.addComponent(guiComponent);
     }
 
     @Nullable
@@ -135,24 +152,11 @@ public class PrivateGUI implements GUI {
         this.closeHandler = handle;
     }
 
-    public void setUIFormat(@Nullable UIFormat uiFormat) {
-        this.uiFormat = uiFormat;
-    }
-
-    @Nullable
-    @Override
-    public UIFormat getUIFormat() {
-        return uiFormat;
-    }
-
     @Override
     public void openGUIFor(@NotNull Player player) {
         validateUse();
         Inventory inventory = globalInventory.build();
-        if (staticComponent != null)
-            staticComponent.applyComponentToInventory(inventory, player);
-        if (uiFormat != null)
-           uiFormat.applyComponentToInventory(inventory, player);
+        applyComponentToInventory(inventory, player);
         clientInventories.add(inventory);
         player.openInventory(inventory);
     }
@@ -160,13 +164,16 @@ public class PrivateGUI implements GUI {
     public void openSameGUIFor(@NotNull Player mainViewer, @NotNull Player... players) {
         validateUse();
         Inventory inventory = globalInventory.build();
-        if (staticComponent != null)
-            staticComponent.applyComponentToInventory(inventory, mainViewer);
-        if (uiFormat != null)
-            uiFormat.applyComponentToInventory(inventory, mainViewer);
+        applyComponentToInventory(inventory, mainViewer);
         clientInventories.add(inventory);
         for (Player player : players)
             player.openInventory(inventory);
+    }
+
+    private void applyComponentToInventory(Inventory inventory, Player player) {
+        if (components != null)
+            for (GUIComponent component : components.getComponents())
+                component.applyComponentToInventory(inventory, player);
     }
 
     @Override
