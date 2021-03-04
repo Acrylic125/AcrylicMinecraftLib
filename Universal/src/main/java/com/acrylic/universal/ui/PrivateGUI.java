@@ -3,31 +3,30 @@ package com.acrylic.universal.ui;
 import com.acrylic.universal.events.AbstractEventBuilder;
 import com.acrylic.universal.ui.components.GUIStaticComponent;
 import com.acrylic.universal.ui.uiformats.UIFormat;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.function.Consumer;
 
-/**
- * Global GUIs are shared among ALL PLAYERS.
- *
- * This means that when this is accessed by multiple players,
- * all parties will be able to see any modification made in this
- * GUI.
- */
 public class PrivateGUI implements GUI {
 
-    private Inventory globalInventory;
     private AbstractEventBuilder<InventoryClickEvent> clickEvent;
-    private AbstractEventBuilder<InventoryCloseEvent> closeEvent;
+    private Consumer<InventoryCloseEvent> closeEvent;
     private final AbstractEventBuilder<InventoryClickEvent> generalClickEvent;
+    private final AbstractEventBuilder<InventoryCloseEvent> generalCloseEvent;
     private GUIStaticComponent staticComponent;
     private UIFormat uiFormat;
     private boolean cancelInventoryClick = false;
+    private InventoryUIBuilder globalInventory;
+    private final Collection<Inventory> clientInventories = new ArrayList<>();
 
     public static Builder builder() {
         return new Builder();
@@ -49,10 +48,6 @@ public class PrivateGUI implements GUI {
         }
 
         public Builder inventory(@NotNull InventoryUIBuilder inventory) {
-            return inventory(inventory.build());
-        }
-
-        public Builder inventory(@NotNull Inventory inventory) {
             gui.setInventory(inventory);
             return this;
         }
@@ -69,11 +64,6 @@ public class PrivateGUI implements GUI {
 
         public Builder closeListener(@NotNull Consumer<InventoryCloseEvent> handle) {
             gui.setCloseListener(handle);
-            return this;
-        }
-
-        public Builder closeListener(@Nullable AbstractEventBuilder<InventoryCloseEvent> closeEvent) {
-            gui.setCloseListener(closeEvent);
             return this;
         }
 
@@ -99,16 +89,17 @@ public class PrivateGUI implements GUI {
 
     public PrivateGUI() {
         this.generalClickEvent = GUI.generateGeneralGUIClickListener(this);
+        this.generalCloseEvent = generateGeneralGUICloseListener();
         this.generalClickEvent.register();
+        this.generalCloseEvent.register();
     }
 
-    public void setInventory(@NotNull Inventory inventory) {
+    public void setInventory(@NotNull InventoryUIBuilder inventory) {
         this.globalInventory = inventory;
-        updateComponents();
     }
 
     @NotNull
-    public Inventory getInventory() {
+    public InventoryUIBuilder getInventory() {
         return globalInventory;
     }
 
@@ -116,14 +107,12 @@ public class PrivateGUI implements GUI {
     public void terminate() {
         if (clickEvent != null)
             clickEvent.unregister();
-        if (closeEvent != null)
-            closeEvent.unregister();
         this.generalClickEvent.unregister();
+        this.generalCloseEvent.unregister();
     }
 
     public void setStaticComponent(@Nullable GUIStaticComponent staticComponent) {
         this.staticComponent = staticComponent;
-        updateStaticComponent();
     }
 
     @Nullable
@@ -157,32 +146,17 @@ public class PrivateGUI implements GUI {
     }
 
     public void setCloseListener(@NotNull Consumer<InventoryCloseEvent> handle) {
-        setCloseListener(GUI
-                .generateListener(this, InventoryCloseEvent.class, "GUI Close Listener (Provided)")
-                .handle(handle)
-        );
-    }
-
-    public void setCloseListener(@Nullable AbstractEventBuilder<InventoryCloseEvent> listener) {
-        if (listener == null) {
-            if (this.closeEvent != null)
-                this.closeEvent.unregister();
-        } else {
-            GUI.bindListenerToGUI(this, listener);
-            listener.register();
-        }
-        this.closeEvent = listener;
+        this.closeEvent = handle;
     }
 
     @Nullable
     @Override
     public AbstractEventBuilder<InventoryCloseEvent> getCloseListener() {
-        return closeEvent;
+        return null.;
     }
 
     public void setUIFormat(@Nullable UIFormat uiFormat) {
         this.uiFormat = uiFormat;
-        updateUIFormat();
     }
 
     @Nullable
@@ -194,32 +168,33 @@ public class PrivateGUI implements GUI {
     @Override
     public void openGUIFor(@NotNull Player player) {
         validateUse();
-        player.openInventory(globalInventory);
-    }
-
-    public void updateStaticComponent() {
+        Inventory inventory = globalInventory.build();
         if (staticComponent != null)
-            staticComponent.applyComponentToInventory(globalInventory);
-    }
-
-    public void updateUIFormat() {
+            staticComponent.applyComponentToInventory(inventory, player);
         if (uiFormat != null)
-            uiFormat.applyComponentToInventory(globalInventory);
+           uiFormat.applyComponentToInventory(inventory, player);
+        clientInventories.add(inventory);
+        player.openInventory(inventory);
     }
 
-    public void updateComponents() {
-        updateStaticComponent();
-        updateUIFormat();
+    public void openSameGUIFor(@NotNull Player mainViewer, @NotNull Player... players) {
+        validateUse();
+        Inventory inventory = globalInventory.build();
+        if (staticComponent != null)
+            staticComponent.applyComponentToInventory(inventory, mainViewer);
+        if (uiFormat != null)
+            uiFormat.applyComponentToInventory(inventory, mainViewer);
+        clientInventories.add(inventory);
+        for (Player player : players)
+            player.openInventory(inventory);
     }
 
     @Override
     public void update() {
         if (clickEvent != null)
             clickEvent.register();
-        if (closeEvent != null)
-            closeEvent.register();
         this.generalClickEvent.register();
-        updateComponents();
+        this.generalCloseEvent.register();
     }
 
     public void cancelInventoryClickEvent(boolean b) {
@@ -234,11 +209,24 @@ public class PrivateGUI implements GUI {
     @Override
     public boolean containsInventory(@NotNull Inventory inventory) {
         validateUse();
-        return globalInventory.equals(inventory);
+        return clientInventories.contains(inventory);
     }
 
     private void validateUse() {
         if (globalInventory == null)
             throw new IllegalStateException("The inventory is not set!");
     }
+
+    private AbstractEventBuilder<InventoryCloseEvent> generateGeneralGUICloseListener() {
+        return GUI.bindListenerToGUI(this, GUI.generateListener(this, InventoryCloseEvent.class, "General GUI Close Listener")
+                .handle(event -> {
+                    if (this.closeEvent != null)
+                        this.closeEvent.accept(event);
+                    Inventory inventory = event.getInventory();
+                    if (shouldCancelInventoryClickEvent() && inventory.getViewers().size() <= 1)
+                        clientInventories.remove(inventory);
+                })
+        );
+    }
+
 }

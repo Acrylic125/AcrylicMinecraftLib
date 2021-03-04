@@ -25,6 +25,7 @@ import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.ui.GlobalGUI;
 import com.acrylic.universal.ui.InventoryUIBuilder;
+import com.acrylic.universal.ui.PrivateGUI;
 import com.acrylic.universal.ui.components.GUIItem;
 import com.acrylic.universal.ui.components.GUIStaticComponent;
 import com.acrylic.universal.ui.uibuttons.CustomClickableItem;
@@ -261,7 +262,7 @@ public class AcrylicCommand {
                             GUIItem guiItem = new CustomClickableItem(ItemBuilder.of(Material.IRON_SWORD).shiny(true).build(),
                                     (event, button) -> Bukkit.broadcastMessage("Clicked something!")
                             );
-                            GlobalGUI.builder()
+                            PrivateGUI.builder()
                                     .inventory(inventoryUIBuilder)
                                     .cancelInventoryClick(true)
                                     .clickListener(clickEvent -> {
