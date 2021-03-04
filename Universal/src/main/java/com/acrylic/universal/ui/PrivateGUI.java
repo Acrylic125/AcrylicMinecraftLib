@@ -152,7 +152,7 @@ public class PrivateGUI implements GUI {
     @Nullable
     @Override
     public AbstractEventBuilder<InventoryCloseEvent> getCloseListener() {
-        return null.;
+        return null;
     }
 
     public void setUIFormat(@Nullable UIFormat uiFormat) {
