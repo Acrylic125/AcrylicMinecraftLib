@@ -62,6 +62,10 @@ public class ChunkedRegionMap<T extends Region>
     @Override
     public void addRegion(@NotNull T region) {
         RegionMap.super.addRegion(region);
+        mapRegion(region);
+    }
+
+    private void mapRegion(T region) {
         Location start = region.getLocation1(), end = region.getLocation2();
         World world = start.getWorld();
         int x1 = chunkGenerator.getChunkXComponent(start.getX()), z1 = chunkGenerator.getChunkZComponent(start.getZ());
@@ -71,7 +75,9 @@ public class ChunkedRegionMap<T extends Region>
         for (int x = xMin; x <= xMax; x++) {
             for (int z = zMin; z <= zMax; z++) {
                 int hash = chunkGenerator.hash(world, x, z);
-                List<T> ids = chunkRegionIDsMap.getOrDefault(hash, new ArrayList<>());
+                List<T> ids = chunkRegionIDsMap.get(hash);
+                if (ids == null)
+                    ids = new ArrayList<>();
                 ids.add(region);
                 chunkRegionIDsMap.put(hash, ids);
             }
