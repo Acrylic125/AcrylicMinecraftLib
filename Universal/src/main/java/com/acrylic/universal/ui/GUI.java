@@ -48,10 +48,26 @@ public interface GUI
     GUIStaticComponent getStaticComponent();
 
     @Nullable
-    AbstractEventBuilder<InventoryClickEvent> getClickListener();
+    Consumer<InventoryClickEvent> getOnClickHandler();
+
+    void setOnClickHandler(@Nullable Consumer<InventoryClickEvent> handle);
+
+    default void runClickHandler(InventoryClickEvent event) {
+        Consumer<InventoryClickEvent> handler = getOnClickHandler();
+        if (handler != null)
+            handler.accept(event);
+    }
 
     @Nullable
-    AbstractEventBuilder<InventoryCloseEvent> getCloseListener();
+    Consumer<InventoryCloseEvent> getOnCloseHandler();
+
+    void setOnCloseHandler(@Nullable Consumer<InventoryCloseEvent> handle);
+
+    default void runCloseHandler(InventoryCloseEvent event) {
+        Consumer<InventoryCloseEvent> handler = getOnCloseHandler();
+        if (handler != null)
+            handler.accept(event);
+    }
 
     void openGUIFor(@NotNull Player player);
 
@@ -138,6 +154,7 @@ public interface GUI
     static AbstractEventBuilder<InventoryClickEvent> generateGeneralGUIClickListener(@NotNull GUI gui) {
         return bindListenerToGUI(gui, generateListener(gui, InventoryClickEvent.class, "General GUI Click Listener")
                 .handle(event -> {
+                    gui.runClickHandler(event);
                     if (gui.shouldCancelInventoryClickEvent())
                         event.setCancelled(true);
                     UIComparableItemInfo.Comparison comparisonInfo = UIComparableItemInfo.getComparableItemInfo().createComparison(event.getCurrentItem());
@@ -151,6 +168,12 @@ public interface GUI
                         });
                     }
                 })
+        );
+    }
+
+    static AbstractEventBuilder<InventoryCloseEvent> generateGeneralGUICloseListener(@NotNull GUI gui) {
+        return bindListenerToGUI(gui, generateListener(gui, InventoryCloseEvent.class, "General GUI Close Listener")
+                .handle(gui::runCloseHandler)
         );
     }
 

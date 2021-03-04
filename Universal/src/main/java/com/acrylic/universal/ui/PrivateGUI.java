@@ -3,9 +3,7 @@ package com.acrylic.universal.ui;
 import com.acrylic.universal.events.AbstractEventBuilder;
 import com.acrylic.universal.ui.components.GUIStaticComponent;
 import com.acrylic.universal.ui.uiformats.UIFormat;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -18,14 +16,15 @@ import java.util.function.Consumer;
 
 public class PrivateGUI implements GUI {
 
-    private AbstractEventBuilder<InventoryClickEvent> clickEvent;
-    private Consumer<InventoryCloseEvent> closeEvent;
     private final AbstractEventBuilder<InventoryClickEvent> generalClickEvent;
     private final AbstractEventBuilder<InventoryCloseEvent> generalCloseEvent;
+
+    private Consumer<InventoryClickEvent> clickHandler;
+    private Consumer<InventoryCloseEvent> closeHandler;
+    private InventoryUIBuilder globalInventory;
     private GUIStaticComponent staticComponent;
     private UIFormat uiFormat;
     private boolean cancelInventoryClick = false;
-    private InventoryUIBuilder globalInventory;
     private final Collection<Inventory> clientInventories = new ArrayList<>();
 
     public static Builder builder() {
@@ -53,17 +52,12 @@ public class PrivateGUI implements GUI {
         }
 
         public Builder clickListener(@NotNull Consumer<InventoryClickEvent> handle) {
-            gui.setClickListener(handle);
-            return this;
-        }
-
-        public Builder clickListener(@Nullable AbstractEventBuilder<InventoryClickEvent> clickEvent) {
-            gui.setClickListener(clickEvent);
+            gui.setOnClickHandler(handle);
             return this;
         }
 
         public Builder closeListener(@NotNull Consumer<InventoryCloseEvent> handle) {
-            gui.setCloseListener(handle);
+            gui.setOnCloseHandler(handle);
             return this;
         }
 
@@ -89,8 +83,8 @@ public class PrivateGUI implements GUI {
 
     public PrivateGUI() {
         this.generalClickEvent = GUI.generateGeneralGUIClickListener(this);
-        this.generalCloseEvent = generateGeneralGUICloseListener();
         this.generalClickEvent.register();
+        this.generalCloseEvent = generateGeneralGUICloseListener();
         this.generalCloseEvent.register();
     }
 
@@ -105,8 +99,6 @@ public class PrivateGUI implements GUI {
 
     @Override
     public void terminate() {
-        if (clickEvent != null)
-            clickEvent.unregister();
         this.generalClickEvent.unregister();
         this.generalCloseEvent.unregister();
     }
@@ -121,38 +113,26 @@ public class PrivateGUI implements GUI {
         return staticComponent;
     }
 
-    public void setClickListener(@NotNull Consumer<InventoryClickEvent> handle) {
-        setClickListener(GUI
-                .generateListener(this, InventoryClickEvent.class, "GUI Click Listener (Provided)")
-                .handle(handle)
-        );
+    @Nullable
+    @Override
+    public Consumer<InventoryClickEvent> getOnClickHandler() {
+        return clickHandler;
     }
 
-    public void setClickListener(@Nullable AbstractEventBuilder<InventoryClickEvent> listener) {
-        if (listener == null) {
-            if (this.clickEvent != null)
-                this.clickEvent.unregister();
-        } else {
-            GUI.bindListenerToGUI(this, listener);
-            listener.register();
-        }
-        this.clickEvent = listener;
+    @Override
+    public void setOnClickHandler(@Nullable Consumer<InventoryClickEvent> handle) {
+        this.clickHandler = handle;
     }
 
     @Nullable
     @Override
-    public AbstractEventBuilder<InventoryClickEvent> getClickListener() {
-        return clickEvent;
+    public Consumer<InventoryCloseEvent> getOnCloseHandler() {
+        return closeHandler;
     }
 
-    public void setCloseListener(@NotNull Consumer<InventoryCloseEvent> handle) {
-        this.closeEvent = handle;
-    }
-
-    @Nullable
     @Override
-    public AbstractEventBuilder<InventoryCloseEvent> getCloseListener() {
-        return null;
+    public void setOnCloseHandler(@Nullable Consumer<InventoryCloseEvent> handle) {
+        this.closeHandler = handle;
     }
 
     public void setUIFormat(@Nullable UIFormat uiFormat) {
@@ -191,8 +171,6 @@ public class PrivateGUI implements GUI {
 
     @Override
     public void update() {
-        if (clickEvent != null)
-            clickEvent.register();
         this.generalClickEvent.register();
         this.generalCloseEvent.register();
     }
@@ -220,8 +198,7 @@ public class PrivateGUI implements GUI {
     private AbstractEventBuilder<InventoryCloseEvent> generateGeneralGUICloseListener() {
         return GUI.bindListenerToGUI(this, GUI.generateListener(this, InventoryCloseEvent.class, "General GUI Close Listener")
                 .handle(event -> {
-                    if (this.closeEvent != null)
-                        this.closeEvent.accept(event);
+                    runCloseHandler(event);
                     Inventory inventory = event.getInventory();
                     if (shouldCancelInventoryClickEvent() && inventory.getViewers().size() <= 1)
                         clientInventories.remove(inventory);
