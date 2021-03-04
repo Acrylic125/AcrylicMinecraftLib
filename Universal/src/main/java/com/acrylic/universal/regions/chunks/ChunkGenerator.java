@@ -1,6 +1,7 @@
 package com.acrylic.universal.regions.chunks;
 
 import com.acrylic.universal.regions.Region;
+import com.acrylic.universal.utils.keys.ChunkKey;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,7 @@ public interface ChunkGenerator {
 
     Region getChunkRegion(@NotNull Location location);
 
-    int getChunkHash(@NotNull Location location);
+    ChunkKey toKey(@NotNull Location location);
 
     default int getChunkXComponent(double x) {
         return getComponentHelper(x, getXSize());
@@ -26,7 +27,7 @@ public interface ChunkGenerator {
         return getComponentHelper(z, getZSize());
     }
 
-    int hash(@Nullable World world, double x, double z);
+    ChunkKey toKey(@NotNull World world, int x, int z);
 
     static int getComponentHelper(double v, int size) {
         return (int) Math.floor(v / size);

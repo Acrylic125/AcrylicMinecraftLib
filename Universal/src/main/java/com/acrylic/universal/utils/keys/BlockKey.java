@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class BlockKey extends RawBlockKey {
@@ -16,7 +17,7 @@ public class BlockKey extends RawBlockKey {
 
     public BlockKey(@NotNull Location location) {
         super(location);
-        this.world = location.getWorld().getUID();
+        this.world = Objects.requireNonNull(location.getWorld()).getUID();
     }
 
     public BlockKey(@NotNull Block block) {

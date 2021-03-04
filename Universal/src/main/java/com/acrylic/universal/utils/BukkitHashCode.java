@@ -50,4 +50,13 @@ public class BukkitHashCode {
         return hash;
     }
 
+    public static int getHashCode(@Nullable UUID worldID, double x, double z) {
+        int hash = 3;
+        hash = computeHash(x, hash);
+        hash = computeHash(z, hash);
+        if (worldID != null)
+            hash = computeHash(worldID.hashCode(), hash);
+        return hash;
+    }
+
 }

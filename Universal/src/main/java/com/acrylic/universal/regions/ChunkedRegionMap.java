@@ -1,6 +1,7 @@
 package com.acrylic.universal.regions;
 
 import com.acrylic.universal.regions.chunks.ChunkGenerator;
+import com.acrylic.universal.utils.keys.ChunkKey;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,7 +17,7 @@ public class ChunkedRegionMap<T extends Region>
         implements RegionMap<T> {
 
     private final Map<UUID, T> regionMap = new HashMap<>();
-    private final Map<Integer, List<T>> chunkRegionIDsMap = new HashMap<>();
+    private final Map<ChunkKey, List<T>> chunkRegionIDsMap = new HashMap<>();
     private ChunkGenerator chunkGenerator = ChunkGenerator.SIMPLE_CHUNK_GENERATOR   ;
 
     @NotNull
@@ -34,27 +35,27 @@ public class ChunkedRegionMap<T extends Region>
         return regionMap;
     }
 
-    public Map<Integer, List<T>> getChunkRegionIDsMap() {
+    public Map<ChunkKey, List<T>> getChunkRegionIDsMap() {
         return chunkRegionIDsMap;
     }
 
     @Nullable
     @Override
     public T getFirstRegion(@NotNull Location location) {
-        List<T> regions = chunkRegionIDsMap.get(chunkGenerator.getChunkHash(location));
+        List<T> regions = chunkRegionIDsMap.get(chunkGenerator.toKey(location));
         return (regions == null) ? null : RegionMap.super.getFirstRegion(location, regions);
     }
 
     @Nullable
     @Override
     public List<T> getRegions(@NotNull Location location) {
-        List<T> regions = chunkRegionIDsMap.get(chunkGenerator.getChunkHash(location));
+        List<T> regions = chunkRegionIDsMap.get(chunkGenerator.toKey(location));
         return (regions == null) ? new ArrayList<>() : RegionMap.super.getRegions(location, regions);
     }
 
     @Override
     public void iterateRegions(@NotNull Location location, @NotNull Consumer<T> regionAction) {
-        List<T> regions = chunkRegionIDsMap.get(chunkGenerator.getChunkHash(location));
+        List<T> regions = chunkRegionIDsMap.get(chunkGenerator.toKey(location));
         if (regions != null)
             RegionMap.super.iterateRegions(location, regions, regionAction);
     }
@@ -68,18 +69,20 @@ public class ChunkedRegionMap<T extends Region>
     private void mapRegion(T region) {
         Location start = region.getLocation1(), end = region.getLocation2();
         World world = start.getWorld();
+        if (world == null)
+            throw new IllegalArgumentException(region + " start location is of a null world.");
         int x1 = chunkGenerator.getChunkXComponent(start.getX()), z1 = chunkGenerator.getChunkZComponent(start.getZ());
         int x2 = chunkGenerator.getChunkXComponent(end.getX()), z2 = chunkGenerator.getChunkZComponent(end.getZ());
         int xMin = Math.min(x1, x2), xMax = Math.max(x1, x2);
         int zMin = Math.min(z1, z2), zMax = Math.max(z1, z2);
         for (int x = xMin; x <= xMax; x++) {
             for (int z = zMin; z <= zMax; z++) {
-                int hash = chunkGenerator.hash(world, x, z);
-                List<T> ids = chunkRegionIDsMap.get(hash);
+                ChunkKey key = chunkGenerator.toKey(world, x, z);
+                List<T> ids = chunkRegionIDsMap.get(key);
                 if (ids == null)
                     ids = new ArrayList<>();
                 ids.add(region);
-                chunkRegionIDsMap.put(hash, ids);
+                chunkRegionIDsMap.put(key, ids);
             }
         }
     }
