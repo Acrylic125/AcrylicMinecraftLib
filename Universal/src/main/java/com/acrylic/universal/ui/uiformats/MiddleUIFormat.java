@@ -1,7 +1,7 @@
 package com.acrylic.universal.ui.uiformats;
 
 import com.acrylic.universal.ui.components.GUIItem;
-import com.acrylic.universal.ui.OpenDetails;
+import com.acrylic.universal.ui.InventoryDetails;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -43,13 +43,13 @@ public class MiddleUIFormat
     }
 
     @Override
-    public void format(@NotNull Inventory inventory, @NotNull Collection<GUIItem> collection, @Nullable Player viewer) {
+    public void format(@NotNull InventoryDetails inventoryDetails, @NotNull Collection<GUIItem> collection) {
         final int endingIndex = getTotalItemsInMenu(),
                 size = collection.size();
         final float divisor = getTotalColumnsPerRow();
+        final Inventory inventory = inventoryDetails.getInventory();
         int currentSlot = getStartingSlot();
         short index = 0, rowsElapsed = 0;
-        final OpenDetails openDetails = new OpenDetails(viewer, inventory);
         final int rowToCenter = (int) Math.floor(size / divisor),
                 centeringOffset = (int) (Math.ceil(divisor / 2) - Math.ceil((size - (rowToCenter * divisor)) / 2f));
         for (GUIItem item : collection) {
@@ -59,7 +59,7 @@ public class MiddleUIFormat
                 currentSlot += centeringOffset;
                 rowsElapsed = -1;
             }
-            inventory.setItem(currentSlot, item.getItem(openDetails));
+            inventory.setItem(currentSlot, item.getItem(inventoryDetails));
             currentSlot++;
             index++;
             if (index % divisor == 0) {

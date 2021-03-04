@@ -1,10 +1,9 @@
 package com.acrylic.universal.ui.uiformats;
 
+import com.acrylic.universal.ui.InventoryDetails;
 import com.acrylic.universal.ui.components.GUIItem;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -142,20 +141,17 @@ public abstract class AbstractSimpleUIFormat
         return totalItemsInMenu;
     }
 
-    public void applyComponentToInventory(@NotNull Inventory inventory, @NotNull Collection<GUIItem> collection, @Nullable Player viewer) {
+    public void applyComponentToInventory(@NotNull InventoryDetails inventoryDetails, @NotNull Collection<GUIItem> collection) {
+        Inventory inventory = inventoryDetails.getInventory();
         final int size = inventory.getSize(),
                 maxSize = getTotalItemsInMenu();
         assert size <= maxSize : "The inventory does not have enough space!";
-        format(inventory, collection, viewer);
-    }
-
-    public void applyComponentToInventory(@NotNull Inventory inventory, @NotNull Collection<GUIItem> collection) {
-        applyComponentToInventory(inventory, collection, null);
+        format(inventoryDetails, collection);
     }
 
     @Override
-    public void applyComponentToInventory(@NotNull Inventory inventory, @Nullable Player player) {
-        applyComponentToInventory(inventory, items);
+    public void applyComponentToInventory(@NotNull InventoryDetails inventoryDetails) {
+        applyComponentToInventory(inventoryDetails, items);
     }
 
     @NotNull

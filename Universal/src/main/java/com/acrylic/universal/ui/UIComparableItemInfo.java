@@ -85,6 +85,37 @@ public final class UIComparableItemInfo {
         public UIComparableItemInfo getUiComparableItemInfo() {
             return uiComparableItemInfo;
         }
+
+        public byte getByte(@NotNull String key) {
+            return (this.compound == null) ? 0 : this.compound.getByte(key);
+        }
+
+        public short getShort(@NotNull String key) {
+            return (this.compound == null) ? 0 : this.compound.getShort(key);
+        }
+
+        public int getInteger(@NotNull String key) {
+            return (this.compound == null) ? 0 : this.compound.getInteger(key);
+        }
+
+        public long getLong(@NotNull String key) {
+            return (this.compound == null) ? 0 : this.compound.getLong(key);
+        }
+
+        public float getFloat(@NotNull String key) {
+            return (this.compound == null) ? 0 : this.compound.getFloat(key);
+        }
+
+        public double getDouble(@NotNull String key) {
+            return (this.compound == null) ? 0 : this.compound.getDouble(key);
+        }
+
+        @Nullable
+        public String getString(@NotNull String key) {
+            return (this.compound == null) ? null : this.compound.getString(key);
+        }
+
+
     }
 
     public Wrapper wrapItem(@NotNull ItemStack item) {
@@ -124,6 +155,38 @@ public final class UIComparableItemInfo {
 
         public ItemStack wrap() {
             return nbtItem.getItem();
+        }
+
+        public void set(@NotNull String key, @Nullable Object value) {
+            this.compound.setObject(key, value);
+        }
+
+        public void set(@NotNull String key, byte value) {
+            this.compound.setByte(key, value);
+        }
+
+        public void set(@NotNull String key, short value) {
+            this.compound.setShort(key, value);
+        }
+
+        public void set(@NotNull String key, int value) {
+            this.compound.setInteger(key, value);
+        }
+
+        public void set(@NotNull String key, long value) {
+            this.compound.setLong(key, value);
+        }
+
+        public void set(@NotNull String key, float value) {
+            this.compound.setFloat(key, value);
+        }
+
+        public void set(@NotNull String key, double value) {
+            this.compound.setDouble(key, value);
+        }
+
+        public void set(@NotNull String key, String value) {
+            this.compound.setString(key, value);
         }
 
     }

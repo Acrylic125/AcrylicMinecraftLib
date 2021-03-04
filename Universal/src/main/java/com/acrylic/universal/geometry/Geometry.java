@@ -9,7 +9,7 @@ public interface Geometry {
 
     Location getSourceLocation();
 
-    default void validateSourceLocation() {
+    default void validateUse() {
         if (getSourceLocation() == null)
             throw new NullPointerException("The source location must be defined!");
     }

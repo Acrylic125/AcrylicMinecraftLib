@@ -42,7 +42,7 @@ public class Orientation3D extends Orientation2D {
     }
 
     public Orientation3D setYOrientation(float degree) {
-        yOrientation.set(-degree);
+        yOrientation.setSinCosByAngle(-degree);
         return this;
     }
 

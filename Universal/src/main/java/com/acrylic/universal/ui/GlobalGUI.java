@@ -170,8 +170,9 @@ public class GlobalGUI implements GUI {
     public void updateComponents() {
         validateUse();
         if (this.components != null) {
+            InventoryDetails inventoryDetails = new InventoryDetails(null, globalInventory);
             for (GUIComponent component : this.components.getComponents()) {
-                component.applyComponentToInventory(globalInventory, null);
+                component.applyComponentToInventory(inventoryDetails);
             }
         }
     }

@@ -3,7 +3,6 @@ package com.acrylic.universal.geometry.line;
 import com.acrylic.universal.geometry.IndexedRotatableGeometry;
 import com.acrylic.universal.math.MathUtils;
 import com.acrylic.universal.math.Orientation3D;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -73,7 +72,7 @@ public abstract class Line
     }
 
     @Override
-    public void validateSourceLocation() {
+    public void validateUse() {
         if (source == null || toLocation == null)
             throw new NullPointerException("The source location and the to location must be defined!");
     }
@@ -87,7 +86,7 @@ public abstract class Line
     protected abstract void prepareLine(@NotNull Location source, @NotNull Location toLocation);
 
     public int getFullCycleIndex() {
-        validateSourceLocation();
+        validateUse();
         return (int) Math.ceil(source.distance(toLocation) * getPoints());
     }
 

@@ -1,17 +1,16 @@
 package com.acrylic.universal.ui.components;
 
-import org.bukkit.entity.Player;
+import com.acrylic.universal.ui.InventoryDetails;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public interface GUIComponent {
 
     default void applyComponentToInventory(@NotNull Inventory inventory) {
-        applyComponentToInventory(inventory, null);
+        applyComponentToInventory(new InventoryDetails(null, inventory));
     }
 
-    void applyComponentToInventory(@NotNull Inventory inventory, @Nullable Player player);
+    void applyComponentToInventory(@NotNull InventoryDetails inventoryDetails);
 
     @NotNull
     default Object getComponentID() {

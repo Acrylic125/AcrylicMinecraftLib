@@ -1,6 +1,5 @@
 package com.acrylic.universal.math;
 
-import lombok.Getter;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +27,7 @@ public class Orientation2D {
     }
 
     public Orientation2D setXOrientation(float degree) {
-        xOrientation.set(degree);
+        xOrientation.setSinCosByAngle(degree);
         return this;
     }
 
@@ -42,7 +41,7 @@ public class Orientation2D {
     }
 
     public Orientation2D setZOrientation(float degree) {
-        xOrientation.set(degree);
+        xOrientation.setSinCosByAngle(degree);
         return this;
     }
 

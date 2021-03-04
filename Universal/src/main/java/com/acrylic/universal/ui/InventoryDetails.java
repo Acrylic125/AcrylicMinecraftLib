@@ -5,12 +5,12 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class OpenDetails {
+public final class InventoryDetails {
 
     private final Player viewer;
     private final Inventory inventory;
 
-    public OpenDetails(@Nullable Player viewer, @NotNull Inventory inventory) {
+    public InventoryDetails(@Nullable Player viewer, @NotNull Inventory inventory) {
         this.viewer = viewer;
         this.inventory = inventory;
     }

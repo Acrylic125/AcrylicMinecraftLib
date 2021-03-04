@@ -1,6 +1,6 @@
 package com.acrylic.universal.ui.components;
 
-import com.acrylic.universal.ui.OpenDetails;
+import com.acrylic.universal.ui.InventoryDetails;
 import com.acrylic.universal.ui.UIComparableItemInfo;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,7 @@ public interface GUIItem {
     String getID();
 
     @Nullable
-    ItemStack getItem(OpenDetails openDetails);
+    ItemStack getItem(InventoryDetails openDetails);
 
     boolean doesItemMatchWithThis(@NotNull UIComparableItemInfo.Comparison uiComparableComparisonInfo);
 

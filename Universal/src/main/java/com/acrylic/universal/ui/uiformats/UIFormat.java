@@ -1,12 +1,9 @@
 package com.acrylic.universal.ui.uiformats;
 
-import com.acrylic.universal.ui.components.GUIComponent;
+import com.acrylic.universal.ui.InventoryDetails;
 import com.acrylic.universal.ui.components.GUIItem;
 import com.acrylic.universal.ui.components.GUIItemComponent;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -27,6 +24,8 @@ public interface UIFormat
         getGUIItems().clear();
     }
 
-    void format(@NotNull Inventory inventory, @NotNull Collection<GUIItem> collection, @Nullable Player viewer);
+    void format(@NotNull InventoryDetails inventoryDetails, @NotNull Collection<GUIItem> collection);
+
+
 
 }

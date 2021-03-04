@@ -1,7 +1,6 @@
 package com.acrylic.universal.ui.components;
 
-import com.acrylic.universal.ui.OpenDetails;
-import com.acrylic.universal.ui.uibuttons.GUIClickableItem;
+import com.acrylic.universal.ui.InventoryDetails;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -43,9 +42,9 @@ public class GUIStaticComponent
     }
 
     @Override
-    public void applyComponentToInventory(@NotNull Inventory inventory, @Nullable Player player) {
-        OpenDetails openDetails = new OpenDetails(player, inventory);
-        componentMap.forEach((slot, item) -> inventory.setItem(slot, item.getItem(openDetails)));
+    public void applyComponentToInventory(@NotNull InventoryDetails inventoryDetails) {
+        Inventory inventory = inventoryDetails.getInventory();
+        componentMap.forEach((slot, item) -> inventory.setItem(slot, item.getItem(inventoryDetails)));
     }
 
     @NotNull

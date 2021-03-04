@@ -1,6 +1,6 @@
 package com.acrylic.universal.ui.uibuttons;
 
-import com.acrylic.universal.ui.OpenDetails;
+import com.acrylic.universal.ui.InventoryDetails;
 import com.acrylic.universal.ui.UIComparableItemInfo;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -60,7 +60,7 @@ public class CustomClickableItem implements GUIClickableItem {
 
     @Nullable
     @Override
-    public ItemStack getItem(OpenDetails openDetails) {
+    public ItemStack getItem(InventoryDetails openDetails) {
         return item;
     }
 

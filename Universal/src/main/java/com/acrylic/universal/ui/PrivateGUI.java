@@ -171,9 +171,11 @@ public class PrivateGUI implements GUI {
     }
 
     private void applyComponentToInventory(Inventory inventory, Player player) {
-        if (components != null)
+        if (components != null) {
+            InventoryDetails inventoryDetails = new InventoryDetails(player, inventory);
             for (GUIComponent component : components.getComponents())
-                component.applyComponentToInventory(inventory, player);
+                component.applyComponentToInventory(inventoryDetails);
+        }
     }
 
     @Override

@@ -16,33 +16,45 @@ public final class TrigonometrySet {
     }
 
     public TrigonometrySet(float sinAngle, float cosAngle) {
-        setSin(sinAngle).setCos(cosAngle);
+        setSinByAngle(sinAngle).setCosByAngle(cosAngle);
     }
 
     public void cloneFrom(TrigonometrySet trigonometrySet) {
-        forceSetSin(trigonometrySet.getSin()).forceSetCos(trigonometrySet.getCos());
+        setRawSin(trigonometrySet.getSin()).setRawCos(trigonometrySet.getCos());
     }
 
-    public TrigonometrySet forceSetSin(float sin) {
+    public TrigonometrySet setRawSin(float sin) {
         this.sin = sin;
         return this;
     }
 
-    public TrigonometrySet forceSetCos(float cos) {
+    public TrigonometrySet setRawCos(float cos) {
         this.cos = cos;
         return this;
     }
 
-    public TrigonometrySet setSin(float angle) {
-        return forceSetSin((float) Math.sin(Math.toRadians(angle)));
+    public TrigonometrySet setSinByAngle(double angle) {
+        return setSinByRadian(Math.toRadians(angle));
     }
 
-    public TrigonometrySet setCos(float angle) {
-        return forceSetCos((float) Math.cos(Math.toRadians(angle)));
+    public TrigonometrySet setSinByRadian(double radian) {
+        return setRawSin((float) Math.sin(radian));
     }
 
-    public TrigonometrySet set(float angle) {
-        return setSin(angle).setCos(angle);
+    public TrigonometrySet setCosByAngle(float angle) {
+        return setCosByRadian(Math.toRadians(angle));
+    }
+
+    public TrigonometrySet setCosByRadian(double radian) {
+        return setRawCos((float) Math.cos(radian));
+    }
+
+    public TrigonometrySet setSinCosByAngle(float angle) {
+        return setSinByAngle(angle).setCosByAngle(angle);
+    }
+
+    public TrigonometrySet setSinCosByRadian(float radian) {
+        return setSinByRadian(radian).setCosByRadian(radian);
     }
 
     public double getAngle() {

@@ -40,7 +40,7 @@ public interface IndexedGeometry extends Geometry {
     }
 
     default void iterateFromAndToIndexWithIncrement(@NotNull Consumer<Location> action, int fromIndex, int toIndex, int incrementIndex) {
-        validateSourceLocation();
+        validateUse();
         for (int i = fromIndex; i <= toIndex; i += incrementIndex)
             action.accept(getLocationAtIndex(i));
     }
