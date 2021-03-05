@@ -1,7 +1,7 @@
 package com.acrylic.universal.files.parsers.variables;
 
 import com.acrylic.universal.files.parsers.AbstractVariableParser;
-import com.acrylic.universal.javamaps.IndexMapConsumer;
+import com.acrylic.universal.collection.IndexMapConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

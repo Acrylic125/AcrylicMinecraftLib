@@ -1,4 +1,4 @@
-package com.acrylic.universal.javamaps;
+package com.acrylic.universal.collection;
 
 @FunctionalInterface
 public interface IndexMapConsumer<T, K> {

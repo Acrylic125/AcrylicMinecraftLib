@@ -2,7 +2,7 @@ package com.acrylic.universal.files.parsers;
 
 import com.acrylic.universal.files.fileeditor.FileEditor;
 import com.acrylic.universal.files.parsers.exceptions.ParserException;
-import com.acrylic.universal.javamaps.MapClimber;
+import com.acrylic.universal.collection.MapClimber;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Material;

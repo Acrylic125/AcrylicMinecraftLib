@@ -3,6 +3,7 @@ package com.acrylic.universal.ui.paginated;
 import com.acrylic.universal.ui.InventoryDetails;
 import com.acrylic.universal.ui.UIComparableItemInfo;
 import com.acrylic.universal.ui.items.GUIClickableItem;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +59,9 @@ public abstract class PageButton implements GUIClickableItem {
 
     @Override
     public void onClicked(InventoryClickEvent event, @NotNull UIComparableItemInfo.Comparison comparison) {
-
+        int page = comparison.getInteger(PAGE_KEY);
+        InventoryDetails inventoryDetails = new InventoryDetails((Player) event.getView().getPlayer(), event.getInventory());
+        paginatedComponent.applyPageToInventory(inventoryDetails, page);
     }
 
     public void setActive(boolean active) {
@@ -69,4 +72,5 @@ public abstract class PageButton implements GUIClickableItem {
     public boolean isActive() {
         return active;
     }
+
 }

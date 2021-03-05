@@ -7,6 +7,10 @@ import org.jetbrains.annotations.NotNull;
 
 public interface PageableGUIComponent {
 
+    int getFirstPage();
+
+    int getLastPage();
+
     @NotNull
     GUIComponent getGUIComponent();
 

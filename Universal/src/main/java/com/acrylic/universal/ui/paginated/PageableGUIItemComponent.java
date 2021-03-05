@@ -25,4 +25,13 @@ public interface PageableGUIItemComponent extends PageableGUIComponent {
 
     void formatPageToInventory(@NotNull InventoryDetails inventoryDetails, @NotNull Collection<GUIItem> itemsToFormatWith, int page);
 
+    @Override
+    default int getFirstPage() {
+        return 1;
+    }
+
+    @Override
+    default int getLastPage() {
+        return getAllPageableItems().getLastPage();
+    }
 }

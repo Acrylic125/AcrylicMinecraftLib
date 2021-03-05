@@ -1,9 +1,9 @@
 package com.acrylic.universal.ui.paginated;
 
 import com.acrylic.universal.ui.InventoryDetails;
-import com.acrylic.universal.ui.components.GUIComponent;
+import com.acrylic.universal.ui.UIComparableItemInfo;
 import com.acrylic.universal.ui.components.GUIItemComponent;
-import com.acrylic.universal.ui.items.GUIItem;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,23 +44,33 @@ public class PaginatedComponent implements GUIItemComponent {
 
     public void applyPageToInventory(@NotNull InventoryDetails inventoryDetails, int page) {
         pageableGUIComponent.applyPageToInventory(inventoryDetails, page);
-        applyBase(inventoryDetails);
+        applyBase(inventoryDetails, page);
     }
 
     @Override
     public void applyComponentToInventory(@NotNull InventoryDetails inventoryDetails) {
-        pageableGUIComponent.getGUIComponent().applyComponentToInventory(inventoryDetails);
-        applyBase(inventoryDetails);
+        applyPageToInventory(inventoryDetails, 1);
     }
 
-    protected void applyBase(InventoryDetails inventoryDetails) {
+    protected void applyBase(InventoryDetails inventoryDetails, int page) {
         Inventory inventory = inventoryDetails.getInventory();
-        pageButtons.forEach((slot, item) -> inventory.setItem(slot, item.getItem(inventoryDetails)));
+        pageButtons.forEach((slot, item) -> inventory.setItem(slot, item.getItem(inventoryDetails, page)));
     }
 
     @NotNull
     @Override
     public Collection<PageButton> getGUIItems() {
         return pageButtons.values();
+    }
+
+    public boolean isPageOutOfBounds(int page) {
+        return page < pageableGUIComponent.getFirstPage() || page > pageableGUIComponent.getLastPage();
+    }
+
+    @Override
+    public boolean findAndRunButton(InventoryClickEvent event, UIComparableItemInfo.Comparison comparison) {
+        boolean found = GUIItemComponent.super.findAndRunButton(event, comparison);
+        return found ||
+                ((pageableGUIComponent instanceof GUIItemComponent) && ((GUIItemComponent) pageableGUIComponent).findAndRunButton(event, comparison));
     }
 }

@@ -77,6 +77,20 @@ public interface GUI
 
     boolean containsInventory(@NotNull Inventory inventory);
 
+    default void runAllClickableButtons(@NotNull InventoryClickEvent event) {
+        UIComparableItemInfo.Comparison comparisonInfo = UIComparableItemInfo.getComparableItemInfo().createComparison(event.getCurrentItem());
+        if (comparisonInfo != null) {
+            GUIComponents<GUIComponent> components = getAllComponents();
+            if (components != null) {
+                for (GUIComponent component : getAllComponents().getComponents()) {
+                    if (component instanceof GUIItemComponent && ((GUIItemComponent) component).findAndRunButton(event, comparisonInfo)) {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Iterates through all clickable items in this GUI.
      *
@@ -157,16 +171,7 @@ public interface GUI
                     gui.runClickHandler(event);
                     if (gui.shouldCancelInventoryClickEvent())
                         event.setCancelled(true);
-                    UIComparableItemInfo.Comparison comparisonInfo = UIComparableItemInfo.getComparableItemInfo().createComparison(event.getCurrentItem());
-                    if (comparisonInfo != null) {
-                        gui.iterateAllClickableItems(guiClickableItem -> {
-                            if (guiClickableItem.doesItemMatchWithThis(comparisonInfo)) {
-                                guiClickableItem.onClicked(event, comparisonInfo);
-                                return true;
-                            }
-                            return false;
-                        });
-                    }
+                    gui.runAllClickableButtons(event);
                 })
         );
     }
