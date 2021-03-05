@@ -145,10 +145,17 @@ public abstract class AbstractSimpleGUIComponent
         return totalItemsInMenu;
     }
 
-    @Override
     public void setGUIItems(@NotNull Collection<GUIItem> items) {
         this.items = new PaginatedArrayList<>(this.totalItemsInMenu);
         this.items.setCollection(items);
+    }
+
+    public void addGUIItem(@NotNull GUIItem item) {
+        getGUIItems().add(item);
+    }
+
+    public void removeGUIItem(@NotNull GUIItem item) {
+        getGUIItems().remove(item);
     }
 
     @NotNull

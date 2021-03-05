@@ -1,6 +1,5 @@
 package com.acrylic.universal.gui.paginated;
 
-import com.acrylic.paginatedcollection.PaginatedArrayList;
 import com.acrylic.universal.gui.AbstractGUIBuilder;
 import com.acrylic.universal.gui.AbstractInventoryBuilder;
 import com.acrylic.universal.gui.PrivateGUIBuilder;
@@ -12,7 +11,6 @@ import com.acrylic.universal.gui.templates.AbstractGUITemplate;
 import com.acrylic.universal.gui.templates.GUISubCollectionTemplate;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

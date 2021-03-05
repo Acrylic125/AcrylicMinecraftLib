@@ -8,6 +8,6 @@ import java.util.Collection;
 public interface GUIItemComponent extends GUIComponent {
 
     @NotNull
-    Collection<GUIItem> getGUIItems();
+    Collection<? extends GUIItem> getGUIItems();
 
 }
