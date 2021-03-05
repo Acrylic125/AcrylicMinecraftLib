@@ -14,6 +14,8 @@ public interface AbstractCommandExecuted {
         return (args.length > argument) ? args[argument] : null;
     }
 
+    String getLabel();
+
     String[] getArgs();
 
     default String getArgs(int from) {

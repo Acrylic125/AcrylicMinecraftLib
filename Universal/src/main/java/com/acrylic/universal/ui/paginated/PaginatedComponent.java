@@ -10,15 +10,15 @@ import java.util.Map;
 
 public class PaginatedComponent implements GUIComponent {
 
-    private final PageableUIFormat pageableUIFormat;
+    private final PageableGUIComponent pageableGUIComponent;
     private final Map<Integer, PageButton> pageButtons;
 
-    public PaginatedComponent(@NotNull PageableUIFormat pageableUIFormat) {
-        this(pageableUIFormat, new HashMap<>());
+    public PaginatedComponent(@NotNull PageableGUIComponent pageableGUIComponent) {
+        this(pageableGUIComponent, new HashMap<>());
     }
 
-    public PaginatedComponent(@NotNull PageableUIFormat pageableUIFormat, @NotNull Map<Integer, PageButton> pageButtons) {
-        this.pageableUIFormat = pageableUIFormat;
+    public PaginatedComponent(@NotNull PageableGUIComponent pageableGUIComponent, @NotNull Map<Integer, PageButton> pageButtons) {
+        this.pageableGUIComponent = pageableGUIComponent;
         this.pageButtons = pageButtons;
     }
 
@@ -41,7 +41,7 @@ public class PaginatedComponent implements GUIComponent {
 
     @Override
     public void applyComponentToInventory(@NotNull InventoryDetails inventoryDetails) {
-        pageableUIFormat.getUIFormat().applyComponentToInventory(inventoryDetails);
+        pageableGUIComponent.getGUIComponent().applyComponentToInventory(inventoryDetails);
         Inventory inventory = inventoryDetails.getInventory();
         pageButtons.forEach((slot, item) -> inventory.setItem(slot, item.getItem(inventoryDetails)));
     }

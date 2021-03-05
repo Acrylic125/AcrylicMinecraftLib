@@ -14,6 +14,7 @@ public final class BasicGUIItem implements GUIItem {
     private ItemStack item;
     private final String id = UUID.randomUUID().toString();
 
+
     public BasicGUIItem(@Nullable ItemStack item) {
         setItem(item);
     }

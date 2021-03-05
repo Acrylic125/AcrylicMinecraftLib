@@ -44,7 +44,7 @@ public interface CommandBuilderExecutor extends CommandBuilderChecks {
         String[] oldArgs = abstractCommandExecuted.getArgs();
         if (l >= 0)
             System.arraycopy(oldArgs, 1, newArgs, 0, l);
-        argument.execute(new CommandExecuted(abstractCommandExecuted.getSender(), newArgs, this));
+        argument.execute(new CommandExecuted(abstractCommandExecuted.getSender(), newArgs, oldArgs[0], this));
         return true;
     }
 

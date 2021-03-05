@@ -161,7 +161,7 @@ public interface GUI
                     if (comparisonInfo != null) {
                         gui.iterateAllClickableItems(guiClickableItem -> {
                             if (guiClickableItem.doesItemMatchWithThis(comparisonInfo)) {
-                                guiClickableItem.onClicked(event);
+                                guiClickableItem.onClicked(event, comparisonInfo);
                                 return true;
                             }
                             return false;

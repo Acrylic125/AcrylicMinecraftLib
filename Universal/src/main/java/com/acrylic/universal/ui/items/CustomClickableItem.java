@@ -37,7 +37,7 @@ public class CustomClickableItem implements GUIClickableItem {
     }
 
     @Override
-    public void onClicked(InventoryClickEvent event) {
+    public void onClicked(InventoryClickEvent event, @NotNull UIComparableItemInfo.Comparison comparison) {
         if (clickedAction != null)
             this.clickedAction.run(event, this);
     }

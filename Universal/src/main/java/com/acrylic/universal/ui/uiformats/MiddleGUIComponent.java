@@ -8,50 +8,55 @@ import paginatedcollection.PaginatedCollection;
 
 import java.util.Collection;
 
-public class MiddleUIFormat
-        extends AbstractSimpleUIFormat {
+public class MiddleGUIComponent
+        extends AbstractSimpleGUIComponent {
 
     public static Builder builder() {
-        return builder(new MiddleUIFormat());
+        return builder(new MiddleGUIComponent());
     }
 
-    public static Builder builder(@NotNull MiddleUIFormat uiFormat) {
+    public static Builder builder(@NotNull MiddleGUIComponent uiFormat) {
         return new Builder(uiFormat);
     }
 
-    public static final class Builder extends AbstractSimpleUIFormat.Builder<MiddleUIFormat> {
+    public static final class Builder extends AbstractSimpleGUIComponent.Builder<MiddleGUIComponent> {
 
-        private Builder(MiddleUIFormat uiFormat) {
+        private Builder(MiddleGUIComponent uiFormat) {
             super(uiFormat);
         }
     }
 
-    public MiddleUIFormat() {
+    public MiddleGUIComponent() {
     }
 
-    public MiddleUIFormat(@NotNull PaginatedCollection<GUIItem> items) {
+    public MiddleGUIComponent(@NotNull PaginatedCollection<GUIItem> items) {
         super(items);
     }
 
-    public MiddleUIFormat(int initialRow, int lastRow) {
+    public MiddleGUIComponent(int initialRow, int lastRow) {
         super(initialRow, lastRow);
     }
 
-    public MiddleUIFormat(@NotNull PaginatedCollection<GUIItem> items, int initialRow, int lastRow) {
+    public MiddleGUIComponent(@NotNull PaginatedCollection<GUIItem> items, int initialRow, int lastRow) {
         super(items, initialRow, lastRow);
     }
 
     @Override
-    public void formatPageByCollection(@NotNull InventoryDetails inventoryDetails, @NotNull Collection<GUIItem> itemsToFormatInPage) {
+    public void applyComponentToInventory(@NotNull InventoryDetails inventoryDetails) {
+        applyPageToInventory(inventoryDetails, 1);
+    }
+
+    @Override
+    public void formatPageToInventory(@NotNull InventoryDetails inventoryDetails, @NotNull Collection<GUIItem> itemsToFormatWith, int page) {
         final int endingIndex = getTotalItemsInMenu(),
-                size = itemsToFormatInPage.size();
+                size = itemsToFormatWith.size();
         final float divisor = getTotalColumnsPerRow();
         final Inventory inventory = inventoryDetails.getInventory();
         int currentSlot = getStartingSlot();
         short index = 0, rowsElapsed = 0;
         final int rowToCenter = (int) Math.floor(size / divisor),
                 centeringOffset = (int) (Math.ceil(divisor / 2) - Math.ceil((size - (rowToCenter * divisor)) / 2f));
-        for (GUIItem item : itemsToFormatInPage) {
+        for (GUIItem item : itemsToFormatWith) {
             if (index > endingIndex)
                 break;
             if (rowsElapsed == rowToCenter) {
@@ -67,12 +72,5 @@ public class MiddleUIFormat
             }
         }
     }
-
-    @Override
-    public void format(@NotNull InventoryDetails inventoryDetails, @NotNull PaginatedCollection<GUIItem> collection) {
-        formatPage(inventoryDetails, collection);
-    }
-
-
 
 }

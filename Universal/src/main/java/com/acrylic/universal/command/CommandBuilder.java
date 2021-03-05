@@ -119,8 +119,8 @@ public class CommandBuilder
     }
 
     @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
-        execute(new CommandExecuted(sender, args, null));
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+        execute(new CommandExecuted(sender, args, commandLabel, null));
         return true;
     }
 

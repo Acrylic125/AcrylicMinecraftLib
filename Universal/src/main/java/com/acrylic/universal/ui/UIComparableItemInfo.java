@@ -157,36 +157,44 @@ public final class UIComparableItemInfo {
             return nbtItem.getItem();
         }
 
-        public void set(@NotNull String key, @Nullable Object value) {
+        public Wrapper set(@NotNull String key, @Nullable Object value) {
             this.compound.setObject(key, value);
+            return this;
         }
 
-        public void set(@NotNull String key, byte value) {
+        public Wrapper set(@NotNull String key, byte value) {
             this.compound.setByte(key, value);
+            return this;
         }
 
-        public void set(@NotNull String key, short value) {
+        public Wrapper set(@NotNull String key, short value) {
             this.compound.setShort(key, value);
+            return this;
         }
 
-        public void set(@NotNull String key, int value) {
+        public Wrapper set(@NotNull String key, int value) {
             this.compound.setInteger(key, value);
+            return this;
         }
 
-        public void set(@NotNull String key, long value) {
+        public Wrapper set(@NotNull String key, long value) {
             this.compound.setLong(key, value);
+            return this;
         }
 
-        public void set(@NotNull String key, float value) {
+        public Wrapper set(@NotNull String key, float value) {
             this.compound.setFloat(key, value);
+            return this;
         }
 
-        public void set(@NotNull String key, double value) {
+        public Wrapper set(@NotNull String key, double value) {
             this.compound.setDouble(key, value);
+            return this;
         }
 
-        public void set(@NotNull String key, String value) {
+        public Wrapper set(@NotNull String key, String value) {
             this.compound.setString(key, value);
+            return this;
         }
 
     }

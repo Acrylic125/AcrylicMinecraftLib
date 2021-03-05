@@ -2,7 +2,8 @@ package com.acrylic.universal.ui.uiformats;
 
 import com.acrylic.universal.ui.InventoryDetails;
 import com.acrylic.universal.ui.items.GUIItem;
-import com.acrylic.universal.ui.paginated.PageableUIFormat;
+import com.acrylic.universal.ui.paginated.PageableGUIComponent;
+import com.acrylic.universal.ui.paginated.PageableGUIItemComponent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import paginatedcollection.PaginatedArrayList;
@@ -12,32 +13,32 @@ import java.util.Collection;
 
 import static com.acrylic.universal.ui.InventoryUI.CHEST_COLUMNS_PER_ROW;
 
-public abstract class AbstractSimpleUIFormat
-        implements UIFormat, PageableUIFormat {
+public abstract class AbstractSimpleGUIComponent
+        implements UIFormat, PageableGUIItemComponent {
 
     private PaginatedCollection<GUIItem> items;
     private int initialRow;
     private int totalItemsInMenu;
     private int offsetLeft = 0;
 
-    public AbstractSimpleUIFormat() {
+    public AbstractSimpleGUIComponent() {
         this(1, 6);
     }
 
-    public AbstractSimpleUIFormat(@NotNull PaginatedCollection<GUIItem> items) {
+    public AbstractSimpleGUIComponent(@NotNull PaginatedCollection<GUIItem> items) {
         this(items, 1, 6);
     }
 
-    public AbstractSimpleUIFormat(int initialRow, int lastRow) {
+    public AbstractSimpleGUIComponent(int initialRow, int lastRow) {
         this(new PaginatedArrayList<>(10), initialRow, lastRow);
     }
 
-    public AbstractSimpleUIFormat(@NotNull PaginatedCollection<GUIItem> items, int initialRow, int lastRow) {
+    public AbstractSimpleGUIComponent(@NotNull PaginatedCollection<GUIItem> items, int initialRow, int lastRow) {
         this.items = items;
         setTotalItemsInMenu(initialRow, lastRow);
     }
 
-    public abstract static class Builder<T extends AbstractSimpleUIFormat> {
+    public abstract static class Builder<T extends AbstractSimpleGUIComponent> {
 
         private final T uiFormat;
 
@@ -144,19 +145,6 @@ public abstract class AbstractSimpleUIFormat
         return totalItemsInMenu;
     }
 
-    public void applyComponentToInventory(@NotNull InventoryDetails inventoryDetails, @NotNull PaginatedCollection<GUIItem> collection) {
-        Inventory inventory = inventoryDetails.getInventory();
-        final int size = inventory.getSize(),
-                maxSize = getTotalItemsInMenu();
-        assert size <= maxSize : "The inventory does not have enough space!";
-        format(inventoryDetails, collection);
-    }
-
-    @Override
-    public void applyComponentToInventory(@NotNull InventoryDetails inventoryDetails) {
-        applyComponentToInventory(inventoryDetails, items);
-    }
-
     @Override
     public void setGUIItems(@NotNull Collection<GUIItem> items) {
         this.items = new PaginatedArrayList<>(this.totalItemsInMenu);
@@ -181,10 +169,10 @@ public abstract class AbstractSimpleUIFormat
 
     @NotNull
     @Override
-    public UIFormat getUIFormat() {
+    public UIFormat getGUIComponent() {
         return this;
     }
 
-    public abstract void format(@NotNull InventoryDetails inventoryDetails, @NotNull PaginatedCollection<GUIItem> collection);
+
 
 }

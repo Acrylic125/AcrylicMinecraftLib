@@ -25,7 +25,7 @@ import com.acrylic.universal.ui.PrivateGUI;
 import com.acrylic.universal.ui.items.GUIItem;
 import com.acrylic.universal.ui.components.GUIStaticComponent;
 import com.acrylic.universal.ui.items.CustomClickableItem;
-import com.acrylic.universal.ui.uiformats.MiddleUIFormat;
+import com.acrylic.universal.ui.uiformats.MiddleGUIComponent;
 import com.acrylic.universal.utils.StringUtils;
 import com.acrylic.universal.utils.keys.BlockKey;
 import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
@@ -265,7 +265,7 @@ public class AcrylicCommand {
                                     .closeListener(closeEvent -> {
                                         Bukkit.broadcastMessage("Closed!");
                                     })
-                                    .uiFormat(MiddleUIFormat.builder()
+                                    .uiFormat(MiddleGUIComponent.builder()
                                             .initialRow(2)
                                             .addGUIItem(guiItem)
                                             .addGUIItem(guiItem)
