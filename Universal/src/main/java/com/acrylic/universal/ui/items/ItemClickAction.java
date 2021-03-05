@@ -1,4 +1,4 @@
-package com.acrylic.universal.ui.uibuttons;
+package com.acrylic.universal.ui.items;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 

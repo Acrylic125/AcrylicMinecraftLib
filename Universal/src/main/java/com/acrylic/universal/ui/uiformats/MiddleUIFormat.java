@@ -1,7 +1,7 @@
 package com.acrylic.universal.ui.uiformats;
 
 import com.acrylic.universal.ui.InventoryDetails;
-import com.acrylic.universal.ui.components.GUIItem;
+import com.acrylic.universal.ui.items.GUIItem;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import paginatedcollection.PaginatedCollection;

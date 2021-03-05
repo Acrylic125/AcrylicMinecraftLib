@@ -1,7 +1,7 @@
 package com.acrylic.universal.ui;
 
 import com.acrylic.universal.items.ItemUtils;
-import com.acrylic.universal.ui.components.GUIItem;
+import com.acrylic.universal.ui.items.GUIItem;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.inventory.ItemStack;

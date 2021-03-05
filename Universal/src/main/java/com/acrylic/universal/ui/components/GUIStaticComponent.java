@@ -1,7 +1,7 @@
 package com.acrylic.universal.ui.components;
 
 import com.acrylic.universal.ui.InventoryDetails;
-import org.bukkit.entity.Player;
+import com.acrylic.universal.ui.items.GUIItem;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

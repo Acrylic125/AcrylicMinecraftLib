@@ -1,4 +1,4 @@
-package com.acrylic.universal.ui.components;
+package com.acrylic.universal.ui.items;
 
 import com.acrylic.universal.ui.InventoryDetails;
 import com.acrylic.universal.ui.UIComparableItemInfo;
@@ -17,16 +17,22 @@ public interface GUIItem {
     boolean doesItemMatchWithThis(@NotNull UIComparableItemInfo.Comparison uiComparableComparisonInfo);
 
     default boolean doesItemMatchWithThis(@NotNull ItemStack item) {
-        return doesItemMatchWithThis(UIComparableItemInfo.getComparableItemInfo().createComparison(item));
+        UIComparableItemInfo.Comparison comparison = UIComparableItemInfo.getComparableItemInfo().createComparison(item);
+        return comparison != null && doesItemMatchWithThis(comparison);
+    }
+
+    @Nullable
+    default UIComparableItemInfo.Wrapper wrapperGUIItem(@Nullable ItemStack item) {
+        return (item == null) ? null :
+                UIComparableItemInfo.getComparableItemInfo()
+                        .wrapItem(item)
+                        .idByGUIItem(this);
     }
 
     @Nullable
     default ItemStack wrapGUIItem(@Nullable ItemStack item) {
-        return (item == null) ? null :
-                UIComparableItemInfo.getComparableItemInfo()
-                .wrapItem(item)
-                .idByGUIItem(this)
-                .wrap();
+        UIComparableItemInfo.Wrapper wrapper = wrapperGUIItem(item);
+        return (wrapper == null) ? null : wrapper.wrap();
     }
 
 }

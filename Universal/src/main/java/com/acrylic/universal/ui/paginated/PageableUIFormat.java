@@ -1,14 +1,17 @@
 package com.acrylic.universal.ui.paginated;
 
 import com.acrylic.universal.ui.InventoryDetails;
-import com.acrylic.universal.ui.components.GUIItem;
-import org.bukkit.inventory.ItemStack;
+import com.acrylic.universal.ui.items.GUIItem;
+import com.acrylic.universal.ui.uiformats.UIFormat;
 import org.jetbrains.annotations.NotNull;
 import paginatedcollection.PaginatedCollection;
 
 import java.util.Collection;
 
 public interface PageableUIFormat {
+
+    @NotNull
+    UIFormat getUIFormat();
 
     @NotNull
     PaginatedCollection<GUIItem> getAllPageableItems();

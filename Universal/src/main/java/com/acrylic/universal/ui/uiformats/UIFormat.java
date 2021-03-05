@@ -1,7 +1,6 @@
 package com.acrylic.universal.ui.uiformats;
 
-import com.acrylic.universal.ui.InventoryDetails;
-import com.acrylic.universal.ui.components.GUIItem;
+import com.acrylic.universal.ui.items.GUIItem;
 import com.acrylic.universal.ui.components.GUIItemComponent;
 import org.jetbrains.annotations.NotNull;
 

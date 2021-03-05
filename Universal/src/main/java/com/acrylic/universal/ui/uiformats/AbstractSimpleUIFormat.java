@@ -1,15 +1,13 @@
 package com.acrylic.universal.ui.uiformats;
 
 import com.acrylic.universal.ui.InventoryDetails;
-import com.acrylic.universal.ui.components.GUIItem;
+import com.acrylic.universal.ui.items.GUIItem;
 import com.acrylic.universal.ui.paginated.PageableUIFormat;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import paginatedcollection.PaginatedArrayList;
 import paginatedcollection.PaginatedCollection;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import static com.acrylic.universal.ui.InventoryUI.CHEST_COLUMNS_PER_ROW;
@@ -179,6 +177,12 @@ public abstract class AbstractSimpleUIFormat
     @Override
     public PaginatedCollection<GUIItem> getAllPageableItems() {
         return this.items;
+    }
+
+    @NotNull
+    @Override
+    public UIFormat getUIFormat() {
+        return this;
     }
 
     public abstract void format(@NotNull InventoryDetails inventoryDetails, @NotNull PaginatedCollection<GUIItem> collection);

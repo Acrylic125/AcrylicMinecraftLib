@@ -1,7 +1,7 @@
-package com.acrylic.universal.ui.uiitems;
+package com.acrylic.universal.ui.items;
 
 import com.acrylic.universal.ui.UIComparableItemInfo;
-import com.acrylic.universal.ui.components.GUIItem;
+import com.acrylic.universal.ui.items.GUIItem;
 import com.acrylic.universal.ui.InventoryDetails;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

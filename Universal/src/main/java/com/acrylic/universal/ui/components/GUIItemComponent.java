@@ -1,6 +1,6 @@
 package com.acrylic.universal.ui.components;
 
-import com.acrylic.universal.ui.GUI;
+import com.acrylic.universal.ui.items.GUIItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
