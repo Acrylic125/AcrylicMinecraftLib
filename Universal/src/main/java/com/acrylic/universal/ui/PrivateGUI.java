@@ -174,7 +174,8 @@ public class PrivateGUI implements GUI {
         if (components != null) {
             InventoryDetails inventoryDetails = new InventoryDetails(player, inventory);
             for (GUIComponent component : components.getComponents())
-                component.applyComponentToInventory(inventoryDetails);
+                if (component.isAllowedToBeAddedToGUI(this))
+                    component.applyComponentToInventory(inventoryDetails);
         }
     }
 

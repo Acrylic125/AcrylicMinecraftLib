@@ -111,12 +111,12 @@
     </repositories>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <dependency>
             <groupId>com.github.Acrylic125</groupId>
             <artifactId>AcrylicLib</artifactId>
-            <version>v1.2c</version>
+            <version>v1.3a</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

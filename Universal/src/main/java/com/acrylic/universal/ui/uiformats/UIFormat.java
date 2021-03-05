@@ -24,8 +24,4 @@ public interface UIFormat
         getGUIItems().clear();
     }
 
-    void format(@NotNull InventoryDetails inventoryDetails, @NotNull Collection<GUIItem> collection);
-
-
-
 }

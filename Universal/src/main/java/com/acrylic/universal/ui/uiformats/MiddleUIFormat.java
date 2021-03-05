@@ -1,11 +1,10 @@
 package com.acrylic.universal.ui.uiformats;
 
-import com.acrylic.universal.ui.components.GUIItem;
 import com.acrylic.universal.ui.InventoryDetails;
-import org.bukkit.entity.Player;
+import com.acrylic.universal.ui.components.GUIItem;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import paginatedcollection.PaginatedCollection;
 
 import java.util.Collection;
 
@@ -30,7 +29,7 @@ public class MiddleUIFormat
     public MiddleUIFormat() {
     }
 
-    public MiddleUIFormat(@NotNull Collection<GUIItem> items) {
+    public MiddleUIFormat(@NotNull PaginatedCollection<GUIItem> items) {
         super(items);
     }
 
@@ -38,21 +37,21 @@ public class MiddleUIFormat
         super(initialRow, lastRow);
     }
 
-    public MiddleUIFormat(@NotNull Collection<GUIItem> items, int initialRow, int lastRow) {
+    public MiddleUIFormat(@NotNull PaginatedCollection<GUIItem> items, int initialRow, int lastRow) {
         super(items, initialRow, lastRow);
     }
 
     @Override
-    public void format(@NotNull InventoryDetails inventoryDetails, @NotNull Collection<GUIItem> collection) {
+    public void formatPageByCollection(@NotNull InventoryDetails inventoryDetails, @NotNull Collection<GUIItem> itemsToFormatInPage) {
         final int endingIndex = getTotalItemsInMenu(),
-                size = collection.size();
+                size = itemsToFormatInPage.size();
         final float divisor = getTotalColumnsPerRow();
         final Inventory inventory = inventoryDetails.getInventory();
         int currentSlot = getStartingSlot();
         short index = 0, rowsElapsed = 0;
         final int rowToCenter = (int) Math.floor(size / divisor),
                 centeringOffset = (int) (Math.ceil(divisor / 2) - Math.ceil((size - (rowToCenter * divisor)) / 2f));
-        for (GUIItem item : collection) {
+        for (GUIItem item : itemsToFormatInPage) {
             if (index > endingIndex)
                 break;
             if (rowsElapsed == rowToCenter) {
@@ -68,4 +67,12 @@ public class MiddleUIFormat
             }
         }
     }
+
+    @Override
+    public void format(@NotNull InventoryDetails inventoryDetails, @NotNull PaginatedCollection<GUIItem> collection) {
+        formatPage(inventoryDetails, collection);
+    }
+
+
+
 }
