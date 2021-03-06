@@ -1,5 +1,6 @@
 package com.acrylic.universal.ui.items;
 
+import com.acrylic.universal.ui.GUI;
 import com.acrylic.universal.ui.InventoryDetails;
 import com.acrylic.universal.ui.UIComparableItemInfo;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -37,7 +38,7 @@ public class CustomClickableItem implements GUIClickableItem {
     }
 
     @Override
-    public void onClicked(InventoryClickEvent event, @NotNull UIComparableItemInfo.Comparison comparison) {
+    public void onClicked(@NotNull GUI gui, @NotNull InventoryClickEvent event, @NotNull UIComparableItemInfo.Comparison comparison) {
         if (clickedAction != null)
             this.clickedAction.run(event, this);
     }

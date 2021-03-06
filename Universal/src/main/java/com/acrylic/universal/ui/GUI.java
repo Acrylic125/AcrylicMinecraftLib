@@ -73,6 +73,28 @@ public interface GUI
 
     void update();
 
+    default void initialize(@NotNull InventoryDetails inventoryDetails) {
+        inventoryDetails.getInventory().clear();
+        GUIComponents<GUIComponent> components = getAllComponents();
+        if (components != null) {
+            for (GUIComponent component : components.getComponents()) {
+                if (component.isAllowedToBeAddedToGUI(this) && component.shouldInitializeOnCall())
+                    component.applyComponentToInventory(inventoryDetails);
+            }
+        }
+    }
+
+    default void refresh(@NotNull InventoryDetails inventoryDetails) {
+        inventoryDetails.getInventory().clear();
+        GUIComponents<GUIComponent> components = getAllComponents();
+        if (components != null) {
+            for (GUIComponent component : components.getComponents()) {
+                if (component.isAllowedToBeAddedToGUI(this) && component.shouldRefreshOnCall())
+                    component.applyComponentToInventory(inventoryDetails);
+            }
+        }
+    }
+
     boolean shouldCancelInventoryClickEvent();
 
     boolean containsInventory(@NotNull Inventory inventory);
@@ -83,7 +105,7 @@ public interface GUI
             GUIComponents<GUIComponent> components = getAllComponents();
             if (components != null) {
                 for (GUIComponent component : getAllComponents().getComponents()) {
-                    if (component instanceof GUIItemComponent && ((GUIItemComponent) component).findAndRunButton(event, comparisonInfo)) {
+                    if (component instanceof GUIItemComponent && ((GUIItemComponent) component).findAndRunButton(this, event, comparisonInfo)) {
                         return;
                     }
                 }

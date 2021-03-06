@@ -1,8 +1,10 @@
 package com.acrylic.universal.ui.paginated;
 
+import com.acrylic.universal.ui.GUI;
 import com.acrylic.universal.ui.InventoryDetails;
 import com.acrylic.universal.ui.UIComparableItemInfo;
 import com.acrylic.universal.ui.items.GUIClickableItem;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -15,12 +17,16 @@ public abstract class PageButton implements GUIClickableItem {
 
     private static final String PAGE_KEY = "page";
 
-    private final PaginatedComponent paginatedComponent;
+    private PaginatedComponent paginatedComponent;
     private final String id = UUID.randomUUID().toString();
     private ItemStack item;
     private boolean active = true;
 
-    public PageButton(@NotNull PaginatedComponent paginatedComponent, @Nullable ItemStack item) {
+    public PageButton(@Nullable ItemStack item) {
+        setItem(item);
+    }
+
+    public PageButton(@Nullable PaginatedComponent paginatedComponent, @Nullable ItemStack item) {
         this.paginatedComponent = paginatedComponent;
         setItem(item);
     }
@@ -29,7 +35,11 @@ public abstract class PageButton implements GUIClickableItem {
         this.item = item;
     }
 
-    @NotNull
+    public void setPaginatedComponent(@Nullable PaginatedComponent paginatedComponent) {
+        this.paginatedComponent = paginatedComponent;
+    }
+
+    @Nullable
     public PaginatedComponent getPaginatedComponent() {
         return paginatedComponent;
     }
@@ -58,10 +68,18 @@ public abstract class PageButton implements GUIClickableItem {
     }
 
     @Override
-    public void onClicked(InventoryClickEvent event, @NotNull UIComparableItemInfo.Comparison comparison) {
+    public void onClicked(@NotNull GUI gui, @NotNull InventoryClickEvent event, @NotNull UIComparableItemInfo.Comparison comparison) {
+        validateUse();
         int page = comparison.getInteger(PAGE_KEY);
+        Bukkit.broadcastMessage(page + "");
         InventoryDetails inventoryDetails = new InventoryDetails((Player) event.getView().getPlayer(), event.getInventory());
+        gui.refresh(inventoryDetails);
         paginatedComponent.applyPageToInventory(inventoryDetails, page);
+    }
+
+    private void validateUse() {
+        if (paginatedComponent == null)
+            throw new IllegalStateException("The paginated component must be set.");
     }
 
     public void setActive(boolean active) {

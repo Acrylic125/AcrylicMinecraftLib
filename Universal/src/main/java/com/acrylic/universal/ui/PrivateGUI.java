@@ -156,7 +156,7 @@ public class PrivateGUI implements GUI {
     public void openGUIFor(@NotNull Player player) {
         validateUse();
         Inventory inventory = globalInventory.build();
-        applyComponentToInventory(inventory, player);
+        initialize(new InventoryDetails(player, inventory));
         clientInventories.add(inventory);
         player.openInventory(inventory);
     }
@@ -164,19 +164,10 @@ public class PrivateGUI implements GUI {
     public void openSameGUIFor(@NotNull Player mainViewer, @NotNull Player... players) {
         validateUse();
         Inventory inventory = globalInventory.build();
-        applyComponentToInventory(inventory, mainViewer);
+        initialize(new InventoryDetails(mainViewer, inventory));
         clientInventories.add(inventory);
         for (Player player : players)
             player.openInventory(inventory);
-    }
-
-    private void applyComponentToInventory(Inventory inventory, Player player) {
-        if (components != null) {
-            InventoryDetails inventoryDetails = new InventoryDetails(player, inventory);
-            for (GUIComponent component : components.getComponents())
-                if (component.isAllowedToBeAddedToGUI(this))
-                    component.applyComponentToInventory(inventoryDetails);
-        }
     }
 
     @Override

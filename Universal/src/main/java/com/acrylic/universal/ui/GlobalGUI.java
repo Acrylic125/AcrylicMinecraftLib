@@ -109,7 +109,7 @@ public class GlobalGUI implements GUI {
 
     public void setInventory(@NotNull Inventory inventory) {
         this.globalInventory = inventory;
-        updateComponents();
+        initialize(new InventoryDetails(null, inventory));
     }
 
     @NotNull
@@ -167,22 +167,11 @@ public class GlobalGUI implements GUI {
         player.openInventory(globalInventory);
     }
 
-    public void updateComponents() {
-        validateUse();
-        if (this.components != null) {
-            InventoryDetails inventoryDetails = new InventoryDetails(null, globalInventory);
-            for (GUIComponent component : this.components.getComponents()) {
-                if (component.isAllowedToBeAddedToGUI(this))
-                    component.applyComponentToInventory(inventoryDetails);
-            }
-        }
-    }
-
     @Override
     public void update() {
         this.generalCloseEvent.register();
         this.generalClickEvent.register();
-        updateComponents();
+        refresh(new InventoryDetails(null, globalInventory));
     }
 
     public void cancelInventoryClickEvent(boolean b) {

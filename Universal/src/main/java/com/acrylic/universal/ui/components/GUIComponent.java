@@ -22,4 +22,12 @@ public interface GUIComponent {
         return true;
     }
 
+    default boolean shouldInitializeOnCall() {
+        return true;
+    }
+
+    default boolean shouldRefreshOnCall() {
+        return true;
+    }
+
 }

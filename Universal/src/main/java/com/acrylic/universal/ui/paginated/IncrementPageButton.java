@@ -10,8 +10,22 @@ public class IncrementPageButton extends PageButton {
     private int pageIncrement = 1;
     private boolean returnNullIfPageOutOfBounds = true;
 
+    public IncrementPageButton(@Nullable ItemStack item) {
+        super(item);
+    }
+
+    public IncrementPageButton(@Nullable ItemStack item, int pageIncrement) {
+        super(item);
+        this.pageIncrement = pageIncrement;
+    }
+
     public IncrementPageButton(@NotNull PaginatedComponent paginatedComponent, @Nullable ItemStack item) {
         super(paginatedComponent, item);
+    }
+
+    public IncrementPageButton(@NotNull PaginatedComponent paginatedComponent, @Nullable ItemStack item, int pageIncrement) {
+        super(paginatedComponent, item);
+        this.pageIncrement = pageIncrement;
     }
 
     public int getPageIncrement() {
@@ -33,6 +47,7 @@ public class IncrementPageButton extends PageButton {
     @Nullable
     @Override
     public ItemStack getItem(InventoryDetails openDetails, int page) {
-        return (returnNullIfPageOutOfBounds && getPaginatedComponent().isPageOutOfBounds(page)) ? null : super.getItem(openDetails, page + pageIncrement);
+        page += pageIncrement;
+        return (returnNullIfPageOutOfBounds && getPaginatedComponent().isPageOutOfBounds(page)) ? null : super.getItem(openDetails, page);
     }
 }

@@ -1,5 +1,6 @@
 package com.acrylic.universal.ui.components;
 
+import com.acrylic.universal.ui.GUI;
 import com.acrylic.universal.ui.UIComparableItemInfo;
 import com.acrylic.universal.ui.items.GUIClickableItem;
 import com.acrylic.universal.ui.items.GUIItem;
@@ -13,11 +14,11 @@ public interface GUIItemComponent extends GUIComponent {
     @NotNull
     Collection<? extends GUIItem> getGUIItems();
 
-    default boolean findAndRunButton(InventoryClickEvent event, UIComparableItemInfo.Comparison comparison) {
+    default boolean findAndRunButton(GUI gui, InventoryClickEvent event, UIComparableItemInfo.Comparison comparison) {
         for (GUIItem guiItem : getGUIItems()) {
             if (guiItem instanceof GUIClickableItem && guiItem.doesItemMatchWithThis(comparison)) {
                 GUIClickableItem item = ((GUIClickableItem) guiItem);
-                item.onClicked(event, comparison);
+                item.onClicked(gui, event, comparison);
                 return true;
             }
         }

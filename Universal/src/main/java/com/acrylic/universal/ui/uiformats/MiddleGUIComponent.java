@@ -63,6 +63,7 @@ public class MiddleGUIComponent
                 currentSlot += centeringOffset;
                 rowsElapsed = -1;
             }
+
             inventory.setItem(currentSlot, item.getItem(inventoryDetails));
             currentSlot++;
             index++;
