@@ -63,12 +63,12 @@ public class GUIStaticComponent
 
         private Builder() {}
 
-        public Builder addComponent(int slot, @NotNull GUIItem component) {
+        public Builder addItem(int slot, @NotNull GUIItem component) {
             componentMap.put(slot, component);
             return this;
         }
 
-        public Builder removeComponent(int slot) {
+        public Builder removeItem(int slot) {
             componentMap.remove(slot);
             return this;
         }

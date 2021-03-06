@@ -137,6 +137,7 @@ public class GlobalGUI implements GUI {
         if (this.components == null)
             this.components = new GUIComponents<>();
         this.components.addComponent(guiComponent);
+        guiComponent.applyComponentToInventory(new InventoryDetails(null, globalInventory));
     }
 
     @Nullable

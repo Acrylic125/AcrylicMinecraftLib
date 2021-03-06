@@ -20,6 +20,7 @@ import com.acrylic.universal.geometry.line.QuadraticYLine;
 import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
+import com.acrylic.universal.ui.GlobalGUI;
 import com.acrylic.universal.ui.InventoryUIBuilder;
 import com.acrylic.universal.ui.PrivateGUI;
 import com.acrylic.universal.ui.items.BasicGUIItem;
@@ -48,43 +49,6 @@ import java.util.HashMap;
 public class AcrylicCommand {
 
     private static final HashMap<BlockKey, String> map = new HashMap<>();
-    private static PrivateGUI privateGUI;
-
-    static {
-        MiddleGUIComponent middleGUIComponent = MiddleGUIComponent.builder()
-                .offsetRight(1)
-                .initialRow(2).totalItemsInMenu(30).build();
-        for (int i = 0; i < 1000; i++) {
-            middleGUIComponent.addGUIItem(new BasicGUIItem(ItemBuilder.of(Material.IRON_SWORD).build()));
-        }
-        PaginatedComponent paginatedComponent = PaginatedComponent.builder(middleGUIComponent)
-                .addPageButton(0, new IncrementPageButton(ItemBuilder.of(Material.REDSTONE_BLOCK).build(), -1))
-                .addPageButton(8, new IncrementPageButton(ItemBuilder.of(Material.EMERALD_BLOCK).build()))
-                .build();
-        InventoryUIBuilder inventoryUIBuilder = new InventoryUIBuilder();
-        inventoryUIBuilder
-                .rows(6)
-                .addItem(0, ItemBuilder.of(Material.DIAMOND_SWORD))
-                .addItem(1, ItemBuilder.of(Material.EMERALD_BLOCK))
-                .removeItem(0);
-        GUIItem guiItem = new CustomClickableItem(ItemBuilder.of(Material.IRON_SWORD).shiny(true).build(),
-                (event, button) -> Bukkit.broadcastMessage("Clicked something!")
-        );
-        privateGUI = PrivateGUI.builder()
-                .inventory(inventoryUIBuilder)
-                .cancelInventoryClick(true)
-                .clickListener(clickEvent -> {
-                    Bukkit.broadcastMessage("CLICKED!");
-                })
-                .closeListener(closeEvent -> {
-                    Bukkit.broadcastMessage("Closed!");
-                })
-                .addComponent(paginatedComponent)
-                .staticComponent(GUIStaticComponent.builder()
-                        .addComponent(3, guiItem)
-                        .build())
-                .build();
-    }
 
     public static void registerMainCommand() {
         CommandBuilder.create("acrylic")
@@ -287,7 +251,13 @@ public class AcrylicCommand {
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                                     Player sender = (Player) commandExecutor.getSender();
-                                    privateGUI.openGUIFor(sender);
+                            GlobalGUI.builder()
+                                    .cancelInventoryClick(true)
+                                    .inventory(new InventoryUIBuilder().rows(6).build())
+                                    .staticComponent(GUIStaticComponent.builder()
+                                            .addItem(0, new BasicGUIItem(new ItemStack(Material.STONE)))
+                                            .build())
+                                    .build().openGUIFor(sender);
                         }),
                         CommandBuilder.create("handrotation")
                                 .filter(AbstractCommandExecuted::isPlayer)
