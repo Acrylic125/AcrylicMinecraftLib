@@ -20,12 +20,11 @@ import com.acrylic.universal.geometry.line.QuadraticYLine;
 import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
-import com.acrylic.universal.ui.GlobalGUI;
-import com.acrylic.universal.ui.InventoryUIBuilder;
-import com.acrylic.universal.ui.components.GUIStaticComponent;
-import com.acrylic.universal.ui.items.BasicGUIItem;
+import com.acrylic.universal.gui.GlobalGUI;
+import com.acrylic.universal.gui.InventoryUIBuilder;
+import com.acrylic.universal.gui.components.GUIStaticComponent;
+import com.acrylic.universal.gui.items.BasicGUIItem;
 import com.acrylic.universal.utils.StringUtils;
-import com.acrylic.universal.utils.keys.BlockKey;
 import com.acrylic.version_1_8.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -37,8 +36,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
 
 public class AcrylicCommand {
 
