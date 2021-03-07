@@ -1,13 +1,12 @@
 package com.acrylic.version_1_8.entity;
 
-import com.acrylic.universal.entityanimations.equipment.AbstractEntityEquipmentBuilder;
 import com.acrylic.universal.versionstore.exceptions.WrongVersionException;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class EntityEquipmentBuilder implements AbstractEntityEquipmentBuilder {
+public class EntityEquipmentBuilder implements com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder {
 
     private ItemStack helmet;
     private ItemStack chestplate;
@@ -46,7 +45,7 @@ public class EntityEquipmentBuilder implements AbstractEntityEquipmentBuilder {
     }
 
     @Override
-    public AbstractEntityEquipmentBuilder setItemInOffHand(ItemStack item) {
+    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setItemInOffHand(ItemStack item) {
         throw new WrongVersionException(9);
     }
 

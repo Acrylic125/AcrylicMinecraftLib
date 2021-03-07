@@ -4,7 +4,6 @@ import com.acrylic.universal.animations.holograms.Holograms;
 import com.acrylic.universal.animations.Animation;
 import com.acrylic.universal.animations.EntityAnimation;
 import com.acrylic.universal.animations.RunnableAnimation;
-import com.acrylic.universal.animations.rotational.AbstractHeadRotationAnimation;
 import com.acrylic.universal.animations.rotational.HeadRotationAnimation;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
@@ -31,7 +30,7 @@ public class RegionDisplayPointerAnimation
     @ConfigValue(path = "durations-ticks")
     private static int DURATION_TICKS = 1000;
 
-    private final List<AbstractHeadRotationAnimation> animations = new ArrayList<>();
+    private final List<HeadRotationAnimation> animations = new ArrayList<>();
     private int maxIndex = DURATION_TICKS;
     private int index = 0;
     private Scheduler<?> scheduler = Scheduler.sync().runRepeatingTask(1, 1);
@@ -54,7 +53,7 @@ public class RegionDisplayPointerAnimation
     public void update() {
         increaseIndex();
         endCheck();
-        animations.forEach(abstractHeadRotationAnimation -> abstractHeadRotationAnimation.teleportWithHolograms(abstractHeadRotationAnimation.getEntityAnimator().getBukkitEntity().getLocation()));
+        animations.forEach(headRotationAnimation -> headRotationAnimation.teleportWithHolograms(headRotationAnimation.getEntityAnimator().getBukkitEntity().getLocation()));
     }
 
     private void endCheck() {

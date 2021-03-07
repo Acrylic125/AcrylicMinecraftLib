@@ -1,14 +1,15 @@
-package com.acrylic.version_1_16.entity;
+package com.acrylic.universal.entity.equipment;
 
+import com.acrylic.universal.Universal;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class EntityEquipmentBuilder implements com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder {
+public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     private ItemStack helmet, chestplate, leggings, boots, itemInHand, itemOffHand;
-    private double helmetDropChance = 0, chestplateDropChance = 0, leggingsDropChance = 0, bootsDropChance = 0,
+    private float helmetDropChance = 0, chestplateDropChance = 0, leggingsDropChance = 0, bootsDropChance = 0,
             itemInHandDropChance = 0, itemOffHandDropChance = 0;
 
     @Override
@@ -18,7 +19,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setHelmetDropChance(double chance) {
+    public EntityEquipmentBuilder setHelmetDropChance(float chance) {
         this.helmetDropChance = chance;
         return this;
     }
@@ -30,7 +31,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setChestplateDropChance(double chance) {
+    public EntityEquipmentBuilder setChestplateDropChance(float chance) {
         this.chestplateDropChance = chance;
         return this;
     }
@@ -42,7 +43,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setLeggingsDropChance(double chance) {
+    public EntityEquipmentBuilder setLeggingsDropChance(float chance) {
         this.leggingsDropChance = chance;
         return this;
     }
@@ -54,7 +55,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setBootsDropChance(double chance) {
+    public EntityEquipmentBuilder setBootsDropChance(float chance) {
         this.bootsDropChance = chance;
         return this;
     }
@@ -66,7 +67,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setItemInHandDropChance(double chance) {
+    public EntityEquipmentBuilder setItemInHandDropChance(float chance) {
         this.itemInHandDropChance = chance;
         return this;
     }
@@ -78,7 +79,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setItemInOffhandDropChance(double chance) {
+    public EntityEquipmentBuilder setItemInOffhandDropChance(float chance) {
         this.itemOffHandDropChance = chance;
         return this;
     }
@@ -89,7 +90,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public double getHelmetDropChance() {
+    public float getHelmetDropChance() {
         return helmetDropChance;
     }
 
@@ -99,7 +100,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public double getChestplateDropChance() {
+    public float getChestplateDropChance() {
         return chestplateDropChance;
     }
 
@@ -109,7 +110,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public double getLeggingsDropChance() {
+    public float getLeggingsDropChance() {
         return leggingsDropChance;
     }
 
@@ -119,7 +120,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public double getBootsDropChance() {
+    public float getBootsDropChance() {
         return bootsDropChance;
     }
 
@@ -129,7 +130,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public double getItemInHandDropChance() {
+    public float getItemInHandDropChance() {
         return itemInHandDropChance;
     }
 
@@ -139,7 +140,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public double getItemInOffhandDropChance() {
+    public float getItemInOffhandDropChance() {
         return itemOffHandDropChance;
     }
 
@@ -148,11 +149,22 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
         EntityEquipment equipment = entity.getEquipment();
         assert equipment != null : "Unexpected equipment is null? of " + entity;
         equipment.setHelmet(getHelmet());
+        equipment.setHelmetDropChance(getHelmetDropChance());
         equipment.setChestplate(getChestplate());
+        equipment.setChestplateDropChance(getChestplateDropChance());
         equipment.setLeggings(getLeggings());
+        equipment.setLeggingsDropChance(getLeggingsDropChance());
         equipment.setBoots(getBoots());
-        equipment.setItemInMainHand(getItemInHand());
-        equipment.setItemInOffHand(getItemInHand());
+        equipment.setBootsDropChance(getBootsDropChance());
+        if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
+            equipment.setItemInHand(getItemInHand());
+            equipment.setItemInHandDropChance(getChestplateDropChance());
+        } else {
+            equipment.setItemInMainHand(getItemInHand());
+            equipment.setItemInMainHandDropChance(getItemInHandDropChance());
+            equipment.setItemInOffHand(getItemInOffHand());
+            equipment.setItemInOffHandDropChance(getItemInOffhandDropChance());
+        }
     }
 
 }

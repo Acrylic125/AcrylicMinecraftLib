@@ -1,7 +1,7 @@
 package com.acrylic.universal.entityanimations;
 
 import com.acrylic.universal.Universal;
-import com.acrylic.universal.entityanimations.equipment.AbstractEntityEquipmentBuilder;
+import com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder;
 import de.tr7zw.nbtapi.NBTEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
@@ -11,7 +11,7 @@ public interface LivingEntityAnimator extends EntityAnimator {
 
     LivingEntity getBukkitEntity();
 
-    default void setEquipment(AbstractEntityEquipmentBuilder entityEquipment) {
+    default void setEquipment(EntityEquipmentBuilder entityEquipment) {
         entityEquipment.apply(getBukkitEntity());
     }
 

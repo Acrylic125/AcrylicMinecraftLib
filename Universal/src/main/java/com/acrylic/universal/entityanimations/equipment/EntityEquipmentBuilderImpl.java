@@ -1,11 +1,11 @@
-package com.acrylic.version_1_16.entity;
+package com.acrylic.universal.entityanimations.equipment;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class EntityEquipmentBuilder implements com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder {
+public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     private ItemStack helmet, chestplate, leggings, boots, itemInHand, itemOffHand;
     private double helmetDropChance = 0, chestplateDropChance = 0, leggingsDropChance = 0, bootsDropChance = 0,
@@ -18,7 +18,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setHelmetDropChance(double chance) {
+    public EntityEquipmentBuilder setHelmetDropChance(double chance) {
         this.helmetDropChance = chance;
         return this;
     }
@@ -30,7 +30,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setChestplateDropChance(double chance) {
+    public EntityEquipmentBuilder setChestplateDropChance(double chance) {
         this.chestplateDropChance = chance;
         return this;
     }
@@ -42,7 +42,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setLeggingsDropChance(double chance) {
+    public EntityEquipmentBuilder setLeggingsDropChance(double chance) {
         this.leggingsDropChance = chance;
         return this;
     }
@@ -54,7 +54,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setBootsDropChance(double chance) {
+    public EntityEquipmentBuilder setBootsDropChance(double chance) {
         this.bootsDropChance = chance;
         return this;
     }
@@ -66,7 +66,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setItemInHandDropChance(double chance) {
+    public EntityEquipmentBuilder setItemInHandDropChance(double chance) {
         this.itemInHandDropChance = chance;
         return this;
     }
@@ -78,7 +78,7 @@ public class EntityEquipmentBuilder implements com.acrylic.universal.entityanima
     }
 
     @Override
-    public com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder setItemInOffhandDropChance(double chance) {
+    public EntityEquipmentBuilder setItemInOffhandDropChance(double chance) {
         this.itemOffHandDropChance = chance;
         return this;
     }
