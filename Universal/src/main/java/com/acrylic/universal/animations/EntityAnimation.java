@@ -3,7 +3,6 @@ package com.acrylic.universal.animations;
 import com.acrylic.universal.animations.holograms.AbstractHolograms;
 import com.acrylic.universal.animations.holograms.HologramSupport;
 import com.acrylic.universal.entity.EntityInstance;
-import com.acrylic.universal.entityanimations.EntityAnimator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +26,7 @@ public abstract class EntityAnimation implements Animation, HologramSupport {
     }
 
     public void teleportMainEntity(@NotNull Location location, float offsetHeight) {
-        getEntityAnimator().teleport(getLocation(new Location(location.getWorld(), location.getX(), location.getY() + this.offsetHeight + offsetHeight, location.getZ(), location.getYaw(), location.getPitch())));
+        getEntityInstance().teleport(getLocation(new Location(location.getWorld(), location.getX(), location.getY() + this.offsetHeight + offsetHeight, location.getZ(), location.getYaw(), location.getPitch())));
     }
 
     public void teleportMainEntity(@NotNull Location location) {
@@ -66,7 +65,7 @@ public abstract class EntityAnimation implements Animation, HologramSupport {
     }
 
     @NotNull
-    public EntityInstance getEntityAnimator() {
+    public EntityInstance getEntityInstance() {
         return entityInstance;
     }
 

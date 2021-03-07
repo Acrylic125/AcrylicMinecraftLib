@@ -157,7 +157,6 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
         equipment.setLeggingsDropChance(getLeggingsDropChance());
         equipment.setBoots(getBoots());
         equipment.setBootsDropChance(getBootsDropChance());
-        Bukkit.broadcastMessage("TTTT");
         if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
             throw new IllegalStateException("You may not use this while using a legacy version.");
         } else {

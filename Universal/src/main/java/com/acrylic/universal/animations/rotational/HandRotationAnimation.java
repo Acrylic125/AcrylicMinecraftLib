@@ -4,8 +4,6 @@ import com.acrylic.universal.animations.EntityAnimation;
 import com.acrylic.universal.animations.exceptions.UnsupportedEntityType;
 import com.acrylic.universal.entity.ArmorStandInstance;
 import com.acrylic.universal.entity.EntityInstance;
-import com.acrylic.universal.entityanimations.EntityAnimator;
-import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.geometry.circular.Circle;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -16,8 +14,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class HandRotationAnimation extends EntityAnimation {
 
-    private final Circle circle;
+    private Circle circle;
     private int index = 0;
+    private boolean isUpsideDown;
 
     public HandRotationAnimation(ArmorStandInstance entityInstance) {
         this((EntityInstance) entityInstance);
@@ -26,7 +25,7 @@ public class HandRotationAnimation extends EntityAnimation {
 
     public HandRotationAnimation(EntityInstance entityInstance) {
         super(entityInstance);
-        circle = generateCircleBy(entityInstance.getBukkitEntity(), 32);
+        updateEntity();
     }
 
     @Override
@@ -34,9 +33,16 @@ public class HandRotationAnimation extends EntityAnimation {
         circle.setLocation(location);
         Location newLoc = circle.getLocationAtIndex(index);
         newLoc.setDirection(location.toVector().subtract(newLoc.toVector()));
-        newLoc.setYaw(newLoc.getYaw() - (45 - (360 / circle.getPointsInOneCycle())));
+        float newYaw = (isUpsideDown) ? newLoc.getYaw() + (45 - (360 / circle.getPointsInOneCycle())) :
+                newLoc.getYaw() - (45 - (360 / circle.getPointsInOneCycle()));
+        newLoc.setYaw(newYaw);
         index++;
         return newLoc;
+    }
+
+    public void updateEntity() {
+        isUpsideDown = getEntityInstance().isUpsideDown();
+        circle = generateCircleBy(getEntityInstance().getBukkitEntity(), 32);
     }
 
     private static Circle generateCircleBy(@NotNull Entity entity, int points) {
@@ -45,7 +51,7 @@ public class HandRotationAnimation extends EntityAnimation {
             case ARMOR_STAND:
                 return new Circle((((ArmorStand) entity).isSmall()) ? 0.3f : 0.65f, points);
             case GIANT:
-                return new Circle(3.5f, points);
+                return new Circle(4f, points);
             default:
                 throw new UnsupportedEntityType();
         }

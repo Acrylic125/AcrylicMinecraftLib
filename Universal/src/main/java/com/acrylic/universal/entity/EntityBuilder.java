@@ -1,6 +1,7 @@
 package com.acrylic.universal.entity;
 
 import com.acrylic.universal.text.ChatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 
 import static com.acrylic.universal.entity.EntityInstance.*;

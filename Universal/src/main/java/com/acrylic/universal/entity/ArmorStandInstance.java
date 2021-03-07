@@ -1,6 +1,5 @@
 package com.acrylic.universal.entity;
 
-import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +48,7 @@ public interface ArmorStandInstance extends LivingEntityInstance {
 
     default void asHologram() {
         asAnimator();
+        setNameVisible(true);
         setMarker(true);
         setSmall(true);
     }

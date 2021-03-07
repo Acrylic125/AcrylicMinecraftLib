@@ -42,8 +42,6 @@ import java.util.HashMap;
 
 public class AcrylicCommand {
 
-    private static final HashMap<BlockKey, String> map = new HashMap<>();
-
     public static void registerMainCommand() {
         CommandBuilder.create("acrylic")
                 .setAliases("acryliccmd")
@@ -258,6 +256,8 @@ public class AcrylicCommand {
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
                             GiantEntityInstance armorStandAnimator = BukkitGiantEntityInstance.builder(sender.getLocation())
+                                    .asAnimator()
+                                    .upsideDown()
                                     .buildEntityInstance();
                             Location location = sender.getLocation();
                             armorStandAnimator.setEquipment(new EntityEquipmentBuilderImpl().setItemInHand(sender.getItemInHand()));

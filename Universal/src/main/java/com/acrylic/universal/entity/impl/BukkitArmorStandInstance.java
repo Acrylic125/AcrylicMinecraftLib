@@ -37,6 +37,11 @@ public class BukkitArmorStandInstance
     }
 
     @Override
+    public void setVisible(boolean visible) {
+        armorStand.setVisible(visible);
+    }
+
+    @Override
     public boolean hasArms() {
         return armorStand.hasArms();
     }

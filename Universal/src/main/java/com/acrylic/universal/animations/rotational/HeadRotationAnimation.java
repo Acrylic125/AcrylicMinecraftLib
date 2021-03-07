@@ -2,7 +2,6 @@ package com.acrylic.universal.animations.rotational;
 
 import com.acrylic.universal.animations.EntityAnimation;
 import com.acrylic.universal.entity.EntityInstance;
-import com.acrylic.universal.entityanimations.EntityAnimator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +23,7 @@ public class HeadRotationAnimation extends EntityAnimation {
 
     @Override
     public Location getLocation(@NotNull Location location) {
-        location.setYaw(getEntityAnimator().getBukkitEntity().getLocation().getYaw() + yawFrequency);
+        location.setYaw(getEntityInstance().getBukkitEntity().getLocation().getYaw() + yawFrequency);
         return location;
     }
 

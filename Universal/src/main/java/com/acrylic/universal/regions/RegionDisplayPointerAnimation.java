@@ -7,8 +7,6 @@ import com.acrylic.universal.animations.RunnableAnimation;
 import com.acrylic.universal.animations.rotational.HeadRotationAnimation;
 import com.acrylic.universal.entity.ArmorStandInstance;
 import com.acrylic.universal.entity.impl.BukkitArmorStandInstance;
-import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
-import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.files.configloader.ConfigValue;
 import com.acrylic.universal.files.configloader.Configurable;
 import com.acrylic.universal.interfaces.Index;
@@ -56,7 +54,7 @@ public class RegionDisplayPointerAnimation
     public void update() {
         increaseIndex();
         endCheck();
-        animations.forEach(headRotationAnimation -> headRotationAnimation.teleportWithHolograms(headRotationAnimation.getEntityAnimator().getBukkitEntity().getLocation()));
+        animations.forEach(headRotationAnimation -> headRotationAnimation.teleportWithHolograms(headRotationAnimation.getEntityInstance().getBukkitEntity().getLocation()));
     }
 
     private void endCheck() {
