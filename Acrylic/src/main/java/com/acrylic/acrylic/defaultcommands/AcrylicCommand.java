@@ -134,9 +134,7 @@ public class AcrylicCommand {
                 .setTimerActive(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
-                    Bukkit.broadcastMessage(
-                            StringUtils.COMMA_SEPARATED_NUMBER_FORMATTER.format(StringUtils.NUMBER_STRING_FORMATTER.formatDouble(commandExecutor.getArg(0)))
-                    );
+
                     ChatUtils.send(sender, "&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!");
                 }).arguments(new AbstractCommandBuilder[] {
                         //List
