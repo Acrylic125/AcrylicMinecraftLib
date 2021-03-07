@@ -6,7 +6,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Giant;
 import org.jetbrains.annotations.NotNull;
 
-import static com.acrGiaylic.universal.entity.EntityInstance.spawnEntity;
+import static com.acrylic.universal.entity.EntityInstance.spawnEntity;
 
 public class BukkitGiantEntityInstance
         implements GiantEntityInstance, BukkitLivingEntityInstance {
