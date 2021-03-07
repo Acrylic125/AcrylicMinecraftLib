@@ -10,6 +10,14 @@ import static com.acrylic.universal.entity.EntityInstance.spawnEntity;
 public class BukkitArmorStandInstance
         implements ArmorStandInstance, BukkitLivingEntityInstance {
 
+    public static Builder builder(@NotNull Location location) {
+        return new Builder(new BukkitArmorStandInstance(location));
+    }
+
+    public static Builder builder(@NotNull ArmorStand armorStand) {
+        return new Builder(new BukkitArmorStandInstance(armorStand));
+    }
+
     private final ArmorStand armorStand;
 
     public BukkitArmorStandInstance(@NotNull Location location) {

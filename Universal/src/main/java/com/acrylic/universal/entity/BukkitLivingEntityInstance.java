@@ -7,6 +7,8 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.inventory.EntityEquipment;
 import org.jetbrains.annotations.NotNull;
 
+import static com.acrylic.universal.entity.equipment.EntityEquipmentBuilder.cloneEquipment;
+
 public interface BukkitLivingEntityInstance
         extends BukkitEntityInstance, LivingEntityInstance {
 
@@ -42,25 +44,8 @@ public interface BukkitLivingEntityInstance
     @Override
     default void setEquipment(@NotNull EntityEquipment equipment) {
         EntityEquipment entityEquipment = getBukkitEntity().getEquipment();
-        if (entityEquipment != null) {
-            entityEquipment.setHelmet(equipment.getHelmet());
-            entityEquipment.setHelmetDropChance(equipment.getHelmetDropChance());
-            entityEquipment.setChestplate(equipment.getChestplate());
-            entityEquipment.setChestplateDropChance(equipment.getChestplateDropChance());
-            entityEquipment.setLeggings(equipment.getLeggings());
-            entityEquipment.setLeggingsDropChance(equipment.getLeggingsDropChance());
-            entityEquipment.setBoots(equipment.getBoots());
-            entityEquipment.setBootsDropChance(equipment.getBootsDropChance());
-            if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
-                entityEquipment.setItemInHand(equipment.getItemInHand());
-                entityEquipment.setItemInHandDropChance(equipment.getItemInHandDropChance());
-            } else {
-                entityEquipment.setItemInMainHand(equipment.getItemInMainHand());
-                entityEquipment.setItemInMainHandDropChance(equipment.getItemInMainHandDropChance());
-                entityEquipment.setItemInOffHand(equipment.getItemInOffHand());
-                entityEquipment.setItemInOffHandDropChance(equipment.getItemInOffHandDropChance());
-            }
-        }
+        if (entityEquipment != null)
+            cloneEquipment(equipment, entityEquipment);
     }
 
 }

@@ -42,4 +42,63 @@ public interface ArmorStandInstance extends LivingEntityInstance {
         setSmall(true);
     }
 
+    class Builder extends LivingEntityBuilder<Builder> {
+
+        private final ArmorStandInstance armorStandInstance;
+
+        public Builder(ArmorStandInstance armorStandInstance) {
+            this.armorStandInstance = armorStandInstance;
+        }
+
+        public Builder arms(boolean arms) {
+            this.armorStandInstance.setArms(arms);
+            return this;
+        }
+
+        public Builder basePlate(boolean basePlate) {
+            this.armorStandInstance.setBasePlate(basePlate);
+            return this;
+        }
+
+        public Builder gravity(boolean gravity) {
+            this.armorStandInstance.setGravity(gravity);
+            return this;
+        }
+
+        public Builder small(boolean small) {
+            this.armorStandInstance.setSmall(small);
+            return this;
+        }
+
+        public Builder marker(boolean marker) {
+            this.armorStandInstance.setMarker(marker);
+            return this;
+        }
+
+        public Builder asAnimator() {
+            this.armorStandInstance.asAnimator();
+            return this;
+        }
+
+        public Builder asHologram() {
+            this.armorStandInstance.asHologram();
+            return this;
+        }
+
+        @Override
+        public ArmorStand buildEntity() {
+            return armorStandInstance.getBukkitEntity();
+        }
+
+        @Override
+        public ArmorStandInstance buildEntityInstance() {
+            return armorStandInstance;
+        }
+
+        @Override
+        public ArmorStandInstance getBuildFrom() {
+            return armorStandInstance;
+        }
+    }
+
 }
