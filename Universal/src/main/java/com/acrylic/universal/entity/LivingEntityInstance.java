@@ -10,6 +10,13 @@ import org.jetbrains.annotations.NotNull;
 
 public interface LivingEntityInstance extends EntityInstance {
 
+    @Override
+    default void asAnimator() {
+        EntityInstance.super.asAnimator();
+        setAI(false);
+        setVisible(false);
+    }
+
     @NotNull
     @Override
     LivingEntity getBukkitEntity();

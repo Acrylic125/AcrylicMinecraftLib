@@ -13,6 +13,10 @@ public interface EntityInstance extends Deletable {
     String UPSIDE_DOWN_NAME = "Dinnerbone";
     String RAINBOW_SHEEP_NAME = "Jeb_";
 
+    default void asAnimator() {
+        setName(null);
+    }
+
     Entity getBukkitEntity();
 
     void setName(String name);

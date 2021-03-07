@@ -1,6 +1,8 @@
 package com.acrylic.universal.entity;
 
+import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
 
 public interface ArmorStandInstance extends LivingEntityInstance {
@@ -29,6 +31,15 @@ public interface ArmorStandInstance extends LivingEntityInstance {
 
     void setMarker(boolean marker);
 
+    void setRightArmPose(@NotNull EulerAngle eulerAngle);
+
+    void setLeftArmPose(@NotNull EulerAngle eulerAngle);
+
+    void setRightLegPose(@NotNull EulerAngle eulerAngle);
+
+    void setLeftLegPose(@NotNull EulerAngle eulerAngle);
+
+    @Override
     default void asAnimator() {
         setVisible(false);
         setArms(false);
@@ -75,8 +86,23 @@ public interface ArmorStandInstance extends LivingEntityInstance {
             return this;
         }
 
-        public Builder asAnimator() {
-            this.armorStandInstance.asAnimator();
+        public Builder rightArmPose(@NotNull EulerAngle eulerAngle) {
+            this.armorStandInstance.setRightArmPose(eulerAngle);
+            return this;
+        }
+
+        public Builder leftArmPose(@NotNull EulerAngle eulerAngle) {
+            this.armorStandInstance.setLeftArmPose(eulerAngle);
+            return this;
+        }
+
+        public Builder rightLegPose(@NotNull EulerAngle eulerAngle) {
+            this.armorStandInstance.setRightLegPose(eulerAngle);
+            return this;
+        }
+
+        public Builder leftLegPose(@NotNull EulerAngle eulerAngle) {
+            this.armorStandInstance.setLeftLegPose(eulerAngle);
             return this;
         }
 

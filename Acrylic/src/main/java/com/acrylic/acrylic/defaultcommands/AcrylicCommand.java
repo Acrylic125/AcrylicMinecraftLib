@@ -4,9 +4,12 @@ import com.acrylic.time.Time;
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.animations.dangle.Dangle;
 import com.acrylic.universal.animations.holograms.Holograms;
+import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
+import com.acrylic.universal.entity.GiantEntityInstance;
+import com.acrylic.universal.entity.impl.BukkitGiantEntityInstance;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.AbstractGiantAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
@@ -256,10 +259,8 @@ public class AcrylicCommand {
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
-                            AbstractGiantAnimator armorStandAnimator =
-                                    new GiantAnimator(sender.getLocation()).asAnimator()
-                                            .asAnimator()
-                                    ;
+                            GiantEntityInstance armorStandAnimator = BukkitGiantEntityInstance.builder(sender.getLocation())
+                                    .buildEntityInstance();
                             Location location = sender.getLocation();
                             armorStandAnimator.setEquipment(new EntityEquipmentBuilder().setItemInHand(sender.getItemInHand()));
                             HandRotationAnimation handRotationAnimation = new HandRotationAnimation(armorStandAnimator);

@@ -5,6 +5,8 @@ import com.acrylic.universal.animations.Animation;
 import com.acrylic.universal.animations.EntityAnimation;
 import com.acrylic.universal.animations.RunnableAnimation;
 import com.acrylic.universal.animations.rotational.HeadRotationAnimation;
+import com.acrylic.universal.entity.ArmorStandInstance;
+import com.acrylic.universal.entity.impl.BukkitArmorStandInstance;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import com.acrylic.universal.files.configloader.ConfigValue;
@@ -39,7 +41,8 @@ public class RegionDisplayPointerAnimation
         int point = 0;
         for (Location corner : region.getCorners()) {
             point++;
-            AbstractArmorStandAnimator armorStandAnimator = new ArmorStandAnimator(corner).asAnimator().small(true).marker(true);
+            ArmorStandInstance armorStandAnimator = BukkitArmorStandInstance.builder(corner)
+                    .asAnimator().small(true).marker(true).buildEntityInstance();
             armorStandAnimator.getBukkitEntity().getEquipment().setHelmet(new ItemStack((point % 2 == 0) ? Material.EMERALD_BLOCK : Material.REDSTONE_BLOCK));
             HeadRotationAnimation animation = new HeadRotationAnimation(armorStandAnimator);
             Location loc = armorStandAnimator.getBukkitEntity().getLocation();

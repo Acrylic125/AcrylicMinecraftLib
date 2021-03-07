@@ -4,6 +4,7 @@ import com.acrylic.universal.entity.ArmorStandInstance;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
+import org.bukkit.util.EulerAngle;
 import org.jetbrains.annotations.NotNull;
 
 import static com.acrylic.universal.entity.EntityInstance.spawnEntity;
@@ -83,6 +84,26 @@ public class BukkitArmorStandInstance
     @Override
     public void setMarker(boolean marker) {
         armorStand.setMarker(marker);
+    }
+
+    @Override
+    public void setRightArmPose(@NotNull EulerAngle eulerAngle) {
+        armorStand.setRightArmPose(eulerAngle);
+    }
+
+    @Override
+    public void setLeftArmPose(@NotNull EulerAngle eulerAngle) {
+        armorStand.setLeftArmPose(eulerAngle);
+    }
+
+    @Override
+    public void setRightLegPose(@NotNull EulerAngle eulerAngle) {
+        armorStand.setRightArmPose(eulerAngle);
+    }
+
+    @Override
+    public void setLeftLegPose(@NotNull EulerAngle eulerAngle) {
+        armorStand.setLeftLegPose(eulerAngle);
     }
 
 

@@ -22,6 +22,11 @@ public abstract class EntityBuilder<B extends EntityBuilder<B>> {
         return (B) this;
     }
 
+    public B asAnimator() {
+        getBuildFrom().asAnimator();
+        return (B) this;
+    }
+
     public abstract Entity buildEntity();
 
     public abstract EntityInstance buildEntityInstance();

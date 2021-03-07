@@ -2,6 +2,7 @@ package com.acrylic.universal.animations;
 
 import com.acrylic.universal.animations.holograms.AbstractHolograms;
 import com.acrylic.universal.animations.holograms.HologramSupport;
+import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universal.entityanimations.EntityAnimator;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -9,12 +10,12 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class EntityAnimation implements Animation, HologramSupport {
 
-    private final EntityAnimator entityAnimator;
+    private final EntityInstance entityInstance;
     private AbstractHolograms holograms;
     private float offsetHeight = 0;
 
-    public EntityAnimation(@NotNull EntityAnimator entityAnimator) {
-        this.entityAnimator = entityAnimator;
+    public EntityAnimation(@NotNull EntityInstance entityInstance) {
+        this.entityInstance = entityInstance;
     }
 
     public float getOffsetHeight() {
@@ -65,20 +66,20 @@ public abstract class EntityAnimation implements Animation, HologramSupport {
     }
 
     @NotNull
-    public EntityAnimator getEntityAnimator() {
-        return entityAnimator;
+    public EntityInstance getEntityAnimator() {
+        return entityInstance;
     }
 
     @Override
     public void delete() {
         if (isUsingHolograms())
             holograms.delete();
-        entityAnimator.delete();
+        entityInstance.delete();
     }
 
     @Override
     public boolean isRunning() {
-        return entityAnimator.isValid();
+        return entityInstance.isValid();
     }
 
     @Override
