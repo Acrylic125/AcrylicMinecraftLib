@@ -1,9 +1,6 @@
 package com.acrylic.universal.entity;
 
-import com.acrylic.universal.Universal;
-import com.acrylic.universal.entityanimations.LivingEntityAnimator;
-import com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder;
-import de.tr7zw.nbtapi.NBTEntity;
+import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.jetbrains.annotations.NotNull;

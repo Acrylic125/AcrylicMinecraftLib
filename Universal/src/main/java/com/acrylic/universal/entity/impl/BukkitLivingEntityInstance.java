@@ -2,11 +2,13 @@ package com.acrylic.universal.entity.impl;
 
 import com.acrylic.universal.Universal;
 import com.acrylic.universal.entity.LivingEntityInstance;
-import com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder;
+import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
 import de.tr7zw.nbtapi.NBTEntity;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import static com.acrylic.universal.entity.equipment.EntityEquipmentBuilder.cloneEquipment;
@@ -24,7 +26,14 @@ public interface BukkitLivingEntityInstance
 
     @Override
     default void setVisible(boolean visible) {
-        getBukkitEntity().setInvisible(!visible);
+        if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
+            if (visible)
+                getBukkitEntity().removePotionEffect(PotionEffectType.INVISIBILITY);
+            else
+                getBukkitEntity().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10000000, 1, false, false));
+        } else {
+            getBukkitEntity().setInvisible(!visible);
+        }
     }
 
     @Override

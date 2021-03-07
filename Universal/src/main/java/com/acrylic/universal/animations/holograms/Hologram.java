@@ -1,5 +1,7 @@
 package com.acrylic.universal.animations.holograms;
 
+import com.acrylic.universal.entity.ArmorStandInstance;
+import com.acrylic.universal.entity.impl.BukkitArmorStandInstance;
 import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
 import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
 import org.bukkit.Location;
@@ -12,19 +14,19 @@ public class Hologram extends AbstractHologram {
     }
 
     public Hologram(Location location, String text, float height) {
-        super(new ArmorStandAnimator(location).asHologram().name(text));
+        super(BukkitArmorStandInstance.builder(location).asHologram().name(text).buildEntityInstance());
         setOffsetHeight(height);
     }
 
-    public Hologram(AbstractArmorStandAnimator entityAnimator) {
-        super(entityAnimator);
+    public Hologram(ArmorStandInstance armorStandInstance) {
+        super(armorStandInstance);
     }
 
-    public Hologram(AbstractArmorStandAnimator entityAnimator, float height) {
-        super(entityAnimator, height);
+    public Hologram(ArmorStandInstance armorStandInstance, float height) {
+        super(armorStandInstance, height);
     }
 
-    public Hologram(AbstractArmorStandAnimator entityAnimator, @Nullable String name, float height) {
-        super(entityAnimator, name, height);
+    public Hologram(ArmorStandInstance armorStandInstance, @Nullable String name, float height) {
+        super(armorStandInstance, name, height);
     }
 }

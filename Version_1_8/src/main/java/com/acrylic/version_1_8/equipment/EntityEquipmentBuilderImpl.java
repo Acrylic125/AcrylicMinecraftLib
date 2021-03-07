@@ -1,6 +1,7 @@
-package com.acrylic.universal.entity.equipment;
+package com.acrylic.version_1_8.equipment;
 
 import com.acrylic.universal.Universal;
+import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
@@ -9,9 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
-    private ItemStack helmet, chestplate, leggings, boots, itemInHand, itemOffHand;
-    private float helmetDropChance = 0, chestplateDropChance = 0, leggingsDropChance = 0, bootsDropChance = 0,
-            itemInHandDropChance = 0, itemOffHandDropChance = 0;
+    private ItemStack helmet, chestplate, leggings, boots, itemInHand;
 
     @Override
     public EntityEquipmentBuilder setHelmet(ItemStack item) {
@@ -21,8 +20,7 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     @Override
     public EntityEquipmentBuilder setHelmetDropChance(float chance) {
-        this.helmetDropChance = chance;
-        return this;
+        throw new IllegalStateException("1.8 does not support drop chance.");
     }
 
     @Override
@@ -33,8 +31,7 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     @Override
     public EntityEquipmentBuilder setChestplateDropChance(float chance) {
-        this.chestplateDropChance = chance;
-        return this;
+        throw new IllegalStateException("1.8 does not support drop chance.");
     }
 
     @Override
@@ -45,8 +42,7 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     @Override
     public EntityEquipmentBuilder setLeggingsDropChance(float chance) {
-        this.leggingsDropChance = chance;
-        return this;
+        throw new IllegalStateException("1.8 does not support drop chance.");
     }
 
     @Override
@@ -57,8 +53,7 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     @Override
     public EntityEquipmentBuilder setBootsDropChance(float chance) {
-        this.bootsDropChance = chance;
-        return this;
+        throw new IllegalStateException("1.8 does not support drop chance.");
     }
 
     @Override
@@ -69,20 +64,17 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     @Override
     public EntityEquipmentBuilder setItemInHandDropChance(float chance) {
-        this.itemInHandDropChance = chance;
-        return this;
+        throw new IllegalStateException("1.8 does not support drop chance.");
     }
 
     @Override
     public EntityEquipmentBuilder setItemInOffHand(ItemStack item) {
-        this.itemOffHand = item;
-        return this;
+        throw new IllegalStateException("1.8 does not support items in offhand.");
     }
 
     @Override
     public EntityEquipmentBuilder setItemInOffhandDropChance(float chance) {
-        this.itemOffHandDropChance = chance;
-        return this;
+        throw new IllegalStateException("1.8 does not support items in offhand.");
     }
 
     @Override
@@ -92,7 +84,7 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     @Override
     public float getHelmetDropChance() {
-        return helmetDropChance;
+        throw new IllegalStateException("1.8 does not support drop chance.");
     }
 
     @Override
@@ -102,7 +94,7 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     @Override
     public float getChestplateDropChance() {
-        return chestplateDropChance;
+        throw new IllegalStateException("1.8 does not support drop chance.");
     }
 
     @Override
@@ -112,7 +104,7 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     @Override
     public float getLeggingsDropChance() {
-        return leggingsDropChance;
+        throw new IllegalStateException("1.8 does not support drop chance.");
     }
 
     @Override
@@ -122,7 +114,7 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     @Override
     public float getBootsDropChance() {
-        return bootsDropChance;
+        throw new IllegalStateException("1.8 does not support drop chance.");
     }
 
     @Override
@@ -132,17 +124,17 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
 
     @Override
     public float getItemInHandDropChance() {
-        return itemInHandDropChance;
+        throw new IllegalStateException("1.8 does not support drop chance.");
     }
 
     @Override
     public ItemStack getItemInOffHand() {
-        return itemOffHand;
+        throw new IllegalStateException("1.8 does not support items in offhand.");
     }
 
     @Override
     public float getItemInOffhandDropChance() {
-        return itemOffHandDropChance;
+        throw new IllegalStateException("1.8 does not support items in offhand.");
     }
 
     @Override
@@ -150,22 +142,10 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
         EntityEquipment equipment = entity.getEquipment();
         assert equipment != null : "Unexpected equipment is null? of " + entity;
         equipment.setHelmet(getHelmet());
-        equipment.setHelmetDropChance(getHelmetDropChance());
         equipment.setChestplate(getChestplate());
-        equipment.setChestplateDropChance(getChestplateDropChance());
         equipment.setLeggings(getLeggings());
-        equipment.setLeggingsDropChance(getLeggingsDropChance());
         equipment.setBoots(getBoots());
-        equipment.setBootsDropChance(getBootsDropChance());
-        Bukkit.broadcastMessage("TTTT");
-        if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
-            throw new IllegalStateException("You may not use this while using a legacy version.");
-        } else {
-            equipment.setItemInMainHand(getItemInHand());
-            equipment.setItemInMainHandDropChance(getItemInHandDropChance());
-            equipment.setItemInOffHand(getItemInOffHand());
-            equipment.setItemInOffHandDropChance(getItemInOffhandDropChance());
-        }
+        equipment.setItemInHand(getItemInHand());
     }
 
 }

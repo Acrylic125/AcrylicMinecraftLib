@@ -8,12 +8,10 @@ import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.command.AbstractCommandBuilder;
 import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
+import com.acrylic.universal.entity.ArmorStandInstance;
 import com.acrylic.universal.entity.GiantEntityInstance;
+import com.acrylic.universal.entity.impl.BukkitArmorStandInstance;
 import com.acrylic.universal.entity.impl.BukkitGiantEntityInstance;
-import com.acrylic.universal.entityanimations.entities.AbstractArmorStandAnimator;
-import com.acrylic.universal.entityanimations.entities.AbstractGiantAnimator;
-import com.acrylic.universal.entityanimations.entities.ArmorStandAnimator;
-import com.acrylic.universal.entityanimations.entities.GiantAnimator;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.files.bukkit.Configuration;
 import com.acrylic.universal.geometry.circular.Circle;
@@ -24,11 +22,11 @@ import com.acrylic.universal.text.ChatUtils;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.ui.GlobalGUI;
 import com.acrylic.universal.ui.InventoryUIBuilder;
-import com.acrylic.universal.ui.items.BasicGUIItem;
 import com.acrylic.universal.ui.components.GUIStaticComponent;
+import com.acrylic.universal.ui.items.BasicGUIItem;
 import com.acrylic.universal.utils.StringUtils;
 import com.acrylic.universal.utils.keys.BlockKey;
-import com.acrylic.version_1_8.entity.EntityEquipmentBuilder;
+import com.acrylic.version_1_8.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -262,7 +260,7 @@ public class AcrylicCommand {
                             GiantEntityInstance armorStandAnimator = BukkitGiantEntityInstance.builder(sender.getLocation())
                                     .buildEntityInstance();
                             Location location = sender.getLocation();
-                            armorStandAnimator.setEquipment(new EntityEquipmentBuilder().setItemInHand(sender.getItemInHand()));
+                            armorStandAnimator.setEquipment(new EntityEquipmentBuilderImpl().setItemInHand(sender.getItemInHand()));
                             HandRotationAnimation handRotationAnimation = new HandRotationAnimation(armorStandAnimator);
                             Scheduler.sync()
                                     .runRepeatingTask(1, 1)
@@ -276,10 +274,10 @@ public class AcrylicCommand {
                             Player sender = (Player) commandExecutor.getSender();
                             Dangle dangle = new Dangle(sender);
                             for (int i = 0; i < 10; i++) {
-                                AbstractArmorStandAnimator armorStandAnimator = new ArmorStandAnimator(sender.getLocation())
-                                        .asAnimator();
-                                HandRotationAnimation handRot = new HandRotationAnimation(armorStandAnimator);
-                                armorStandAnimator.setEquipment(new EntityEquipmentBuilder().setItemInHand(new ItemStack(Material.DIAMOND_PICKAXE)));
+                                ArmorStandInstance armorStandInstance = BukkitArmorStandInstance.builder(sender.getLocation())
+                                        .asAnimator().buildEntityInstance();
+                                HandRotationAnimation handRot = new HandRotationAnimation(armorStandInstance);
+                                armorStandInstance.setEquipment(new EntityEquipmentBuilderImpl().setItemInHand(new ItemStack(Material.DIAMOND_PICKAXE)));
                                 dangle.addAnimation(handRot);
                                 Holograms holograms = new Holograms();
                                 holograms.addHologram(sender.getLocation(), 2f, "&eClick Me!", "&b&lDiamond pickaxe");
