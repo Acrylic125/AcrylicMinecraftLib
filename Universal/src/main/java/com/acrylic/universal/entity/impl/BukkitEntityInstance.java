@@ -1,5 +1,6 @@
-package com.acrylic.universal.entity;
+package com.acrylic.universal.entity.impl;
 
+import com.acrylic.universal.entity.EntityInstance;
 import com.acrylic.universal.text.ChatUtils;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;

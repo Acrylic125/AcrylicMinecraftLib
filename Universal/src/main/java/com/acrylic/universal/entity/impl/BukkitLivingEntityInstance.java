@@ -1,7 +1,9 @@
-package com.acrylic.universal.entity;
+package com.acrylic.universal.entity.impl;
 
 import com.acrylic.universal.Universal;
+import com.acrylic.universal.entity.LivingEntityInstance;
 import com.acrylic.universal.entityanimations.equipment.EntityEquipmentBuilder;
+import de.tr7zw.nbtapi.NBTEntity;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.inventory.EntityEquipment;
@@ -11,6 +13,14 @@ import static com.acrylic.universal.entity.equipment.EntityEquipmentBuilder.clon
 
 public interface BukkitLivingEntityInstance
         extends BukkitEntityInstance, LivingEntityInstance {
+
+    default void setAI(boolean ai) {
+        if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
+            NBTEntity nbtEntity = new NBTEntity(getBukkitEntity());
+            nbtEntity.setByte("NoAI", (byte) ((ai) ? 0 : 1));
+        } else
+            getBukkitEntity().setAI(ai);
+    }
 
     @Override
     default void setVisible(boolean visible) {

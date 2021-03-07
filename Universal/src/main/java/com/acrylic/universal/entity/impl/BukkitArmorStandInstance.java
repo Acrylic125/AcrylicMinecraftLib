@@ -1,5 +1,6 @@
-package com.acrylic.universal.entity;
+package com.acrylic.universal.entity.impl;
 
+import com.acrylic.universal.entity.ArmorStandInstance;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;

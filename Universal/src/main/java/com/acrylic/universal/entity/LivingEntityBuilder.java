@@ -10,6 +10,11 @@ import org.jetbrains.annotations.NotNull;
 public abstract class LivingEntityBuilder<B extends LivingEntityBuilder<B>>
         extends EntityBuilder<B> {
 
+    public B ai(boolean ai) {
+        getBuildFrom().setAI(ai);
+        return (B) this;
+    }
+
     public B maxHealth(double maxHealth) {
         getBuildFrom().setMaxHealth(maxHealth);
         return (B) this;
