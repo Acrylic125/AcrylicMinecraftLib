@@ -80,7 +80,7 @@ public @interface Configurable {
      * "a", it will declare that variable as true.
      *
      * Likewise, if you specify a config value of path,
-     * "b",it will declare that variable as 1000.
+     * "b", it will declare that variable as 1000.
      *
      * However, since "test2" is out of the root, you
      * cannot retrieve the config value "value-that-cannot-be-retrieved".

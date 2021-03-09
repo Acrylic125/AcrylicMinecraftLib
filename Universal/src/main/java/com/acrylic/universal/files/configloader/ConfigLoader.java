@@ -26,16 +26,6 @@ public class ConfigLoader<T> {
         return new ConfigLoader<>(configurableClass);
     }
 
-    @Deprecated
-    public static <T> ConfigLoader<T> getObjectLoader(@NotNull Class<T> configurableClass) {
-        return new ConfigLoader<>(configurableClass);
-    }
-
-    @Deprecated
-    public static <T> ConfigLoader<T> getStaticLoader(@NotNull Class<T> configurableClass) {
-        return new ConfigLoader<>(configurableClass);
-    }
-
     public ConfigLoader(@NotNull Class<T> configurableClass) {
         Configurable configurable = configurableClass.getAnnotation(Configurable.class);
         if (configurable == null)

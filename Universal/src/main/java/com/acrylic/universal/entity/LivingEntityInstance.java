@@ -24,7 +24,7 @@ public interface LivingEntityInstance extends EntityInstance {
 
     void setMaxHealth(double maxHealth);
 
-    double getMaxHealth();
+    float getMaxHealth();
 
     void setHealth(double health);
 
