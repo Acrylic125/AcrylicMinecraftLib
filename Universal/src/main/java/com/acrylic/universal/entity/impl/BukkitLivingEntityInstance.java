@@ -6,6 +6,7 @@ import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
 import de.tr7zw.nbtapi.NBTEntity;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -13,10 +14,15 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.acrylic.universal.entity.equipment.EntityEquipmentBuilder.cloneEquipment;
 
-public interface BukkitLivingEntityInstance
-        extends BukkitEntityInstance, LivingEntityInstance {
+public abstract class BukkitLivingEntityInstance
+        extends BukkitEntityInstance
+        implements LivingEntityInstance {
 
-    default void setAI(boolean ai) {
+    @NotNull
+    @Override
+    public abstract LivingEntity getBukkitEntity();
+
+    public void setAI(boolean ai) {
         if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
             NBTEntity nbtEntity = new NBTEntity(getBukkitEntity());
             nbtEntity.setByte("NoAI", (byte) ((ai) ? 0 : 1));
@@ -25,7 +31,7 @@ public interface BukkitLivingEntityInstance
     }
 
     @Override
-    default void setVisible(boolean visible) {
+    public void setVisible(boolean visible) {
         if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
             if (visible)
                 getBukkitEntity().removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -37,7 +43,7 @@ public interface BukkitLivingEntityInstance
     }
 
     @Override
-    default void setMaxHealth(double maxHealth) {
+    public void setMaxHealth(double maxHealth) {
         AttributeInstance attribute = getBukkitEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (attribute != null) {
             attribute.setBaseValue(maxHealth);
@@ -45,23 +51,23 @@ public interface BukkitLivingEntityInstance
     }
 
     @Override
-    default float getMaxHealth() {
+    public float getMaxHealth() {
         AttributeInstance attribute = getBukkitEntity().getAttribute(Attribute.GENERIC_MAX_HEALTH);
         return (attribute != null) ? (float) attribute.getValue() : 0;
     }
 
     @Override
-    default void setHealth(double health) {
+    public void setHealth(double health) {
         getBukkitEntity().setHealth(Math.min(health, getMaxHealth()));
     }
 
     @Override
-    default void setEquipment(@NotNull EntityEquipmentBuilder equipment) {
+    public void setEquipment(@NotNull EntityEquipmentBuilder equipment) {
         equipment.apply(getBukkitEntity());
     }
 
     @Override
-    default void setEquipment(@NotNull EntityEquipment equipment) {
+    public void setEquipment(@NotNull EntityEquipment equipment) {
         EntityEquipment entityEquipment = getBukkitEntity().getEquipment();
         if (entityEquipment != null)
             cloneEquipment(equipment, entityEquipment);

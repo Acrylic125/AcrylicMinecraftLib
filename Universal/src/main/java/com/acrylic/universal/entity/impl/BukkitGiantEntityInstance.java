@@ -9,7 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import static com.acrylic.universal.entity.EntityInstance.spawnEntity;
 
 public class BukkitGiantEntityInstance
-        implements GiantEntityInstance, BukkitLivingEntityInstance {
+        extends BukkitLivingEntityInstance
+        implements GiantEntityInstance {
 
     public static Builder builder(@NotNull Location location) {
         return new Builder(new BukkitGiantEntityInstance(location));

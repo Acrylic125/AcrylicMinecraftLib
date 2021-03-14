@@ -10,7 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import static com.acrylic.universal.entity.EntityInstance.spawnEntity;
 
 public class BukkitArmorStandInstance
-        implements ArmorStandInstance, BukkitLivingEntityInstance {
+        extends BukkitLivingEntityInstance
+        implements ArmorStandInstance {
 
     public static Builder builder(@NotNull Location location) {
         return new Builder(new BukkitArmorStandInstance(location));
@@ -89,6 +90,11 @@ public class BukkitArmorStandInstance
     @Override
     public void setMarker(boolean marker) {
         armorStand.setMarker(marker);
+    }
+
+    @Override
+    public void setHeadPose(@NotNull EulerAngle eulerAngle) {
+        armorStand.setHeadPose(eulerAngle);
     }
 
     @Override

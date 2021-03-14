@@ -30,6 +30,8 @@ public interface ArmorStandInstance extends LivingEntityInstance {
 
     void setMarker(boolean marker);
 
+    void setHeadPose(@NotNull EulerAngle eulerAngle);
+
     void setRightArmPose(@NotNull EulerAngle eulerAngle);
 
     void setLeftArmPose(@NotNull EulerAngle eulerAngle);
@@ -83,6 +85,11 @@ public interface ArmorStandInstance extends LivingEntityInstance {
 
         public Builder marker(boolean marker) {
             this.armorStandInstance.setMarker(marker);
+            return this;
+        }
+
+        public Builder headPose(@NotNull EulerAngle eulerAngle) {
+            this.armorStandInstance.setHeadPose(eulerAngle);
             return this;
         }
 

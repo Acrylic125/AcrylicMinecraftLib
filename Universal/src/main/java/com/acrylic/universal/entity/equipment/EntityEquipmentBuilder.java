@@ -16,15 +16,11 @@ public interface EntityEquipmentBuilder {
 
     EntityEquipmentBuilder setHelmet(@Nullable ItemStack item);
 
-    EntityEquipmentBuilder setHelmetDropChance(float chance);
-
     default EntityEquipmentBuilder setChestplate(@Nullable AbstractItemBuilder itemBuilder) {
         return setChestplate((itemBuilder == null) ? null : itemBuilder.build());
     }
 
     EntityEquipmentBuilder setChestplate(@Nullable ItemStack item);
-
-    EntityEquipmentBuilder setChestplateDropChance(float chance);
 
     default EntityEquipmentBuilder setLeggings(@Nullable AbstractItemBuilder itemBuilder) {
         return setLeggings((itemBuilder == null) ? null : itemBuilder.build());
@@ -32,15 +28,11 @@ public interface EntityEquipmentBuilder {
 
     EntityEquipmentBuilder setLeggings(@Nullable ItemStack item);
 
-    EntityEquipmentBuilder setLeggingsDropChance(float chance);
-
     default EntityEquipmentBuilder setBoots(@Nullable AbstractItemBuilder itemBuilder) {
         return setBoots((itemBuilder == null) ? null : itemBuilder.build());
     }
 
     EntityEquipmentBuilder setBoots(@Nullable ItemStack item);
-
-    EntityEquipmentBuilder setBootsDropChance(float chance);
 
     default EntityEquipmentBuilder setItemInHand(@Nullable AbstractItemBuilder itemBuilder) {
         return setItemInHand((itemBuilder == null) ? null : itemBuilder.build());
@@ -48,39 +40,23 @@ public interface EntityEquipmentBuilder {
 
     EntityEquipmentBuilder setItemInHand(@Nullable ItemStack item);
 
-    EntityEquipmentBuilder setItemInHandDropChance(float chance);
-
     default EntityEquipmentBuilder setItemInOffHand(@Nullable AbstractItemBuilder itemBuilder) {
         return setItemInOffHand((itemBuilder == null) ? null : itemBuilder.build());
     }
 
     EntityEquipmentBuilder setItemInOffHand(@Nullable ItemStack item);
 
-    EntityEquipmentBuilder setItemInOffhandDropChance(float chance);
-
     ItemStack getHelmet();
-
-    float getHelmetDropChance();
 
     ItemStack getChestplate();
 
-    float getChestplateDropChance();
-
     ItemStack getLeggings();
-
-    float getLeggingsDropChance();
 
     ItemStack getBoots();
 
-    float getBootsDropChance();
-
     ItemStack getItemInHand();
 
-    float getItemInHandDropChance();
-
     ItemStack getItemInOffHand();
-
-    float getItemInOffhandDropChance();
 
     void apply(@NotNull LivingEntity entity);
 
