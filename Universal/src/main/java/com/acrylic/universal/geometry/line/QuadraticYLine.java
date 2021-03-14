@@ -40,7 +40,7 @@ public class QuadraticYLine extends Line {
     }
 
     private double calculateY(int index) {
-        return yMultiplier * (index * (getPoints() - index)) + yOffset;
+        return yMultiplier * (index * (index - getPoints())) + yOffset;
     }
 
     @Override
