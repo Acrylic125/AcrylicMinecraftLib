@@ -15,6 +15,7 @@ public class QuadraticYLine extends Line {
 
     private Vector deltaVector;
     private float yOffset = 0, yMultiplier = 1;
+    private int estimateHorizontalMaxIndex = 1;
 
     public float getYOffset() {
         return yOffset;
@@ -40,7 +41,7 @@ public class QuadraticYLine extends Line {
     }
 
     private double calculateY(int index) {
-        return yMultiplier * (index * (index - getPoints())) + yOffset;
+        return (yMultiplier * index * (index - estimateHorizontalMaxIndex)) + yOffset;
     }
 
     @Override
@@ -54,6 +55,7 @@ public class QuadraticYLine extends Line {
     @Override
     protected void prepareLine(@NotNull Location source, @NotNull Location toLocation) {
         this.deltaVector = (toLocation.toVector().add(source.toVector().multiply(-1))).multiply(1 / getPoints());
+        this.estimateHorizontalMaxIndex = (int) source.distance(toLocation);
     }
 
 }

@@ -10,7 +10,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public interface AbstractItemBuilder {
@@ -76,15 +78,30 @@ public interface AbstractItemBuilder {
     }
 
     default AbstractItemBuilder name(String name) {
-        meta().setDisplayName(ChatUtils.get(name));
+        return rawName(ChatUtils.get(name));
+    }
+
+    default AbstractItemBuilder rawName(String name) {
+        meta().setDisplayName(name);
         return this;
     }
 
     default AbstractItemBuilder lore(String... lore) {
-        final ArrayList<String> l = new ArrayList<>();
+        final LinkedList<String> l = new LinkedList<>();
         for (String s : lore)
             l.add(ChatUtils.get(s));
-        meta().setLore(l);
+        return rawLore(l);
+    }
+
+    default AbstractItemBuilder lore(Collection<String> lore) {
+        final LinkedList<String> l = new LinkedList<>();
+        for (String s : lore)
+            l.add(ChatUtils.get(s));
+        return rawLore(l);
+    }
+
+    default AbstractItemBuilder rawLore(List<String> lore) {
+        meta().setLore(lore);
         return this;
     }
 

@@ -28,6 +28,7 @@ public class VanillaItemTypeAnalyzer implements ItemTypeAnalyzer {
             case CHAINMAIL_HELMET:
             case IRON_HELMET:
             case DIAMOND_HELMET:
+            case NETHERITE_HELMET:
                 return true;
             default:
                 return false;
@@ -43,6 +44,7 @@ public class VanillaItemTypeAnalyzer implements ItemTypeAnalyzer {
             case CHAINMAIL_CHESTPLATE:
             case IRON_CHESTPLATE:
             case DIAMOND_CHESTPLATE:
+            case NETHERITE_CHESTPLATE:
                 return true;
             default:
                 return false;
@@ -57,6 +59,7 @@ public class VanillaItemTypeAnalyzer implements ItemTypeAnalyzer {
             case CHAINMAIL_LEGGINGS:
             case IRON_LEGGINGS:
             case DIAMOND_LEGGINGS:
+            case NETHERITE_LEGGINGS:
                 return true;
             default:
                 return false;
@@ -71,6 +74,7 @@ public class VanillaItemTypeAnalyzer implements ItemTypeAnalyzer {
             case CHAINMAIL_BOOTS:
             case IRON_BOOTS:
             case DIAMOND_BOOTS:
+            case NETHERITE_BOOTS:
                 return true;
             default:
                 return false;
@@ -90,6 +94,7 @@ public class VanillaItemTypeAnalyzer implements ItemTypeAnalyzer {
             case GOLDEN_SWORD:
             case IRON_SWORD:
             case DIAMOND_SWORD:
+            case NETHERITE_SWORD:
                 return true;
             default:
                 return false;
@@ -104,6 +109,7 @@ public class VanillaItemTypeAnalyzer implements ItemTypeAnalyzer {
             case GOLDEN_AXE:
             case IRON_AXE:
             case DIAMOND_AXE:
+            case NETHERITE_AXE:
                 return true;
             default:
                 return false;
@@ -118,6 +124,7 @@ public class VanillaItemTypeAnalyzer implements ItemTypeAnalyzer {
             case GOLDEN_PICKAXE:
             case IRON_PICKAXE:
             case DIAMOND_PICKAXE:
+            case NETHERITE_PICKAXE:
                 return true;
             default:
                 return false;
@@ -132,6 +139,7 @@ public class VanillaItemTypeAnalyzer implements ItemTypeAnalyzer {
             case GOLDEN_SHOVEL:
             case IRON_SHOVEL:
             case DIAMOND_SHOVEL:
+            case NETHERITE_SHOVEL:
                 return true;
             default:
                 return false;
@@ -146,6 +154,7 @@ public class VanillaItemTypeAnalyzer implements ItemTypeAnalyzer {
             case GOLDEN_HOE:
             case IRON_HOE:
             case DIAMOND_HOE:
+            case NETHERITE_AXE:
                 return true;
             default:
                 return false;
