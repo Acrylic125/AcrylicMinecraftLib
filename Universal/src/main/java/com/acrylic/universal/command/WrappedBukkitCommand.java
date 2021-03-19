@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class WrappedBukkitCommand<E extends CommandExecuted>
     private final Command<E> command;
 
     public WrappedBukkitCommand(Command<E> command) {
-        this(command.getName(), command.getDescription(), command.getUsage(), Arrays.asList(command.getAliases()), command);
+        this(command.getName(), command.getDescription(), command.getUsage(), (command.getAliases() == null) ? new ArrayList<>() : Arrays.asList(command.getAliases()), command);
     }
 
     public WrappedBukkitCommand(@NotNull String name, @NotNull String description, @NotNull String usageMessage, @NotNull List<String> aliases, Command<E> command) {
