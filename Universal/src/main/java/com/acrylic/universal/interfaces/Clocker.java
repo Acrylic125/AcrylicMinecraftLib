@@ -4,6 +4,6 @@ public interface Clocker extends Clocked {
 
     boolean isTimerActive();
 
-    Clocker setTimerActive(boolean isTimerActive);
+    void setTimerActive(boolean isTimerActive);
 
 }

@@ -109,11 +109,6 @@ public class RegionDisplayPointerAnimation
     }
 
     @Override
-    public void setIndexIncrement(int indexIncrement) {
-        throw new IllegalStateException("You may not set the index increment.");
-    }
-
-    @Override
     public void terminate() {
         delete();
         terminateScheduler();

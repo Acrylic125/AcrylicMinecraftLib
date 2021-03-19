@@ -8,8 +8,6 @@ public interface Index {
 
     void setIndex(int index);
 
-    void setIndexIncrement(int indexIncrement);
-
     default void increaseIndex() {
         setIndex(getIndex() + getIndexIncrement());
     }

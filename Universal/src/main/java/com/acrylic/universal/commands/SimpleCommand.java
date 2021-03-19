@@ -4,7 +4,8 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface SimpleCommand extends Command<CommandExecutedImpl> {
+public interface SimpleCommand
+        extends Command<CommandExecutedImpl> {
 
     @Override
     default CommandExecutedImpl generateNewCommandExecuted(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args,

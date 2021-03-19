@@ -128,10 +128,14 @@ public class EventBuilder<T extends Event>
         return shouldClock;
     }
 
-    @Override
-    public EventBuilder<T> setTimerActive(boolean isTimerActive) {
+    public AbstractEventBuilder<T> timer(boolean isTimerActive) {
         this.shouldClock = isTimerActive;
         return this;
+    }
+
+    @Override
+    public void setTimerActive(boolean isTimerActive) {
+        this.shouldClock = isTimerActive;
     }
 
     @Override

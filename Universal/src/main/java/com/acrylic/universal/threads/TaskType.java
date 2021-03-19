@@ -143,7 +143,6 @@ public class TaskType {
 
         private int index = 0;
         private int maxIndex;
-        private int indexIncrement = 1;
 
         IndexedRepeatingTask(long delay, long period, int maxIndex) {
             super(delay, period);
@@ -165,17 +164,12 @@ public class TaskType {
 
         @Override
         public int getIndexIncrement() {
-            return indexIncrement;
+            return 1;
         }
 
         @Override
         public void setIndex(int index) {
             this.index = index;
-        }
-
-        @Override
-        public void setIndexIncrement(int indexIncrement) {
-            this.indexIncrement = indexIncrement;
         }
 
         public void update() {

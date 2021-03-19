@@ -1,8 +1,8 @@
 package com.acrylic.universal.commands;
 
-import com.acrylic.universal.interfaces.Clocker;
 import com.acrylic.universal.interfaces.PluginRegister;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universal.utils.TimeConverter;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -10,10 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public interface Command<E extends CommandExecuted>
-        extends Clocker, PluginRegister {
+        extends PluginRegister {
 
     /**
      * This will run if the CommandSender is allowed to
@@ -26,18 +25,11 @@ public interface Command<E extends CommandExecuted>
     /**
      * This will run if the command used by the CommandSender
      * is disallowed either by {@link #getPermissions()} or
-     * {@link #getFilter()}.
+     * {@link #passFilter(CommandExecuted)})}.
      *
      * @param commandExecuted The command that is being executed.
      */
     default void runUnableToUseCommand(E commandExecuted) {}
-
-    /**
-     *
-     * @return The filter.
-     */
-    @Nullable
-    Predicate<E> getFilter();
 
     /**
      * The arguments that is extended from this command.
@@ -159,24 +151,21 @@ public interface Command<E extends CommandExecuted>
         return true;
     }
 
-    default boolean testFilter(E commandExecuted) {
-        Predicate<E> filter = getFilter();
-        return (filter == null || filter.test(commandExecuted));
+    default boolean passFilter(E commandExecuted) {
+        return true;
     }
 
     default boolean canUseThisCommand(E commandExecuted) {
-        return hasPermission(commandExecuted) && testFilter(commandExecuted);
+        return hasPermission(commandExecuted) && passFilter(commandExecuted);
     }
 
     default void executeCommand(@NotNull E commandExecuted) {
         if (canUseThisCommand(commandExecuted) &&
                 !seekArgument(commandExecuted)) {
-            boolean isTimerActive = isTimerActive();
-            if (isTimerActive)
-                clockTime();
+            long time = System.currentTimeMillis();
             runCommand(commandExecuted);
-            if (isTimerActive)
-                System.out.println(ChatUtils.get("The command took " + getTimeDifferenceAsConsoleString()));
+            if (isTimerActive())
+                System.out.println(ChatUtils.get("The command took " + TimeConverter.CONSOLE.convert(System.currentTimeMillis() - time)));
         }
     }
 
@@ -188,5 +177,7 @@ public interface Command<E extends CommandExecuted>
     default void register(@NotNull JavaPlugin javaPlugin) {
         CommandRegistry.register(javaPlugin, WrappedBukkitCommand.wrap(this));
     }
+
+    boolean isTimerActive();
 
 }

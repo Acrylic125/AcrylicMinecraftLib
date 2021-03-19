@@ -32,6 +32,8 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Clocker
 
     AbstractEventBuilder<T> ignoreCancel(boolean ignoreCancel);
 
+    AbstractEventBuilder<T> timer(boolean ignoreCancel);
+
     AbstractEventBuilder<T> copy(@NotNull AbstractEventBuilder<T> eventBuilder);
 
     void setRegisteredBefore(boolean b);

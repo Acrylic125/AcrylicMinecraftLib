@@ -140,10 +140,14 @@ public class CommandBuilder
         return shouldClock;
     }
 
-    @Override
-    public CommandBuilder setTimerActive(boolean isTimerActive) {
+    public CommandBuilder timer(boolean isTimerActive) {
         this.shouldClock = isTimerActive;
         return this;
+    }
+
+    @Override
+    public void setTimerActive(boolean isTimerActive) {
+        this.shouldClock = isTimerActive;
     }
 
     @Override

@@ -91,7 +91,7 @@ public class AcrylicCommand {
                 }).arguments(new AbstractCommandBuilder[] {
                         CommandBuilder.create("loop")
                                 .filter(AbstractCommandExecuted::isPlayer)
-                                .setTimerActive(true)
+                                .timer(true)
                                 .handle(commandExecutor -> {
 
                             Player sender = (Player) commandExecutor.getSender();
@@ -111,7 +111,7 @@ public class AcrylicCommand {
                         }),
                         CommandBuilder.create("sudo")
                                 .filter(AbstractCommandExecuted::isPlayer)
-                                .setTimerActive(true)
+                                .timer(true)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
                             String arg1 = commandExecutor.getArg(0);
@@ -131,7 +131,7 @@ public class AcrylicCommand {
 
     private static CommandBuilder getTestCommandBuilder() {
         return CommandBuilder.create("test")
-                .setTimerActive(true)
+                .timer(true)
                 .handle(commandExecutor -> {
                     Player sender = (Player) commandExecutor.getSender();
 
@@ -140,7 +140,7 @@ public class AcrylicCommand {
                         //List
                         CommandBuilder.create("scheduler")
                                 .filter(AbstractCommandExecuted::isPlayer)
-                                .setTimerActive(true)
+                                .timer(true)
                                 .handle(commandExecutor -> {
                                     Scheduler.sync().runDelayedTask(5, Time.SECONDS).handleThenBuild(task -> {
                                         Bukkit.broadcastMessage("hello!");
@@ -160,7 +160,7 @@ public class AcrylicCommand {
                         }),
                         CommandBuilder.create("region")
                                 .filter(AbstractCommandExecuted::isPlayer)
-                                .setTimerActive(true)
+                                .timer(true)
                                 .handle(commandExecutor -> {
                             Player player = (Player) commandExecutor.getSender();
                             SimpleRegion simpleRegion = new SimpleRegion(player.getLocation(), player.getLocation().add(10, 10 , 10));
@@ -186,7 +186,7 @@ public class AcrylicCommand {
                             );
                         }),
                         CommandBuilder.create("circle")
-                                .setTimerActive(true)
+                                .timer(true)
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
@@ -197,7 +197,7 @@ public class AcrylicCommand {
                             circle.iterateToIndex(location -> sender.sendBlockChange(location, Material.DIAMOND_BLOCK, (byte) 0), 36);
                         }),
                         CommandBuilder.create("line")
-                                .setTimerActive(true)
+                                .timer(true)
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
@@ -212,7 +212,7 @@ public class AcrylicCommand {
                             }, 20);
                         }),
                         CommandBuilder.create("spiral")
-                                .setTimerActive(true)
+                                .timer(true)
                                 .filter(AbstractCommandExecuted::isPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
