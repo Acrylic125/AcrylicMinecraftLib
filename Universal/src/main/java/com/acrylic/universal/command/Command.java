@@ -1,4 +1,4 @@
-package com.acrylic.universal.commands;
+package com.acrylic.universal.command;
 
 import com.acrylic.universal.interfaces.PluginRegister;
 import com.acrylic.universal.text.ChatUtils;
@@ -60,7 +60,7 @@ public interface Command<E extends CommandExecuted>
      * @return The aliases/the alternative names to identify
      * the command executed is this command.
      */
-    @NotNull
+    @Nullable
     String[] getAliases();
 
     /**
@@ -115,9 +115,12 @@ public interface Command<E extends CommandExecuted>
         for (Command<E> argument : args) {
             if (arg.equals(argument.getName()))
                 return argument;
-            for (String alias : argument.getAliases())
-                if (arg.equals(alias))
-                    return argument;
+            String[] aliases = argument.getAliases();
+            if (aliases != null) {
+                for (String alias : aliases)
+                    if (arg.equals(alias))
+                        return argument;
+            }
         }
         return null;
     }
@@ -131,11 +134,17 @@ public interface Command<E extends CommandExecuted>
         String[] oldArgs = commandExecuted.getArgs();
         if (l >= 0)
             System.arraycopy(oldArgs, 1, newArgs, 0, l);
-        argument.executeCommand(generateNewCommandExecuted(commandExecuted.getSender(), commandExecuted.getLabel(), newArgs, commandExecuted.getFirstParentCommand()));
+        argument.executeCommand(
+                generateNewCommandExecuted(commandExecuted.getSender(), commandExecuted.getLabel(), newArgs,
+                        this,
+                        commandExecuted.getFirstParentCommand())
+        );
         return true;
     }
 
-    E generateNewCommandExecuted(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args, @Nullable Command<? extends CommandExecuted> firstParentCommand);
+    E generateNewCommandExecuted(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args,
+                                 @Nullable Command<? extends CommandExecuted> parent,
+                                 @Nullable Command<? extends CommandExecuted> firstParentCommand);
 
     default boolean hasPermission(E commandExecuted) {
         final String[] permissions = getPermissions();

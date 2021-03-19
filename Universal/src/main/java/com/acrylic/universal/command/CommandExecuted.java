@@ -1,39 +1,52 @@
 package com.acrylic.universal.command;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class CommandExecuted implements AbstractCommandExecuted {
+public interface CommandExecuted {
 
-    private final String[] args;
-    private final CommandSender sender;
-    private final CommandBuilderExecutor commandBuilder;
-    private final String label;
+    @Nullable
+    Command<? extends CommandExecuted> getFirstParentCommand();
 
-    public CommandExecuted(CommandSender sender, String[] args, String label, CommandBuilderExecutor commandBuilder) {
-        this.sender = sender;
-        this.args = args;
-        this.label = label;
-        this.commandBuilder = commandBuilder;
+    @Nullable
+    Command<? extends CommandExecuted> getParent();
+
+    @NotNull
+    Command<? extends CommandExecuted> getCommand();
+
+    @NotNull
+    CommandSender getSender();
+
+    @NotNull
+    String[] getArgs();
+
+    @NotNull
+    String getLabel();
+
+    default String getArg(int argument) {
+        String[] args = getArgs();
+        return (args.length > argument) ? args[argument] : null;
     }
 
-    @Override
-    public CommandSender getSender() {
-        return sender;
+    default String getArgsAsString(int from) {
+        String[] args = getArgs();
+        int s = args.length;
+        if (s > from) {
+            StringBuilder builder = new StringBuilder();
+            for (int i = from; i < s; i++) {
+                if (i != from)
+                    builder.append(" ");
+                builder.append(args[i]);
+            }
+            return builder.toString();
+        }
+        return null;
     }
 
-    @Override
-    public String getLabel() {
-        return label;
-    }
-
-    @Override
-    public String[] getArgs() {
-        return args;
-    }
-
-    @Override
-    public CommandBuilderExecutor getParentCommandBuilder() {
-        return commandBuilder;
+    default boolean isExecutedByPlayer() {
+        return getSender() instanceof Player;
     }
 
 }

@@ -1,8 +1,8 @@
 package com.acrylic.universal.command;
 
 @FunctionalInterface
-public interface CommandHandler<T extends AbstractCommandExecuted> {
+public interface CommandHandler<T extends CommandExecutedImpl> {
 
-    void run(T commandExecutor);
+    void run(T commandExecuted);
 
 }

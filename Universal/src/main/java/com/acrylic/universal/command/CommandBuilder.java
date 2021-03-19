@@ -1,163 +1,72 @@
 package com.acrylic.universal.command;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.defaults.BukkitCommand;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Predicate;
 
-public class CommandBuilder
-        extends BukkitCommand
-        implements AbstractCommandBuilder {
+public class CommandBuilder extends AbstractSimpleCommand {
 
-    private CommandHandler<AbstractCommandExecuted> commandHandler;
-    private CommandHandler<AbstractCommandExecuted> failedConditionsCommandHandler;
-    private CommandHandler<AbstractCommandExecuted> noPermissionCommandHandler;
-    private AbstractCommandBuilder[] arguments;
-    private Predicate<AbstractCommandExecuted> filter;
-    private String[] permissions;
+    private Predicate<CommandExecutedImpl> filter;
+    private CommandHandler<CommandExecutedImpl> handler;
 
-    private long time = 0;
-    private boolean shouldClock = false;
-
-    public static CommandBuilder create(String command) {
-        return new CommandBuilder(command);
+    public static CommandBuilder create(@NotNull String name) {
+        return new CommandBuilder(name);
     }
 
-    protected CommandBuilder(String command) {
-        super(command.toLowerCase());
+    public CommandBuilder(@NotNull String name) {
+        super(name);
     }
 
-    @NotNull
-    public CommandBuilder setDescription(@NotNull String description) {
-        super.setDescription(description);
-        return this;
-    }
-
-    public CommandBuilder setAliases(String... aliases) {
-        return setAliases(Arrays.asList(aliases));
-    }
-
-    @NotNull
-    public CommandBuilder setAliases(@NotNull List<String> aliases) {
-        List<String> newAliases = new ArrayList<>();
-        for (String alias : aliases) {
-            newAliases.add(alias.toLowerCase());
-        }
-        super.setAliases(newAliases);
-        return this;
-    }
-
-    @Override
-    public void register(@NotNull JavaPlugin plugin) {
-        CommandUtils.register(plugin, this);
-    }
-
-    @Override
-    public CommandHandler<AbstractCommandExecuted> getCommandHandler() {
-        return commandHandler;
-    }
-
-    @Override
-    public CommandHandler<AbstractCommandExecuted> getHandleFailedCondition() {
-        return failedConditionsCommandHandler;
-    }
-
-    @Override
-    public CommandHandler<AbstractCommandExecuted> getHandleNoPermission() {
-        return noPermissionCommandHandler;
-    }
-
-    @Override
-    public Predicate<AbstractCommandExecuted> getFilter() {
-        return filter;
-    }
-
-    @Override
-    public String[] getPermissions() {
-        return permissions;
-    }
-
-    @Override
-    public CommandBuilder handle(CommandHandler<AbstractCommandExecuted> commandHandler) {
-        this.commandHandler = commandHandler;
-        return this;
-    }
-
-    @Override
-    public CommandBuilder handleFilter(CommandHandler<AbstractCommandExecuted> commandHandler) {
-        this.failedConditionsCommandHandler = commandHandler;
-        return this;
-    }
-
-    @Override
-    public CommandBuilder handleNoPermission(CommandHandler<AbstractCommandExecuted> commandHandler) {
-        this.noPermissionCommandHandler = commandHandler;
-        return this;
-    }
-
-    @Override
-    public CommandBuilder filter(Predicate<AbstractCommandExecuted> filter) {
+    public CommandBuilder filter(@Nullable Predicate<CommandExecutedImpl> filter) {
         this.filter = filter;
         return this;
     }
 
-    @Override
-    public CommandBuilder permissions(String... permissions) {
-        this.permissions = permissions;
+    public CommandBuilder handle(@Nullable CommandHandler<CommandExecutedImpl> handle) {
+        this.handler = handle;
+        return this;
+    }
+
+    public CommandBuilder description(@NotNull String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    public CommandBuilder usage(@NotNull String usage) {
+        super.setUsage(usage);
+        return this;
+    }
+
+    public CommandBuilder aliases(@NotNull String... aliases) {
+        super.setAliases(aliases);
+        return this;
+    }
+
+    public CommandBuilder permissions(@NotNull String... permissions) {
+        super.setPermissions(permissions);
+        return this;
+    }
+
+    public CommandBuilder timer(boolean timer) {
+        super.setTimerActive(timer);
+        return this;
+    }
+
+    @SafeVarargs
+    public final CommandBuilder arguments(@NotNull Command<CommandExecutedImpl>... arguments) {
+        super.setArguments(arguments);
         return this;
     }
 
     @Override
-    public CommandBuilder aliases(String... aliases) {
-        super.setAliases(Arrays.asList(aliases));
-        return this;
+    public void runCommand(CommandExecutedImpl commandExecuted) {
+        if (handler != null)
+            handler.run(commandExecuted);
     }
 
     @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        execute(new CommandExecuted(sender, args, commandLabel, null));
-        return true;
+    public boolean passFilter(CommandExecutedImpl commandExecuted) {
+        return filter == null || filter.test(commandExecuted);
     }
-
-    @Override
-    public CommandBuilderExecutor[] getArguments() {
-        return arguments;
-    }
-
-    @Override
-    public CommandBuilder arguments(AbstractCommandBuilder[] arguments) {
-        this.arguments = arguments;
-        return this;
-    }
-
-    @Override
-    public boolean isTimerActive() {
-        return shouldClock;
-    }
-
-    public CommandBuilder timer(boolean isTimerActive) {
-        this.shouldClock = isTimerActive;
-        return this;
-    }
-
-    @Override
-    public void setTimerActive(boolean isTimerActive) {
-        this.shouldClock = isTimerActive;
-    }
-
-    @Override
-    public long getTime() {
-        return time;
-    }
-
-    @Override
-    public void setTime(long time) {
-        this.time = time;
-    }
-
 }

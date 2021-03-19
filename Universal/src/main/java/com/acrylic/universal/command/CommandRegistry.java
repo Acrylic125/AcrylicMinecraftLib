@@ -1,4 +1,4 @@
-package com.acrylic.universal.commands;
+package com.acrylic.universal.command;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

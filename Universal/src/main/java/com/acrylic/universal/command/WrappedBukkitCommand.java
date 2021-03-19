@@ -1,4 +1,4 @@
-package com.acrylic.universal.commands;
+package com.acrylic.universal.command;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -27,7 +27,7 @@ public class WrappedBukkitCommand<E extends CommandExecuted>
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        command.executeCommand(command.generateNewCommandExecuted(sender, commandLabel, args, command));
+        command.executeCommand(command.generateNewCommandExecuted(sender, commandLabel, args, null, command));
         return true;
     }
 }

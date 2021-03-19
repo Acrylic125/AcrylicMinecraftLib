@@ -5,9 +5,8 @@ import com.acrylic.universal.Universal;
 import com.acrylic.universal.animations.dangle.Dangle;
 import com.acrylic.universal.animations.holograms.Holograms;
 import com.acrylic.universal.animations.rotational.HandRotationAnimation;
-import com.acrylic.universal.command.AbstractCommandBuilder;
-import com.acrylic.universal.command.AbstractCommandExecuted;
 import com.acrylic.universal.command.CommandBuilder;
+import com.acrylic.universal.command.CommandExecuted;
 import com.acrylic.universal.entity.ArmorStandInstance;
 import com.acrylic.universal.entity.GiantEntityInstance;
 import com.acrylic.universal.entity.impl.BukkitArmorStandInstance;
@@ -41,12 +40,12 @@ public class AcrylicCommand {
 
     public static void registerMainCommand() {
         CommandBuilder.create("acrylic")
-                .setAliases("acryliccmd")
+                .aliases("acryliccmd")
                 .permissions("acrylic.acrylic")
-                .arguments(new AbstractCommandBuilder[] {
+                .arguments(
                         getTestCommandBuilder(),
                         getUtilsCommandBuilder()
-                })
+                )
                 .handle(commandExecutor -> {
                     sendHelp(commandExecutor.getSender());
                 })
@@ -88,16 +87,16 @@ public class AcrylicCommand {
                 .aliases("util", "utilities", "utility")
                 .handle(commandExecutor -> {
                     sendHelp(commandExecutor.getSender());
-                }).arguments(new AbstractCommandBuilder[] {
+                }).arguments(
                         CommandBuilder.create("loop")
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .timer(true)
                                 .handle(commandExecutor -> {
 
                             Player sender = (Player) commandExecutor.getSender();
                             String arg1 = commandExecutor.getArg(0);
                             String arg2 = commandExecutor.getArg(1);
-                            String str = commandExecutor.getArgs(2);
+                            String str = commandExecutor.getArgsAsString(2);
                             if (arg1 == null || arg2 == null || str == null)
                                 sendHelp(sender);
                             else {
@@ -110,12 +109,12 @@ public class AcrylicCommand {
                             }
                         }),
                         CommandBuilder.create("sudo")
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .timer(true)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
                             String arg1 = commandExecutor.getArg(0);
-                            String str = commandExecutor.getArgs(1);
+                            String str = commandExecutor.getArgsAsString(1);
                             if (arg1 == null || str == null)
                                 sendHelp(sender);
                             else {
@@ -126,7 +125,7 @@ public class AcrylicCommand {
                                 }
                             }
                         })
-                });
+                );
     }
 
     private static CommandBuilder getTestCommandBuilder() {
@@ -136,10 +135,10 @@ public class AcrylicCommand {
                     Player sender = (Player) commandExecutor.getSender();
 
                     ChatUtils.send(sender, "&bThis command executes the current test. To see other tests, do &f/acrylic test -list&b!");
-                }).arguments(new AbstractCommandBuilder[] {
+                }).arguments(
                         //List
                         CommandBuilder.create("scheduler")
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .timer(true)
                                 .handle(commandExecutor -> {
                                     Scheduler.sync().runDelayedTask(5, Time.SECONDS).handleThenBuild(task -> {
@@ -148,7 +147,7 @@ public class AcrylicCommand {
 
                         }),
                         CommandBuilder.create("item")
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .handle(commandExecutor -> {
                             Player player = (Player) commandExecutor.getSender();
                             player.getInventory().addItem(
@@ -159,7 +158,7 @@ public class AcrylicCommand {
                             );
                         }),
                         CommandBuilder.create("region")
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .timer(true)
                                 .handle(commandExecutor -> {
                             Player player = (Player) commandExecutor.getSender();
@@ -170,12 +169,12 @@ public class AcrylicCommand {
                                 .handle(commandExecutor ->  {
                             CommandSender sender = commandExecutor.getSender();
                             sender.sendMessage(ChatUtils.get("&3&lList of Tests:"));
-                            commandExecutor.getParentCommandBuilder().iterateArguments(commandBuilderExecutor -> {
+                            commandExecutor.getParent().iterateArguments(commandBuilderExecutor -> {
                                 sender.sendMessage(ChatUtils.get("  &3&l- &r&b" + commandBuilderExecutor.getName()));
                             });
                         }),
                         CommandBuilder.create("item")
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .handle(commandExecutor -> {
                             Player player = (Player) commandExecutor.getSender();
                             player.getInventory().addItem(
@@ -187,7 +186,7 @@ public class AcrylicCommand {
                         }),
                         CommandBuilder.create("circle")
                                 .timer(true)
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
 
@@ -198,7 +197,7 @@ public class AcrylicCommand {
                         }),
                         CommandBuilder.create("line")
                                 .timer(true)
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
 
@@ -213,7 +212,7 @@ public class AcrylicCommand {
                         }),
                         CommandBuilder.create("spiral")
                                 .timer(true)
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
                             Spiral spiral = new Spiral();
@@ -235,7 +234,7 @@ public class AcrylicCommand {
 
                         }),
                         CommandBuilder.create("gui")
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .handle(commandExecutor -> {
                                     Player sender = (Player) commandExecutor.getSender();
                             GlobalGUI.builder()
@@ -247,7 +246,7 @@ public class AcrylicCommand {
                                     .build().openGUIFor(sender);
                         }),
                         CommandBuilder.create("handrotation")
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
                             GiantEntityInstance armorStandAnimator = BukkitGiantEntityInstance.builder(sender.getLocation())
@@ -264,7 +263,7 @@ public class AcrylicCommand {
                                     }).build();
                         }),
                         CommandBuilder.create("dangle")
-                                .filter(AbstractCommandExecuted::isPlayer)
+                                .filter(CommandExecuted::isExecutedByPlayer)
                                 .handle(commandExecutor -> {
                             Player sender = (Player) commandExecutor.getSender();
                             Dangle dangle = new Dangle(sender);
@@ -287,7 +286,7 @@ public class AcrylicCommand {
                             Bukkit.broadcastMessage(configuration.getFileEditor() + "");
                             configuration.saveFile();
                         })
-                });
+                );
     }
 
 

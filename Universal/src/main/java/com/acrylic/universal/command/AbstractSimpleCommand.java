@@ -1,9 +1,9 @@
-package com.acrylic.universal.commands;
+package com.acrylic.universal.command;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.acrylic.universal.commands.Command.toComparableCommandString;
+import static com.acrylic.universal.command.Command.toComparableCommandString;
 
 public abstract class AbstractSimpleCommand implements SimpleCommand {
 
@@ -49,7 +49,7 @@ public abstract class AbstractSimpleCommand implements SimpleCommand {
         this.aliases = aliases;
     }
 
-    @NotNull
+    @Nullable
     @Override
     public String[] getAliases() {
         return aliases;
