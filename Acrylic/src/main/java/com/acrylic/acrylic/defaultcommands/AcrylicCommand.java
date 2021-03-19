@@ -201,7 +201,10 @@ public class AcrylicCommand {
                                 .timer(true)
                                 .filter(CommandExecuted::isExecutedByPlayer)
                                 .handle(commandExecutor -> {
-                                    Bukkit.broadcastMessage(TimeConverter.GLOBAL.convert(CommandUtils.getLong(commandExecutor, 0, 0)).toString());
+                                    TimeConverter timeConverter = new TimeConverter();
+                                    timeConverter.setValueFormat("&6");
+                                    timeConverter.setSuffixFormat("&6");
+                                    Bukkit.broadcastMessage(timeConverter.convert(CommandUtils.getLong(commandExecutor, 0, 0)).toString());
                                 }),
                         CommandBuilder.create("line")
                                 .timer(true)
