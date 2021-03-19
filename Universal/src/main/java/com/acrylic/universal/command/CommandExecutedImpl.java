@@ -30,6 +30,7 @@ public class CommandExecutedImpl implements CommandExecuted {
         return sender;
     }
 
+    @NotNull
     public String getLabel() {
         return label;
     }
@@ -48,7 +49,7 @@ public class CommandExecutedImpl implements CommandExecuted {
     @Nullable
     @Override
     public Command<? extends CommandExecuted> getParent() {
-        return null;
+        return parent;
     }
 
     @NotNull
@@ -62,6 +63,7 @@ public class CommandExecutedImpl implements CommandExecuted {
                 "args=" + Arrays.toString(args) +
                 ", sender=" + sender +
                 ", command=" + command +
+                ", parent=" + parent +
                 ", firstParent=" + firstParent +
                 ", label='" + label + '\'' +
                 '}';

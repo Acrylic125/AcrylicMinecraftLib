@@ -11,6 +11,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Locale;
 import java.util.function.Consumer;
 
+/**
+ * A bukkit command wrapper that allows for more flexibility in
+ * command design.
+ *
+ * @param <E> The command executed type.
+ */
 public interface Command<E extends CommandExecuted>
         extends PluginRegister {
 
@@ -178,10 +184,6 @@ public interface Command<E extends CommandExecuted>
         }
     }
 
-    static String toComparableCommandString(String string) {
-        return string.toLowerCase(Locale.ROOT);
-    }
-
     @Override
     default void register(@NotNull JavaPlugin javaPlugin) {
         CommandRegistry.register(javaPlugin, WrappedBukkitCommand.wrap(this));
@@ -189,4 +191,25 @@ public interface Command<E extends CommandExecuted>
 
     boolean isTimerActive();
 
+    /**
+     * Ensures any input string/comparing strings are
+     * of the same capitalization.
+     *
+     * For example,
+     * ARGUMENT -> argument
+     * CoMMaND -> command
+     *
+     * So, when the command is checking for any valid
+     * arguments or valid commands, it will ensure the
+     * capitalization is the same.
+     *
+     * In the event that this changes, any implementation that
+     * uses this will use the same format.
+     *
+     * @param string The string to convert.
+     * @return The converted string.
+     */
+    static String toComparableCommandString(String string) {
+        return string.toLowerCase(Locale.ROOT);
+    }
 }

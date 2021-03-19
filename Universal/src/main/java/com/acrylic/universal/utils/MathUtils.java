@@ -59,7 +59,7 @@ public class MathUtils {
 
     public static long getLong(@NotNull String arg, long defaultValue) {
         try {
-            return Integer.parseInt(arg);
+            return Long.parseLong(arg);
         } catch (NumberFormatException ex) {
             return defaultValue;
         }

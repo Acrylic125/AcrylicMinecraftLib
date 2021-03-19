@@ -7,6 +7,7 @@ import com.acrylic.universal.animations.holograms.Holograms;
 import com.acrylic.universal.animations.rotational.HandRotationAnimation;
 import com.acrylic.universal.command.CommandBuilder;
 import com.acrylic.universal.command.CommandExecuted;
+import com.acrylic.universal.command.CommandUtils;
 import com.acrylic.universal.entity.ArmorStandInstance;
 import com.acrylic.universal.entity.GiantEntityInstance;
 import com.acrylic.universal.entity.impl.BukkitArmorStandInstance;
@@ -24,6 +25,7 @@ import com.acrylic.universal.gui.InventoryUIBuilder;
 import com.acrylic.universal.gui.components.GUIStaticComponent;
 import com.acrylic.universal.gui.items.BasicGUIItem;
 import com.acrylic.universal.utils.StringUtils;
+import com.acrylic.universal.utils.TimeConverter;
 import com.acrylic.version_1_8.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -195,6 +197,12 @@ public class AcrylicCommand {
                             circle.setLocation(sender.getLocation());
                             circle.iterateToIndex(location -> sender.sendBlockChange(location, Material.DIAMOND_BLOCK, (byte) 0), 36);
                         }),
+                        CommandBuilder.create("timer")
+                                .timer(true)
+                                .filter(CommandExecuted::isExecutedByPlayer)
+                                .handle(commandExecutor -> {
+                                    Bukkit.broadcastMessage(TimeConverter.GLOBAL.convert(CommandUtils.getLong(commandExecutor, 0, 0)).toString());
+                                }),
                         CommandBuilder.create("line")
                                 .timer(true)
                                 .filter(CommandExecuted::isExecutedByPlayer)
