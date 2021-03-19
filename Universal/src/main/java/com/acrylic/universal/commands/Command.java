@@ -1,6 +1,9 @@
 package com.acrylic.universal.commands;
 
+import com.acrylic.universal.command.AbstractCommandExecuted;
+import com.acrylic.universal.command.CommandHandler;
 import com.acrylic.universal.interfaces.Clocker;
+import com.acrylic.universal.text.ChatUtils;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +55,7 @@ public interface Command<E extends CommandExecuted> extends Clocker {
      *
      * @return The permissions.
      */
-    @NotNull
+    @Nullable
     String[] getPermissions();
 
     /**
@@ -117,8 +120,39 @@ public interface Command<E extends CommandExecuted> extends Clocker {
 
     E generateNewCommandExecuted(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args, @Nullable Command<? extends CommandExecuted> firstParentCommand);
 
-    default void executeCommand(@NotNull E commandExecuted) {
+    default boolean hasPermission(E commandExecuted) {
+        final String[] permissions = getPermissions();
+        final CommandSender sender = commandExecuted.getSender();
 
+        if (permissions != null && permissions.length > 0) {
+            for (String permission : permissions) {
+                if (sender.hasPermission(permission))
+                    return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
+    default boolean testFilter(E commandExecuted) {
+        Predicate<E> filter = getFilter();
+        return (filter == null || filter.test(commandExecuted));
+    }
+
+    default boolean canUseThisCommand(E commandExecuted) {
+        return hasPermission(commandExecuted) && testFilter(commandExecuted);
+    }
+
+    default void executeCommand(@NotNull E commandExecuted) {
+        if (canUseThisCommand(commandExecuted) &&
+                !seekArgument(commandExecuted)) {
+            boolean isTimerActive = isTimerActive();
+            if (isTimerActive)
+                clockTime();
+            runCommand(commandExecuted);
+            if (isTimerActive)
+                System.out.println(ChatUtils.get("The command took " + getTimeDifferenceAsConsoleString()));
+        }
     }
 
 }
