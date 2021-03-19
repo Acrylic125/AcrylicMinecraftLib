@@ -1,17 +1,19 @@
 package com.acrylic.universal.commands;
 
-import com.acrylic.universal.command.AbstractCommandExecuted;
-import com.acrylic.universal.command.CommandHandler;
 import com.acrylic.universal.interfaces.Clocker;
+import com.acrylic.universal.interfaces.PluginRegister;
 import com.acrylic.universal.text.ChatUtils;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public interface Command<E extends CommandExecuted> extends Clocker {
+public interface Command<E extends CommandExecuted>
+        extends Clocker, PluginRegister {
 
     /**
      * This will run if the CommandSender is allowed to
@@ -78,13 +80,36 @@ public interface Command<E extends CommandExecuted> extends Clocker {
     String getName();
 
     @NotNull
+    String getDescription();
+
+    @NotNull
     String getUsage();
 
-    default void iterateArguments(@NotNull Consumer<Command<? extends E>> action) {
+    /**
+     * Iterates through all the arguments of this command.
+     *
+     * @param action The action.
+     */
+    default void iterateArguments(@NotNull Consumer<Command<E>> action) {
         Command<E>[] args = getArguments();
         if (args != null && args.length > 0)
-            for (Command<? extends E> arg : args)
+            for (Command<E> arg : args)
                 action.accept(arg);
+    }
+
+    /**
+     * Iterates through all the arguments of this command and
+     * it's children.
+     *
+     * @param action The action.
+     */
+    default void iterateArgumentsWithChild(@NotNull Consumer<Command<E>> action) {
+        Command<E>[] args = getArguments();
+        if (args != null && args.length > 0)
+            for (Command<E> arg : args) {
+                action.accept(arg);
+                arg.iterateArgumentsWithChild(action);
+            }
     }
 
     default Command<E> getArgument(E commandExecuted) {
@@ -94,7 +119,7 @@ public interface Command<E extends CommandExecuted> extends Clocker {
         String arg = commandExecuted.getArg(0);
         if (arg == null)
             return null;
-        arg = arg.toLowerCase();
+        arg = toComparableCommandString(arg);
         for (Command<E> argument : args) {
             if (arg.equals(argument.getName()))
                 return argument;
@@ -153,6 +178,15 @@ public interface Command<E extends CommandExecuted> extends Clocker {
             if (isTimerActive)
                 System.out.println(ChatUtils.get("The command took " + getTimeDifferenceAsConsoleString()));
         }
+    }
+
+    static String toComparableCommandString(String string) {
+        return string.toLowerCase(Locale.ROOT);
+    }
+
+    @Override
+    default void register(@NotNull JavaPlugin javaPlugin) {
+        CommandRegistry.register(javaPlugin, WrappedBukkitCommand.wrap(this));
     }
 
 }

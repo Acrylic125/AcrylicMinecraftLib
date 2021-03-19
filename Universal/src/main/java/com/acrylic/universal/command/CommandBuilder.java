@@ -53,7 +53,7 @@ public class CommandBuilder
     }
 
     @Override
-    public void register(JavaPlugin plugin) {
+    public void register(@NotNull JavaPlugin plugin) {
         CommandUtils.register(plugin, this);
     }
 
