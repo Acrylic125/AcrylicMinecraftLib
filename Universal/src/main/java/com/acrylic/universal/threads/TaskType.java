@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 /**
@@ -33,20 +34,18 @@ import java.util.concurrent.Future;
  * can have a highest degree of accuracy of Nanoseconds due to
  * the use of a different {@link ScheduleExecutor}.
  */
-public class TaskType {
+public abstract class TaskType {
 
-    private static final TaskType EMPTY = new TaskType();
+    public abstract BukkitTask scheduleSync(@NotNull SyncScheduler<?> scheduleBuilder);
 
-    public BukkitTask scheduleSync(@NotNull SyncScheduler<?> scheduleBuilder) {
-        return Bukkit.getScheduler().runTask(scheduleBuilder.getPlugin(), scheduleBuilder);
+    public abstract Future<?> scheduleASync(@NotNull AsyncScheduler<?> scheduleBuilder);
+
+    public static SingleRunTask task() {
+        return new SingleRunTask();
     }
 
-    public Future<?> scheduleASync(@NotNull AsyncScheduler<?> scheduleBuilder) {
-        return ScheduleExecutor.ASYNC_EXECUTOR.runTask(scheduleBuilder);
-    }
-
-    public static TaskType task() {
-        return EMPTY;
+    public static SingleRunTask task(@NotNull ExecutorService executorService) {
+        return new SingleRunTask(executorService);
     }
 
     public static DelayedTask delayedTask(long delay) {
@@ -178,6 +177,28 @@ public class TaskType {
 
         public boolean hasReachedIndex() {
             return index >= maxIndex;
+        }
+
+    }
+
+    public static class SingleRunTask extends TaskType {
+
+        private final ExecutorService executorService;
+
+        SingleRunTask() {
+            this.executorService = ScheduleExecutor.ASYNC_EXECUTOR.getDefaultExecutionerService();
+        }
+
+        SingleRunTask(ExecutorService executorService) {
+            this.executorService = executorService;
+        }
+
+        public BukkitTask scheduleSync(@NotNull SyncScheduler<?> scheduleBuilder) {
+            return Bukkit.getScheduler().runTask(scheduleBuilder.getPlugin(), scheduleBuilder);
+        }
+
+        public Future<?> scheduleASync(@NotNull AsyncScheduler<?> scheduleBuilder) {
+            return ScheduleExecutor.ASYNC_EXECUTOR.runTask(executorService, scheduleBuilder);
         }
 
     }

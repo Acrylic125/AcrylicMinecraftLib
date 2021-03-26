@@ -2,7 +2,6 @@ package com.acrylic.universal.threads;
 
 import com.acrylic.time.Time;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -19,12 +18,12 @@ public class ScheduleExecutor {
 
     public static final ScheduleExecutor ASYNC_EXECUTOR = new ScheduleExecutor();
 
-    private final ExecutorService taskService;
+    private final ExecutorService defaultExecutionerService;
     private final ScheduledExecutorService timerExecutionService;
     private final Set<ScheduledFuture<?>> tasks = Collections.newSetFromMap(new WeakHashMap<>());
 
     public ScheduleExecutor() {
-        this.taskService = Executors.newCachedThreadPool(new ThreadFactoryBuilder()
+        this.defaultExecutionerService = Executors.newCachedThreadPool(new ThreadFactoryBuilder()
                 .setDaemon(true)
                 .build()
         );
@@ -44,8 +43,13 @@ public class ScheduleExecutor {
     }
 
     @NotNull
+    public Future<?> runTask(@NotNull ExecutorService executorService, @NotNull Runnable runnable) {
+        return executorService.submit(runnable);
+    }
+
+    @NotNull
     public Future<?> runTask(@NotNull Runnable runnable) {
-        return taskService.submit(runnable);
+        return runTask(defaultExecutionerService, runnable);
     }
 
     @NotNull
@@ -70,6 +74,7 @@ public class ScheduleExecutor {
 
     public void removeTask(@NotNull ScheduledFuture<?> future) {
         synchronized (tasks) {
+            future.cancel(false);
             tasks.remove(future);
         }
     }
@@ -80,6 +85,10 @@ public class ScheduleExecutor {
                 task.cancel(false);
             tasks.clear();
         }
+    }
+
+    public ExecutorService getDefaultExecutionerService() {
+        return defaultExecutionerService;
     }
 
     private AsyncLockWrapper wrapRunnable(@NotNull Runnable runnable) {
@@ -102,7 +111,7 @@ public class ScheduleExecutor {
             if (isCurrentlyProcessing)
                 return;
             isCurrentlyProcessing = true;
-            ScheduleExecutor.this.taskService.execute(() -> {
+            ScheduleExecutor.this.defaultExecutionerService.execute(() -> {
                 try {
                     lock.lock();
                     runnable.run();

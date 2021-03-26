@@ -3,6 +3,8 @@ package com.acrylic.universal.threads;
 import com.acrylic.time.Time;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.ExecutorService;
+
 public final class ScheduleTaskContext {
 
     private final boolean isAsync;
@@ -13,6 +15,10 @@ public final class ScheduleTaskContext {
 
     public Scheduler<TaskType> runTask() {
         return taskType(TaskType.task());
+    }
+
+    public Scheduler<TaskType> runTask(@NotNull ExecutorService executorService) {
+        return taskType(TaskType.task(executorService));
     }
 
     public Scheduler<TaskType.DelayedTask> runDelayedTask(long ticks) {

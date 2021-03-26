@@ -19,6 +19,7 @@ import com.acrylic.universal.geometry.circular.Spiral;
 import com.acrylic.universal.geometry.line.QuadraticYLine;
 import com.acrylic.universal.regions.SimpleRegion;
 import com.acrylic.universal.text.ChatUtils;
+import com.acrylic.universal.threads.ScheduleExecutor;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.gui.GlobalGUI;
 import com.acrylic.universal.gui.InventoryUIBuilder;
@@ -143,9 +144,7 @@ public class AcrylicCommand {
                                 .filter(CommandExecuted::isExecutedByPlayer)
                                 .timer(true)
                                 .handle(commandExecutor -> {
-                                    Scheduler.sync().runDelayedTask(5, Time.SECONDS).handleThenBuild(task -> {
-                                        Bukkit.broadcastMessage("hello!");
-                                    });
+                                    Bukkit.broadcastMessage(ScheduleExecutor.ASYNC_EXECUTOR.getTasks().size() + "");
 
                         }),
                         CommandBuilder.create("item")
