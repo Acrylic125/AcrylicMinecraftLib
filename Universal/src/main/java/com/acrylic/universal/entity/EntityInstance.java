@@ -8,10 +8,24 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public interface EntityInstance extends Deletable {
 
     String UPSIDE_DOWN_NAME = "Dinnerbone";
     String RAINBOW_SHEEP_NAME = "Jeb_";
+
+    default Location getLocation() {
+        return getBukkitEntity().getLocation();
+    }
+
+    default int getId() {
+        return getBukkitEntity().getEntityId();
+    }
+
+    default UUID getUUID() {
+        return getBukkitEntity().getUniqueId();
+    }
 
     default void asAnimator() {
         setName(null);
