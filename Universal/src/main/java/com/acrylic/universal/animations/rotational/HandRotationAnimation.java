@@ -45,6 +45,10 @@ public class HandRotationAnimation extends EntityAnimation {
         circle = generateCircleBy(getEntityInstance().getBukkitEntity(), 32);
     }
 
+    public Location getSourceLocation() {
+        return circle.getSourceLocation();
+    }
+
     private static Circle generateCircleBy(@NotNull Entity entity, int points) {
         EntityType entityType = entity.getType();
         switch (entityType) {

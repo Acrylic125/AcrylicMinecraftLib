@@ -3,17 +3,34 @@ package com.acrylic.universal.animations.holograms;
 import com.acrylic.universal.animations.Animation;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class AbstractHolograms
         implements Animation, Iterable<AbstractHologram> {
 
-    private final ArrayList<AbstractHologram> holograms = new ArrayList<>();
+    private final List<AbstractHologram> holograms;
     private boolean running = true;
+
+    public AbstractHolograms() {
+        this(new ArrayList<>());
+    }
+
+    public AbstractHolograms(@NotNull List<AbstractHologram> holograms) {
+        this.holograms = holograms;
+    }
+
+    @Nullable
+    public AbstractHologram getHologram(int index) {
+        int size = holograms.size();
+        return (index >= size || index < 0) ? null : holograms.get(index);
+    }
+
+    public List<AbstractHologram> getHolograms() {
+        return holograms;
+    }
 
     public void clear() {
         holograms.clear();
