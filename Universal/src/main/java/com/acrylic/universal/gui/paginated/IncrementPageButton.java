@@ -7,6 +7,38 @@ import org.jetbrains.annotations.Nullable;
 
 public class IncrementPageButton extends PageButton {
 
+    public static IncrementPageButton createLastPageButton(@Nullable ItemStack item) {
+        return createLastPageButton(item, -1);
+    }
+
+    public static IncrementPageButton createLastPageButton(@NotNull PaginatedComponent paginatedComponent, @Nullable ItemStack item) {
+        return createLastPageButton(paginatedComponent, item, -1);
+    }
+
+    public static IncrementPageButton createLastPageButton(@Nullable ItemStack item, int turnBy) {
+        return new IncrementPageButton(item, -turnBy);
+    }
+
+    public static IncrementPageButton createLastPageButton(@NotNull PaginatedComponent paginatedComponent, @Nullable ItemStack item, int turnBy) {
+        return new IncrementPageButton(paginatedComponent, item, -turnBy);
+    }
+
+    public static IncrementPageButton createNextPageButton(@Nullable ItemStack item) {
+        return createNextPageButton(item, 1);
+    }
+
+    public static IncrementPageButton createNextPageButton(@NotNull PaginatedComponent paginatedComponent, @Nullable ItemStack item) {
+        return createNextPageButton(paginatedComponent, item, 1);
+    }
+
+    public static IncrementPageButton createNextPageButton(@Nullable ItemStack item, int turnBy) {
+        return new IncrementPageButton(item, turnBy);
+    }
+
+    public static IncrementPageButton createNextPageButton(@NotNull PaginatedComponent paginatedComponent, @Nullable ItemStack item, int turnBy) {
+        return new IncrementPageButton(paginatedComponent, item, turnBy);
+    }
+
     private int pageIncrement = 1;
     private boolean returnNullIfPageOutOfBounds = true;
 
@@ -48,6 +80,9 @@ public class IncrementPageButton extends PageButton {
     @Override
     public ItemStack getItem(InventoryDetails openDetails, int page) {
         page += pageIncrement;
-        return (returnNullIfPageOutOfBounds && getPaginatedComponent().isPageOutOfBounds(page)) ? null : super.getItem(openDetails, page);
+        PaginatedComponent paginatedComponent = getPaginatedComponent();
+        if (paginatedComponent == null)
+            throw new NullPointerException("No paginated component set!");
+        return (returnNullIfPageOutOfBounds && paginatedComponent.isPageOutOfBounds(page)) ? null : super.getItem(openDetails, page);
     }
 }

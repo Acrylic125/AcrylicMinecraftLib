@@ -71,7 +71,6 @@ public abstract class PageButton implements GUIClickableItem {
     public void onClicked(@NotNull GUI gui, @NotNull InventoryClickEvent event, @NotNull UIComparableItemInfo.Comparison comparison) {
         validateUse();
         int page = comparison.getInteger(PAGE_KEY);
-        Bukkit.broadcastMessage(page + "");
         InventoryDetails inventoryDetails = new InventoryDetails((Player) event.getView().getPlayer(), event.getInventory());
         gui.refresh(inventoryDetails);
         paginatedComponent.applyPageToInventory(inventoryDetails, page);
