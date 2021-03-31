@@ -21,6 +21,6 @@ public class EntityMetadataMap implements MetadataMap<EntityMetadata> {
     @NotNull
     @Override
     public Map<String, EntityMetadata> getMetadataMap() {
-        return null;
+        return map;
     }
 }

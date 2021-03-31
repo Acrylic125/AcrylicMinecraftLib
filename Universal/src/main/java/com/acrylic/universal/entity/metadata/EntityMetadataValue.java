@@ -1,6 +1,12 @@
 package com.acrylic.universal.entity.metadata;
 
-public abstract class EntityMetadataValue implements EntityMetadata {
+import com.acrylic.universal.interfaces.DataSerializable;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class EntityMetadataValue implements EntityMetadata, DataSerializable {
 
     private final String key;
 
@@ -14,4 +20,13 @@ public abstract class EntityMetadataValue implements EntityMetadata {
     }
 
     public abstract Object getValue();
+
+    @Override
+    @NotNull
+    public Map<String, Object> serialize() {
+        HashMap<String, Object> map = new HashMap<>(1);
+        map.put(key, getValue());
+        return map;
+    }
+
 }

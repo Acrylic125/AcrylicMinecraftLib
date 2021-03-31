@@ -1,5 +1,6 @@
 package com.acrylic.universal.entity;
 
+import com.acrylic.universal.entity.metadata.EntityMetadataMap;
 import com.acrylic.universal.interfaces.Deletable;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -14,6 +15,8 @@ public interface EntityInstance extends Deletable {
 
     String UPSIDE_DOWN_NAME = "Dinnerbone";
     String RAINBOW_SHEEP_NAME = "Jeb_";
+
+    EntityMetadataMap getMetadataMap();
 
     default Location getLocation() {
         return getBukkitEntity().getLocation();
