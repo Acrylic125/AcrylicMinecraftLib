@@ -30,6 +30,15 @@
  *   would allow.
  *   This has been done and expanded upon in the AcrylicNMSLib project:
  *   https://github.com/Acrylic125/AcrylicNMSLibV2
+ *
+ *
+ * Some entities are declared as 'OLD' with the Old entity
+ * suffix in the class name. These entities are NOT deprecated
+ * but are not supported in a later version of MC. Theses should
+ * only be used for it's intended version.
+ *
+ * @see com.acrylic.universal.entity.WitherSkeletonEntityInstanceOld
+ * @see com.acrylic.universal.entity.ZombieVillagerEntityInstanceOld
  */
 
 package com.acrylic.universal.entity;

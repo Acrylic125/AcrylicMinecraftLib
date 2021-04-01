@@ -1,6 +1,7 @@
 package com.acrylic.universal.entity;
 
 import org.bukkit.entity.Stray;
+import org.bukkit.entity.WitherSkeleton;
 import org.jetbrains.annotations.NotNull;
 
 public interface StrayEntityInstance extends SkeletonEntityInstance {
@@ -10,12 +11,8 @@ public interface StrayEntityInstance extends SkeletonEntityInstance {
     Stray getBukkitEntity();
 
     @Override
-    default boolean isWitherSkeleton() {
-        return false;
+    default SkeletonType getSkeletonType() {
+        return SkeletonType.STRAY;
     }
 
-    @Override
-    default boolean isStray() {
-        return true;
-    }
 }

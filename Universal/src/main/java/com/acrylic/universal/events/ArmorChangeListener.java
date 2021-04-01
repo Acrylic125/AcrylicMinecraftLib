@@ -4,7 +4,6 @@ import com.acrylic.universal.Universal;
 import com.acrylic.universal.files.configloader.ConfigValue;
 import com.acrylic.universal.files.configloader.Configurable;
 import com.acrylic.universal.items.ItemUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -64,7 +63,7 @@ public class ArmorChangeListener {
                 .setArmorType(newArmorType)
                 .setHotSwap(HOT_SWAP_ENABLED && !isItemHeldAir)
                 .setChangeType(changeType);
-        armorChangeEvent.call();
+        armorChangeEvent.callEvent();
         if (!armorChangeEvent.isCancelled()) {
             newArmorType.setItemInEquipment(equipment, item);
             equipment.setItemInHand((previousItem == null) ? null : previousItem.clone());
@@ -81,7 +80,7 @@ public class ArmorChangeListener {
                     ArmorChangeEvent event = new ArmorChangeEvent(entity)
                             .setArmorType(armorType);
                     armorChangeEventManipulation.accept(event, armorType, item);
-                    event.call();
+                    event.callEvent();
                 }
             }
         }
@@ -101,7 +100,7 @@ public class ArmorChangeListener {
                                 .setChangeType(ArmorChangeEvent.ChangeType.UN_EQUIP)
                                 .setPreviousItem(oldItem)
                                 .setNewItem(null)
-                                .call();
+                                .callEvent();
                     }
                 });
     }
@@ -162,7 +161,7 @@ public class ArmorChangeListener {
                                 .setEquipType(ArmorChangeEvent.EquipType.INVENTORY_DRAG)
                                 .setPreviousItem(null)
                                 .setNewItem(newItem);
-                        changeEvent.call();
+                        changeEvent.callEvent();
                         if (changeEvent.isCancelled()){
                             event.setResult(Event.Result.DENY);
                             event.setCancelled(true);
@@ -268,7 +267,7 @@ public class ArmorChangeListener {
                                 .setArmorType((changeType == ArmorChangeEvent.ChangeType.EQUIP) ? newArmorType : oldArmorType)
                                 .setPreviousItem((changeType == ArmorChangeEvent.ChangeType.EQUIP) ? null : oldItem)
                                 .setNewItem((changeType == ArmorChangeEvent.ChangeType.UN_EQUIP) ? null : newItem);
-                        armorChangeEvent.call();
+                        armorChangeEvent.callEvent();
                         if (armorChangeEvent.isCancelled())
                             event.setCancelled(true);
                     }
@@ -321,7 +320,7 @@ public class ArmorChangeListener {
                                     .setArmorType(type)
                                     .setEquipType(ArmorChangeEvent.EquipType.DISPENSER)
                                     .setChangeType(ArmorChangeEvent.ChangeType.EQUIP);
-                            changeEvent.call();
+                            changeEvent.callEvent();
                             event.setCancelled(changeEvent.isCancelled());
                         }
                     });

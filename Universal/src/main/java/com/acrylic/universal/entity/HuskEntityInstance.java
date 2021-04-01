@@ -11,8 +11,4 @@ public interface HuskEntityInstance extends ZombieEntityInstance {
     @Override
     Husk getBukkitEntity();
 
-    @Override
-    default boolean isHusk() {
-        return true;
-    }
 }

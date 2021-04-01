@@ -12,9 +12,15 @@ public interface EntityFactory {
 
     ZombieEntityInstance getNewZombieInstance(@NotNull Location location);
 
+    ZombieVillagerEntityInstance getNewZombieVillagerInstance(@NotNull Location location);
+
+    ZombieVillagerEntityInstanceOld getNewZombieVillagerInstanceOld(@NotNull Location location);
+
     SkeletonEntityInstance getNewSkeletonInstance(@NotNull Location location);
 
     WitherSkeletonEntityInstance getNewWitherSkeletonInstance(@NotNull Location location);
+
+    WitherSkeletonEntityInstanceOld getNewWitherSkeletonInstanceOld(@NotNull Location location);
 
     StrayEntityInstance getNewStrayInstance(@NotNull Location location);
 

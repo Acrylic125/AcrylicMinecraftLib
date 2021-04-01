@@ -10,21 +10,19 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.acrylic.universal.entity.EntityInstance.spawnEntity;
 
-public class BukkitCaveSpiderInstance extends BukkitLivingEntityInstance implements CaveSpiderEntityInstance {
-
-    private final CaveSpider spider;
+public class BukkitCaveSpiderInstance extends BukkitSpiderInstance implements CaveSpiderEntityInstance {
 
     public BukkitCaveSpiderInstance(@NotNull Location location) {
-        this((CaveSpider) spawnEntity(location, EntityType.CAVE_SPIDER));
+        super(location, SpiderType.CAVE_SPIDER);
     }
 
-    public BukkitCaveSpiderInstance(@NotNull CaveSpider spider) {
-        this.spider = spider;
+    public BukkitCaveSpiderInstance(@NotNull CaveSpider caveSpider) {
+        super(caveSpider);
     }
 
     @NotNull
     @Override
     public CaveSpider getBukkitEntity() {
-        return spider;
+        return (CaveSpider) super.getBukkitEntity();
     }
 }

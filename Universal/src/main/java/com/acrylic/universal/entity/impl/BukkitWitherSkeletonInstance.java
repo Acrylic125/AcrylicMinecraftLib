@@ -1,31 +1,28 @@
 package com.acrylic.universal.entity.impl;
 
-import com.acrylic.universal.entity.SkeletonEntityInstance;
 import com.acrylic.universal.entity.WitherSkeletonEntityInstance;
 import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.WitherSkeleton;
 import org.jetbrains.annotations.NotNull;
 
-import static com.acrylic.universal.entity.EntityInstance.spawnEntity;
-
-public class BukkitWitherSkeletonInstance extends BukkitLivingEntityInstance implements WitherSkeletonEntityInstance {
-
-    private final WitherSkeleton skeleton;
+public class BukkitWitherSkeletonInstance
+        extends BukkitSkeletonInstance
+        implements WitherSkeletonEntityInstance {
 
     public BukkitWitherSkeletonInstance(@NotNull Location location) {
-        this((WitherSkeleton) spawnEntity(location, EntityType.WITHER_SKELETON));
+        super(location, SkeletonType.WITHER);
     }
 
     public BukkitWitherSkeletonInstance(@NotNull WitherSkeleton skeleton) {
-        this.skeleton = skeleton;
+        super(skeleton);
     }
 
     @NotNull
     @Override
     public WitherSkeleton getBukkitEntity() {
-        return skeleton;
+        return (WitherSkeleton) super.getBukkitEntity();
     }
+
+
 
 }

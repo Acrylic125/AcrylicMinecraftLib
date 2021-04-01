@@ -125,7 +125,7 @@ public class ArmorChangeEvent extends Event implements Cancellable {
         return handleUnEquip;
     }
 
-    public void call() {
+    public void callEvent() {
         boolean isChange = changeType.equals(ChangeType.CHANGE);
         handleEquip = isChange || changeType.equals(ChangeType.EQUIP);
         handleUnEquip = isChange || changeType.equals(ChangeType.UN_EQUIP);

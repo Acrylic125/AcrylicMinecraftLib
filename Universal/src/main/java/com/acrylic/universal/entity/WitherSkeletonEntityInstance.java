@@ -9,13 +9,4 @@ public interface WitherSkeletonEntityInstance extends SkeletonEntityInstance {
     @Override
     WitherSkeleton getBukkitEntity();
 
-    @Override
-    default boolean isWitherSkeleton() {
-        return true;
-    }
-
-    @Override
-    default boolean isStray() {
-        return false;
-    }
 }
