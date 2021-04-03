@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
-//T
 public class BlockData implements MCBlockData {
 
     private final Material material;
