@@ -16,6 +16,10 @@ public class BukkitSkeletonInstanceImpl
     private final Skeleton skeleton;
     private final SkeletonType skeletonType;
 
+    public BukkitSkeletonInstanceImpl(@NotNull Location location) {
+        this(location, SkeletonType.NORMAL);
+    }
+
     public BukkitSkeletonInstanceImpl(@NotNull Location location, @NotNull SkeletonType skeletonType) {
         this.skeleton = spawnEntity(location, EntityType.SKELETON);
         switch (skeletonType) {

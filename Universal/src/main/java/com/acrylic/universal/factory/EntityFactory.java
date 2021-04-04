@@ -8,7 +8,7 @@ public interface EntityFactory {
 
     ArmorStandInstance getNewArmorStandInstance(@NotNull Location location);
 
-    ArmorStandInstance getNewGiantInstance(@NotNull Location location);
+    GiantEntityInstance getNewGiantInstance(@NotNull Location location);
 
     ZombieEntityInstance getNewZombieInstance(@NotNull Location location);
 
