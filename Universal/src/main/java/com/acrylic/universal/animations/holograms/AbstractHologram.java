@@ -28,4 +28,8 @@ public abstract class AbstractHologram extends EntityAnimation {
         return location;
     }
 
+    public void setText(String text) {
+        getEntityInstance().setName(text);
+    }
+
 }

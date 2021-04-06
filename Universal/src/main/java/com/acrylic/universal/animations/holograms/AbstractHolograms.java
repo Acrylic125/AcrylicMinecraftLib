@@ -25,7 +25,7 @@ public abstract class AbstractHolograms
     @Nullable
     public AbstractHologram getHologram(int index) {
         int size = holograms.size();
-        return (index >= size || index < 0) ? null : holograms.get(index);
+        return (size > 0 && (index >= size || index < 0)) ? null : holograms.get(index);
     }
 
     public List<AbstractHologram> getHolograms() {
@@ -100,5 +100,16 @@ public abstract class AbstractHolograms
     public void terminate() {
         this.running = false;
         delete();
+    }
+
+    /**
+     *
+     * @param line The line number. From 1.
+     * @param text The text.
+     */
+    public void setHologramText(int line, String text) {
+        AbstractHologram hologram = getHologram(line + 1);
+        if (hologram != null)
+            holograms.get(line).setText(text);
     }
 }

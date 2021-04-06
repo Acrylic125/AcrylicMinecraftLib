@@ -10,7 +10,7 @@ public abstract class AbstractScheduler<R extends TaskType>
     private final R taskType;
     private JavaPlugin plugin = Universal.getPlugin();
     private ExecutedTask<R> handle;
-    private String name;
+    private String name = "Unnamed";
 
     public AbstractScheduler(@NotNull R taskType) {
         this.taskType = taskType;
