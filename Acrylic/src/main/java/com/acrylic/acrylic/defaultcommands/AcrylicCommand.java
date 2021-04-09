@@ -1,7 +1,6 @@
 package com.acrylic.acrylic.defaultcommands;
 
-import com.acrylic.time.Time;
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.animations.dangle.Dangle;
 import com.acrylic.universal.animations.holograms.Holograms;
 import com.acrylic.universal.animations.rotational.HandRotationAnimation;
@@ -25,7 +24,6 @@ import com.acrylic.universal.gui.GlobalGUI;
 import com.acrylic.universal.gui.InventoryUIBuilder;
 import com.acrylic.universal.gui.components.GUIStaticComponent;
 import com.acrylic.universal.gui.items.BasicGUIItem;
-import com.acrylic.universal.utils.StringUtils;
 import com.acrylic.universal.utils.TimeConverter;
 import com.acrylic.version_1_8.equipment.EntityEquipmentBuilderImpl;
 import com.acrylic.version_1_8.items.ItemBuilder;
@@ -69,7 +67,7 @@ public class AcrylicCommand {
     private static void sudo(@NotNull Player sender, String player, String str, int amt) {
         Player p = Bukkit.getPlayer(player);
         if (p == null || !p.isOnline()) {
-            Universal.getAcrylicPlugin().getMessageBuilder().sendErrorMessage("The user is not online.", sender);
+            sender.sendMessage(ChatUtils.get("&c&l[!]&r&c The user is not online."));
             return;
         }
         String name = p.getName();
@@ -292,7 +290,7 @@ public class AcrylicCommand {
                         CommandBuilder.create("files")
                                 .handle(commandExecutor -> {
                             Configuration configuration = new Configuration("acrylic.yml", null);
-                            configuration.loadFromResources(Universal.getPlugin());
+                            configuration.loadFromResources(MCLib.getPlugin());
                             Bukkit.broadcastMessage(configuration.getFileEditor() + "");
                             configuration.saveFile();
                         })

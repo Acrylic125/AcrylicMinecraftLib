@@ -1,6 +1,6 @@
 package com.acrylic.universal.events;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +18,7 @@ public class EventBuilder<T extends Event>
     private EventPriority priority = EventPriority.NORMAL;
     private boolean shouldIgnoreCancel = false;
     private String name;
-    private JavaPlugin plugin = Universal.getPlugin();
+    private JavaPlugin plugin = MCLib.getPlugin();
 
     private long time = 0;
     private boolean shouldClock = false;

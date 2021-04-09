@@ -1,6 +1,6 @@
 package com.acrylic.universal.files.bukkit;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.files.YMLFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -18,8 +18,8 @@ public class Configuration
     }
 
     public Configuration(@NotNull String path, @Nullable JavaPlugin plugin) {
-        super(BukkitConfiguration.getPluginConfigurationPath((plugin == null) ? Universal.getPlugin() : plugin, path));
-        this.plugin = (plugin == null) ? Universal.getPlugin() : plugin;
+        super(BukkitConfiguration.getPluginConfigurationPath((plugin == null) ? MCLib.getPlugin() : plugin, path));
+        this.plugin = (plugin == null) ? MCLib.getPlugin() : plugin;
     }
 
     @Nullable

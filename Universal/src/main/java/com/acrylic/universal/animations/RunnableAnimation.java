@@ -1,6 +1,6 @@
 package com.acrylic.universal.animations;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.threads.Scheduler;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +19,7 @@ public interface RunnableAnimation extends Runnable {
     }
 
     default void startScheduler() {
-        startScheduler(Universal.getPlugin());
+        startScheduler(MCLib.getPlugin());
     }
 
     default void terminateScheduler() {

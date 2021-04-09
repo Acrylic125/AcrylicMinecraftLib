@@ -1,6 +1,6 @@
 package com.acrylic.universal.entity.equipment;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.items.AbstractItemBuilder;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
@@ -69,7 +69,7 @@ public interface EntityEquipmentBuilder {
         cloneTo.setLeggingsDropChance(cloneFrom.getLeggingsDropChance());
         cloneTo.setBoots(cloneFrom.getBoots());
         cloneTo.setBootsDropChance(cloneFrom.getBootsDropChance());
-        if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
+        if (MCLib.getLib().isLegacyVersion()) {
             cloneTo.setItemInHand(cloneFrom.getItemInHand());
             cloneTo.setItemInHandDropChance(cloneFrom.getItemInHandDropChance());
         } else {

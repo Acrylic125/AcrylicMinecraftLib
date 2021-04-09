@@ -1,10 +1,9 @@
 package com.acrylic.universal.items.itemdropproection;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.events.AbstractEventBuilder;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.threads.Scheduler;
-import com.acrylic.universal.threads.SyncScheduler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
@@ -41,7 +40,7 @@ public class ItemDropChecker {
     }
 
     private void listenPickUp() {
-        entityPickupItemEventBuilder = (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) ?
+        entityPickupItemEventBuilder = (MCLib.getLib().isLegacyVersion()) ?
                 EventBuilder.listen(PlayerPickupItemEvent.class)
                         .priority(EventPriority.HIGHEST)
                         .setEventName("ItemDropChecker : PickUp Listener")

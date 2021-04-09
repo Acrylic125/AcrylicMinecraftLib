@@ -1,8 +1,8 @@
 package com.acrylic.universal.worldblocksaver;
 
-import com.acrylic.universal.Universal;
-import com.acrylic.universal.blocks.BlockFactory;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.blocks.MCBlockData;
+import com.acrylic.universal.factory.UtilityFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -25,8 +25,8 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
             this.y = Integer.parseInt(serialized[1]);
             this.z = Integer.parseInt(serialized[2]);
             this.world = serialized[3];
-            BlockFactory blockFactory = Universal.getAcrylicPlugin().getBlockFactory();
-            this.blockData = blockFactory.getBlockData(Material.values()[Integer.parseInt(serialized[4])], (serialized.length >= 6) ? Byte.parseByte(serialized[5]) : 0);
+            UtilityFactory utilityFactory = MCLib.getLib().getUtilityFactory();
+            this.blockData = utilityFactory.getBlockData(Material.values()[Integer.parseInt(serialized[4])], (serialized.length >= 6) ? Byte.parseByte(serialized[5]) : 0);
         } catch (Throwable ex) {
             ex.printStackTrace();
             throw new IllegalArgumentException("The specified serialized string array, " + Arrays.toString(serialized) + " is not deserializable via " + this.getClass());
@@ -34,7 +34,7 @@ public class BlockSaveSerialized implements SerializedBlockSaveInstance {
     }
 
     public BlockSaveSerialized(@NotNull Block block) {
-        this(block, Universal.getAcrylicPlugin().getBlockFactory().getBlockData(block));
+        this(block, MCLib.getLib().getUtilityFactory().getBlockData(block));
     }
 
     public BlockSaveSerialized(@NotNull Block block, @NotNull MCBlockData originalData) {

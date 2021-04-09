@@ -1,6 +1,6 @@
 package com.acrylic.universal.files.bukkit;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -55,7 +55,7 @@ public interface BukkitConfiguration {
     }
 
     static String getPluginConfigurationPath(@NotNull String fileName) {
-        return getPluginConfigurationPath(Universal.getPlugin(), fileName);
+        return getPluginConfigurationPath(MCLib.getPlugin(), fileName);
     }
 
     /** Helper method **/

@@ -1,6 +1,6 @@
 package com.acrylic.universal.gui;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.events.AbstractEventBuilder;
 import com.acrylic.universal.events.EventBuilder;
 import com.acrylic.universal.interfaces.Terminable;
@@ -171,7 +171,7 @@ public interface GUI
     static <E extends Event> AbstractEventBuilder<E> generateListener(@NotNull GUI gui, @NotNull Class<E> listenerType, @NotNull String name) {
         return EventBuilder.listen(listenerType)
                 .priority(EventPriority.HIGHEST)
-                .plugin(Universal.getPlugin())
+                .plugin(MCLib.getPlugin())
                 .setEventName(name + " @" + gui);
     }
 

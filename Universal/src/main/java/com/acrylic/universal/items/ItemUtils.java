@@ -1,6 +1,6 @@
 package com.acrylic.universal.items;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.items.itemdropproection.ItemDropProtected;
 import com.acrylic.universal.items.itemdropproection.PlayerItemDropProtected;
 import com.acrylic.universal.text.ChatUtils;
@@ -18,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class ItemUtils {
@@ -27,7 +26,7 @@ public class ItemUtils {
 
     @NotNull
     public static ItemTypeAnalyzer getItemTypeAnalyzer() {
-        return Universal.getAcrylicPlugin().getItemTypeAnalyzer();
+        return MCLib.getLib().getItemTypeAnalyzer();
     }
 
     @NotNull

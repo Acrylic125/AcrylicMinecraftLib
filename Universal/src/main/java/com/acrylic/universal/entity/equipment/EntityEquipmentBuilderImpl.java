@@ -1,7 +1,6 @@
 package com.acrylic.universal.entity.equipment;
 
-import com.acrylic.universal.Universal;
-import org.bukkit.Bukkit;
+import com.acrylic.universal.MCLib;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
@@ -85,7 +84,7 @@ public class EntityEquipmentBuilderImpl implements EntityEquipmentBuilder {
         equipment.setChestplate(getChestplate());
         equipment.setLeggings(getLeggings());
         equipment.setBoots(getBoots());
-        if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
+        if (MCLib.getLib().isLegacyVersion()) {
             throw new IllegalStateException("You may not use this while using a legacy version.");
         } else {
             equipment.setItemInMainHand(getItemInHand());

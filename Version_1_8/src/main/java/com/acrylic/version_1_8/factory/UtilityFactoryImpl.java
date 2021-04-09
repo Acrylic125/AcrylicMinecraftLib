@@ -1,13 +1,13 @@
 package com.acrylic.version_1_8.factory;
 
-import com.acrylic.universal.blocks.BlockFactory;
 import com.acrylic.universal.blocks.MCBlockData;
+import com.acrylic.universal.factory.UtilityFactory;
 import com.acrylic.version_1_8.blocks.BlockData;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
 
-public class UtilityFactoryImpl implements BlockFactory {
+public class UtilityFactoryImpl implements UtilityFactory {
 
     @NotNull
     @Override

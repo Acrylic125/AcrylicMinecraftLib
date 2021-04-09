@@ -170,6 +170,10 @@ public class Dangle
         return time;
     }
 
+    public void start() {
+        startScheduler();
+    }
+
     @Override
     public void terminate() {
         delete();

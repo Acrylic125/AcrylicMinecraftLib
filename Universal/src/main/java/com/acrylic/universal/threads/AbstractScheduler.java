@@ -1,6 +1,6 @@
 package com.acrylic.universal.threads;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,7 +8,7 @@ public abstract class AbstractScheduler<R extends TaskType>
         implements Scheduler<R> {
 
     private final R taskType;
-    private JavaPlugin plugin = Universal.getPlugin();
+    private JavaPlugin plugin = MCLib.getPlugin();
     private ExecutedTask<R> handle;
     private String name = "Unnamed";
 

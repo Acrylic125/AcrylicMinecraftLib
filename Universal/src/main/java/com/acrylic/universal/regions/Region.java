@@ -1,8 +1,7 @@
 package com.acrylic.universal.regions;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.regions.exceptions.InvalidLocationException;
-import com.acrylic.universal.threads.Scheduler;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -61,7 +60,7 @@ public interface Region {
     }
 
     default void showMarkers() {
-        showMarkers(Universal.getPlugin());
+        showMarkers(MCLib.getPlugin());
     }
 
     default void showMarkers(JavaPlugin plugin) {

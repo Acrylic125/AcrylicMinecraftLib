@@ -1,7 +1,7 @@
 package com.acrylic.universal.events;
 
 import co.aikar.timings.lib.MCTiming;
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.interfaces.PluginRegister;
 import com.acrylic.universal.interfaces.Clocker;
 import com.acrylic.universal.reflection.ReflectionUtils;
@@ -116,7 +116,7 @@ public interface AbstractEventBuilder<T extends Event> extends Listener, Clocker
 
     @NotNull
     default MCTiming getTimings() {
-        return Universal.getTimingManager().of(getEventName());
+        return MCLib.getTimingManager().of(getEventName());
     }
 
 }

@@ -1,6 +1,6 @@
 package com.acrylic.universal.events;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.files.configloader.ConfigValue;
 import com.acrylic.universal.files.configloader.Configurable;
 import com.acrylic.universal.items.ItemUtils;
@@ -306,7 +306,7 @@ public class ArmorChangeListener {
     }
 
     private void listenDispenser() {
-        if (!Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
+        if (!MCLib.getLib().isLegacyVersion()) {
             EventBuilder.listen(BlockDispenseArmorEvent.class)
                     .priority(EventPriority.HIGHEST)
                     .setEventName("ArmorChangeListener : Armor Dispenser Listener")

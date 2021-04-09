@@ -1,6 +1,6 @@
 package com.acrylic.universal.animations;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.interfaces.Index;
 import com.acrylic.universal.threads.Scheduler;
 import com.acrylic.universal.threads.TaskType;
@@ -40,7 +40,7 @@ public interface InvocationLocationAnimation extends Index {
     }
 
     default void invokeWithScheduler(int delayTicks, int periodTicks, int count, @NotNull final Location location, @NotNull final BiConsumer<Integer, Location> action) {
-        invokeWithScheduler(Universal.getPlugin(), delayTicks, periodTicks, count, location, action);
+        invokeWithScheduler(MCLib.getPlugin(), delayTicks, periodTicks, count, location, action);
     }
 
     default void invokeWithScheduler(@NotNull JavaPlugin plugin, int delayTicks, int periodTicks, @NotNull final Location location, @NotNull final BiConsumer<Integer, Location> action) {

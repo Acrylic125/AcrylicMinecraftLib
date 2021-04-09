@@ -1,7 +1,7 @@
 package com.acrylic.universal.worldblocksaver;
 
 import com.acrylic.time.Time;
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.files.CSVFile;
 import com.acrylic.universal.files.fileeditor.CSVTextFileEditor;
 import com.acrylic.universal.threads.Scheduler;
@@ -23,7 +23,7 @@ public class SimpleBlockSaver
     private BlockSaverSerializer<SerializedBlockSaveInstance> serializer;
 
     public SimpleBlockSaver() {
-        this.csvFile = new CSVFile("blocksaves.csv", Universal.getPlugin());
+        this.csvFile = new CSVFile("blocksaves.csv", MCLib.getPlugin());
         this.csvFile.load();
         this.scheduler = getNewScheduler();
     }

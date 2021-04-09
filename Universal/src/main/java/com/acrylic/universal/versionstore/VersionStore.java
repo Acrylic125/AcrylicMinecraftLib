@@ -18,13 +18,4 @@ public class VersionStore {
         return getVersion() <= LEGACY_VERSION;
     }
 
-    public void throwExceptionIfLegacy() {
-        throwExceptionIfWrongVersion(LEGACY_VERSION + 1);
-    }
-
-    public void throwExceptionIfWrongVersion(int version) {
-        if (getVersion() < version)
-            throw new WrongVersionException(version);
-    }
-
 }

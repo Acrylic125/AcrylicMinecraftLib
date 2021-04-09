@@ -1,6 +1,6 @@
 package com.acrylic.universal.entity.impl;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.entity.LivingEntityInstance;
 import com.acrylic.universal.entity.equipment.EntityEquipmentBuilder;
 import de.tr7zw.nbtapi.NBTEntity;
@@ -23,7 +23,7 @@ public abstract class BukkitLivingEntityInstance
     public abstract LivingEntity getBukkitEntity();
 
     public void setAI(boolean ai) {
-        if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
+        if (MCLib.getLib().isLegacyVersion()) {
             NBTEntity nbtEntity = new NBTEntity(getBukkitEntity());
             nbtEntity.setByte("NoAI", (byte) ((ai) ? 0 : 1));
         } else
@@ -32,7 +32,7 @@ public abstract class BukkitLivingEntityInstance
 
     @Override
     public void setVisible(boolean visible) {
-        if (Universal.getAcrylicPlugin().getVersionStore().isLegacyVersion()) {
+        if (MCLib.getLib().isLegacyVersion()) {
             if (visible)
                 getBukkitEntity().removePotionEffect(PotionEffectType.INVISIBILITY);
             else

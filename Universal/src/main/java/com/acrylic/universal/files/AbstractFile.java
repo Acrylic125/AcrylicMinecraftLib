@@ -1,9 +1,8 @@
 package com.acrylic.universal.files;
 
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import com.acrylic.universal.files.bukkit.BukkitConfiguration;
 import com.acrylic.universal.files.fileeditor.AbstractFileEditor;
-import com.acrylic.universal.files.fileeditor.FileEditor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,8 +28,8 @@ public abstract class AbstractFile implements BukkitConfiguration {
 
     private AbstractFile(@NotNull String path, @Nullable JavaPlugin plugin, boolean useUniversalPluginIfNull) {
         if (useUniversalPluginIfNull) {
-            path = BukkitConfiguration.getPluginConfigurationPath((plugin == null) ? Universal.getPlugin() : plugin, path);
-            this.plugin = (plugin == null) ? Universal.getPlugin() : plugin;
+            path = BukkitConfiguration.getPluginConfigurationPath((plugin == null) ? MCLib.getPlugin() : plugin, path);
+            this.plugin = (plugin == null) ? MCLib.getPlugin() : plugin;
         } else
             this.plugin = null;
         Logger logger = Logger.getGlobal();

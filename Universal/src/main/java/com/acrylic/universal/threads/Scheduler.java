@@ -1,7 +1,7 @@
 package com.acrylic.universal.threads;
 
 import co.aikar.timings.lib.MCTiming;
-import com.acrylic.universal.Universal;
+import com.acrylic.universal.MCLib;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -65,7 +65,7 @@ public interface Scheduler<R extends TaskType> extends Runnable {
 
     @NotNull
     default MCTiming getTimings() {
-        return Universal.getTimingManager().of(getName());
+        return MCLib.getTimingManager().of(getName());
     }
 
 }
