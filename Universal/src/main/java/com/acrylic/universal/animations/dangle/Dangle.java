@@ -11,6 +11,7 @@ import com.acrylic.universal.interfaces.Timed;
 import com.acrylic.universal.threads.Scheduler;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -95,6 +96,10 @@ public class Dangle
 
     public void update() {
         if (isRunning()) {
+            if (!entity.isValid() || (entity instanceof Player && !((Player) entity).isOnline())) {
+                terminate();
+                return;
+            }
             checkForRemoval();
             final Location location = entity.getLocation();
             final int size = entityAnimations.size();
